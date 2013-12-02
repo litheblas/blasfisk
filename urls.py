@@ -4,10 +4,6 @@ from django.contrib import admin
 
 from mezzanine.core.views import direct_to_template
 
-#Bajsbajsbajs /Ollé
-#Detta ser lite autogenererat ut...
-#skriver man verkligen kommentarer på det här sättet btw... Wöö Olle trollar
-#Hejhej
 
 admin.autodiscover()
 
