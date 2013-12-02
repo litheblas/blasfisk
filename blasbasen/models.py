@@ -153,7 +153,7 @@ class Post(models.Model):
     section = models.ForeignKey('Section', blank=True, null=True)
     post = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    #TODO: En egenskap för arkiverade poster (t.ex. Generalbas) också kanske?
+    #TODO: En egenskap för om posten är arkiverad också kanske? Typ generalbas
 
     
     class Meta:
