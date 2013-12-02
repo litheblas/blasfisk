@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+    {% load pages_tags mezzanine_tags i18n future staticfiles %}
+    <head>
+
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+        <meta name="description" content="{% block meta_description %}{% endblock %}">
+        <title>{% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
+        <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
+
+        {% ifinstalled mezzanine.blog %}
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
+        <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
+        {% endifinstalled %}
+
+        {% compress css %}
+        <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+        <link rel="stylesheet" href="{% static "css/custom.css" %}">
+        <!--<link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}">-->
+        {% if LANGUAGE_BIDI %}
+        <link rel="stylesheet" href="{% static "css/rtl.css" %}">
+        {% endif %}
+        {% ifinstalled cartridge.shop %}
+        <link rel="stylesheet" href="{% static "css/cartridge.css" %}">
+        {% if LANGUAGE_BIDI %}
+        <link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
+        {% endif %}
+        {% endifinstalled %}
+        {% block extra_css %}{% endblock %}
+        {% endcompress %}
+
+        {% compress js %}
+        <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
+        <script src="{% static "js/bootstrap.js" %}"></script>
+        <script src="{% static "js/bootstrap-extras.js" %}"></script>
+        {% block extra_js %}{% endblock %}
+        {% endcompress %}
+
+        {% block extra_head %}{% endblock %}
+
+        <!--[if lt IE 9]>
+        <script src="{% static "js/html5shiv.js" %}"></script>
+        <![endif]-->
+
+    </head>
+
+    <body id="{% block body_id %}body{% endblock %}">
+
+        {% nevercache %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" data-alert="alert">
+            <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>{{ message }}
+        </div>
+        {% endfor %}
+        {% endnevercache %}
+        <header>
+            <div class="container top">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="/static/img/blottartuban.svg" width="150">
+                    </div>
+                    <div class="col-md-9">
+                        <h1>LiTHe Blås</h1>
+                        <p class="lead">
+                            Linköpings Tekniska Högskolas Blåscorps
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-wrapper">
+                <div class="navbar navbar-default">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li class="active">
+                                    <a href="#">Hem</a>
+                                </li>
+                                <li>
+                                    <a href="#about">Ansök</a>
+                                </li>
+                                <li>
+                                    <a href="#contact">Boka</a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lyssna <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Kommande spelningar</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Musikvideos</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Skivor</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Om <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Föreningen</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Blåsrummet</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Blottartuban</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Eurotour</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Uppslagsverket</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown-header">
+                                            Sektioner
+                                        </li>
+                                        <li>
+                                            <a href="#">Basunsektionen</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Baletten Blåsyran</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Klarinettsektionen</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Kompet</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Phloytsektionen</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Saxsekten</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Trumpetsektionen</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown-header">
+                                            Relaterade grupperingar
+                                        </li>
+                                        <li>
+                                            <a href="#">Baren Baren</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">LiTHe Grås</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#about">Kontakt</a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">
+                                    <a href="#" class=""><span class="glyphicon glyphicon-user"></span> Olle "Olle" Vidner</a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Profil</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="#">Admin</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="#">Logga ut</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <h1>{% block title %}{% endblock %}</h1>
+
+            {% block main %}{% endblock %}
+        </div>
+        <footer>
+            <div class="container">
+                <p>
+                    Drivs av <a href="http://mezzanine.jupo.org">Mezzanine</a> och <a href="http://www.djangoproject.com">Django</a>
+                    <span class="separator">|</span>
+                    Design baserad på <a href="http://twitter.github.com/bootstrap/">Bootstrap</a>
+                    {% ifinstalled mezzanine.mobile %}
+                    <span class="separator">|</span>
+                    <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
+                    {% endifinstalled %}
+                </p>
+            </div>
+        </footer>
+
+        {% include "includes/footer_scripts.html" %}
+
+    </body>
+</html>

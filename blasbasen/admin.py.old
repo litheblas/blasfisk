@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+from django.contrib import admin
+from django.contrib.auth.models import User as DjangoUser
+from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
+from blasbasen.models import User as BlasUser
+from blasbasen.models import SpecialDiet
+
+class BlasUserInline(admin.StackedInline):
+    model = BlasUser
+    
+    #Visa aldrig mer än ett Blåsbas-användarobjekt åt gången.
+    max_num = 1
+    
+    #Blåsbas-användarobjekt kan inte raderas från Django-användaradmin
+    can_delete = False
+    
+    verbose_name = 'Blåsbasen'
+    verbose_name_plural = 'Blåsbasen'
+    
+    fieldsets = (
+        (None, {
+            'fields': ('nickname', 'liu_id', ('birth_date', 'personal_id_number'), 'special_diets')
+        }),
+        ('Address information', {
+            'fields': ('address', ('postcode', 'city'), 'country')
+        }),
+    )
+
+class DjangoUserAdmin(DjangoUserAdmin):
+    inlines = [BlasUserInline]
+
+#Reregister the user admin with Blåsbasen
+admin.site.unregister(DjangoUser)
+admin.site.register(DjangoUser, DjangoUserAdmin)
+
+admin.site.register(SpecialDiet)
