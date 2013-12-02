@@ -10,7 +10,7 @@ answers = (
 )
 
 class EventType(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=256)
     
     def __unicode__(self):
         return self.name
@@ -24,10 +24,11 @@ class Attendance(models.Model):
 
 class Event(models.Model):
     name = models.CharField(max_length=256)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     start = models.DateTimeField()
     end = models.DateTimeField()
     type = models.ForeignKey(EventType)
+    public = models.BooleanField()
     attendees = models.ManyToManyField(User, through=Attendance)
     
     customer = models.ForeignKey(Customer)

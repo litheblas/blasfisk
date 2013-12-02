@@ -55,29 +55,28 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     #Auth related information and other fields required by Django
-    email = models.EmailField(verbose_name='email address', max_length=255, unique=True, db_index=True)
-    username = models.CharField(max_length=255, default=str(uuid.uuid1())) #TODO: Kolla om det går att lösa så detta fält kan tas bort. Finns bara för att Mezzanine inte ska balla ur.
+    email = models.EmailField(verbose_name='email address', max_length=256, unique=True, db_index=True)
+    username = models.CharField(max_length=256, default=str(uuid.uuid1())) #TODO: Kolla om det går att lösa så detta fält kan tas bort. Finns bara för att Mezzanine inte ska balla ur.
     is_active = models.BooleanField(default=True) #Ska inte användas för att markera gamlingsskap osv.! Det görs mycket bättre på automatisk väg via posts
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     
     #Personal information
-    first_name = models.CharField(max_length=255)
-    nickname = models.CharField(max_length=255, blank=True)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=256)
+    nickname = models.CharField(max_length=256, blank=True)
+    last_name = models.CharField(max_length=256)
     date_of_birth = models.DateField(blank=True, null=True)
     personal_id_number = models.CharField(max_length=4, blank=True) #Last 4 characters in Swedish personal id number
     
     #Address information
-    address = models.CharField(max_length=255, blank=True)
-    postcode = models.CharField(max_length=255, blank=True)
-    city = models.CharField(max_length=255, blank=True)
+    address = models.CharField(max_length=256, blank=True)
+    postcode = models.CharField(max_length=256, blank=True)
+    city = models.CharField(max_length=256, blank=True)
     country = models.CharField(max_length=2, choices=countries, default='SE', blank=True)
-    
     
     special_diets = models.ManyToManyField('SpecialDiet', blank=True)
     liu_id = models.CharField(max_length=8, verbose_name='LiU-ID', blank=True)
-    card_data = models.CharField(max_length=255, unique=True, blank=True) #Number or other data used to identify user from magnet card
+    card_data = models.CharField(max_length=256, unique=True, blank=True) #Number or other data used to identify user from magnet card
     
     posts = models.ManyToManyField('Post', through='MembershipAssignment') #Föreslår att detta bara tilldelas människor som faktiskt har en formell anknytning till föreningen.
     
@@ -125,7 +124,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Section(models.Model):
     """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc."""
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=256)
     description = models.TextField(blank=True)
     
     class Meta:
@@ -150,7 +149,7 @@ class Post(models.Model):
     som fungerar mycket bra och är utbyggbara"""
     
     section = models.ForeignKey('Section', blank=True, null=True)
-    post = models.CharField(max_length=255)
+    post = models.CharField(max_length=256)
     description = models.TextField(blank=True)
     #TODO: En egenskap för om posten är arkiverad också kanske? Typ generalbas
 
@@ -192,17 +191,17 @@ class SpecialDiet(models.Model):
         return self.name
     
 class Customer(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=256)
     organisation_number = SEOrganisationNumberField() #Accepterar även personnummer
     comments = models.TextField()
     
-    contact = models.CharField(max_length=255) #Kontaktperson
+    contact = models.CharField(max_length=256) #Kontaktperson
     phone_number = models.CharField(max_length=64)
     
     #Address information
-    address = models.CharField(max_length=255, blank=True)
-    postcode = models.CharField(max_length=255, blank=True)
-    city = models.CharField(max_length=255, blank=True)
+    address = models.CharField(max_length=256, blank=True)
+    postcode = models.CharField(max_length=256, blank=True)
+    city = models.CharField(max_length=256, blank=True)
     country = models.CharField(max_length=2, choices=countries, default='SE', blank=True)
     
     def __unicode__(self):
