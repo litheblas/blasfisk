@@ -63,9 +63,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     
     #Personal information
-    first_name = models.CharField(max_length=255) #Required
+    first_name = models.CharField(max_length=255)
     nickname = models.CharField(max_length=255, blank=True)
-    last_name = models.CharField(max_length=255) #Required
+    last_name = models.CharField(max_length=255)
     date_of_birth = models.DateField(blank=True, null=True)
     personal_id_number = models.CharField(max_length=4, blank=True) #Last 4 characters in Swedish personal id number
     
@@ -98,12 +98,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         #filtrera sedan ut de objekt som påbörjats innan detta dygn
         obj = self.membershipassignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
         
-        #TODO: 
+        #TODO: Ge en lista med strängar i formatet 'Sektion: post'
+        #Eller annat lämpligt format.
         if readable:
-            #Ger en lista med strängar i formatet 'Sektion: post'
+            
             l = []
             for i in obj:
-                #TODO: 
                 pass
         return obj
 
@@ -144,8 +144,8 @@ class Post(models.Model):
     Bäst att spara gamling som en egen slags medlemstyp eftersom 
     man inte blir gamling på nåt specifikt instrument/sektion. 
     
-    Ett skript som körs vid ändring av posterna tilldelar gruppmedlemsskap i Djangos egna tabeller.
-    #TODO: Hur ska dessa grupper genereras automatiskt?
+    #TODO: Ett skript som körs vid ändring av posterna tilldelar gruppmedlemsskap i Djangos egna tabeller.
+    Hur ska dessa grupper genereras automatiskt?
     Det är alltså gruppmedlemsskap som styr rättigheter och inte denna tabell.
     Detta eftersom Django redan har inbyggda rutiner för rättighetshantering
     som fungerar mycket bra och är utbyggbara"""
@@ -194,10 +194,10 @@ class SpecialDiet(models.Model):
     
 class Customer(models.Model):
     name = models.CharField(max_length=255)
-    organisation_number = SEOrganisationNumberField()
+    organisation_number = SEOrganisationNumberField() #Accepterar även personnummer
     comments = models.TextField()
     
-    contact = models.CharField(max_length=255)
+    contact = models.CharField(max_length=255) #Kontaktperson
     phone_number = models.CharField(max_length=64)
     
     #Address information
@@ -219,31 +219,3 @@ class GroupFilter(models.Model):
     def __unicode__(self):
         return self.name
 """
-
-"""
-class User(models.Model):
-    user = models.OneToOneField(DjangoUser)
-    
-    #Blåsnamn
-    nickname = models.CharField(max_length=256, blank=True)
-    
-    #LiU-ID
-    liu_id = models.CharField(max_length=8, verbose_name='LiU-ID', blank=True)
-    
-    birth_date = models.DateField(blank=True, null=True)
-    
-    #Personnumrets fyra sista siffror
-    personal_id_number = models.CharField(max_length=4, blank=True)
-    
-    #Fält relaterade till adress
-    address = models.CharField(max_length=256, blank=True)
-    postcode = models.CharField(max_length=256, blank=True)
-    city = models.CharField(max_length=256, blank=True)
-    country = models.CharField(max_length=2, choices=countries, default='SE', blank=True)
-
-    #Allergier etc.
-    special_diets = models.ManyToManyField(SpecialDiet, blank=True)
-
-    def __unicode__(self):
-        return self.user.name
-        """
