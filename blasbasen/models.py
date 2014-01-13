@@ -76,7 +76,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     special_diets = models.ManyToManyField('SpecialDiet', blank=True)
     liu_id = models.CharField(max_length=8, verbose_name='LiU-ID', blank=True)
-    card_data = models.CharField(max_length=256, unique=True, blank=True) #Number or other data used to identify user from magnet card
     
     posts = models.ManyToManyField('Post', through='MembershipAssignment') #Föreslår att detta bara tilldelas människor som faktiskt har en formell anknytning till föreningen.
     
@@ -94,16 +93,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_assignments(self, readable=False):
         #Exkludera objekt som avslutats innan detta dygn (detta ser till att objekt utan slutdatum inte utesluts), 
         #filtrera sedan ut de objekt som påbörjats innan detta dygn
-        obj = self.membershipassignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
-        
-        #TODO: Ge en lista med strängar i formatet 'Sektion: post'
-        #Eller annat lämpligt format.
-        if readable:
-            
-            l = []
-            for i in obj:
-                pass
-        return obj
+        return self.membershipassignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
 
     #Används internt av Django
     def get_full_name(self):

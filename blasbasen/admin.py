@@ -1,6 +1,7 @@
 from django.contrib import admin
 from litheblas.blasbasen.models import User, Section, Post, MembershipAssignment, SpecialDiet
 from litheblas.mailing.models import Membership as MailingMembership
+from litheblas.cards.models import Card
 
 class MembershipAssignmentInline(admin.TabularInline):
     model = MembershipAssignment
@@ -8,8 +9,11 @@ class MembershipAssignmentInline(admin.TabularInline):
 class MailingListInline(admin.TabularInline):
     model = MailingMembership
 
+class CardInline(admin.TabularInline):
+    model = Card
+    
 class UserAdmin(admin.ModelAdmin):
-    inlines = [MembershipAssignmentInline, MailingListInline]
+    inlines = [MembershipAssignmentInline, CardInline, MailingListInline]
     
 #     fieldsets = (
 #         (None, {
