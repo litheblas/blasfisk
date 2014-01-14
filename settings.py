@@ -245,9 +245,10 @@ INSTALLED_APPS = (
     #"mezzanine.accounts",
     #"mezzanine.mobile",
     "localflavor",
-    "litheblas.blasbasen",
     "litheblas.mailing",
+    "litheblas.blasbasen",
     "litheblas.events",
+    "litheblas.watcher",
 )
 
 # List of processors used by RequestContext to populate the context.

@@ -2,16 +2,9 @@
 import uuid
 import datetime
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, PermissionsMixin, AbstractBaseUser, Group
+from django.contrib.auth.models import BaseUserManager, PermissionsMixin, AbstractBaseUser
 from localflavor.se.forms import SEOrganisationNumberField
-
-from litheblas.mailing.models import MailingList
-
-# TODO: Lägg till alla länder
-countries = (
-    ('SE', 'Sverige'),
-    ('US', 'USA')
-)
+from litheblas.globals import countries
 
 class UserManager(BaseUserManager):
     """Plankat från Djangos dokumentation. Används för Blåsbasens användarmodell."""
@@ -55,20 +48,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class Watcher(models.Model):
-    """Lägger automatiskt till användare till en grupp och/eller mailinglista baserat på sektion eller post."""
-    #Leta i
-    sections = models.ManyToManyField('Section', blank=True, null=True)
-    posts = models.ManyToManyField('Post', blank=True, null=True)
-    
-    #Lägg till i
-    group = models.ForeignKey(Group)
-    list = models.ForeignKey(MailingList)
-    
-    def apply(self):
-        for i in self.sections:
-            pass
-        pass
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     #Auth related information and other fields required by Django
@@ -85,7 +65,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_of_birth = models.DateField(blank=True, null=True)
     personal_id_number = models.CharField(max_length=4, blank=True, help_text="Sista 4 siffrorna i personnumret") #Last 4 characters in Swedish personal id number
     
-    posts = models.ManyToManyField('Post', through='MembershipAssignment')
+    posts = models.ManyToManyField('Post', through='Assignment')
     
     #Address information
     address = models.CharField(max_length=256, blank=True)
@@ -98,7 +78,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     
     about = models.TextField(blank=True) #Kan förslagsvis användas för att t.ex. beskriva vad som gör en hedersmedlem så hedersvärd eller bara fritext av personen själv.
-    special_diets = models.ManyToManyField('SpecialDiet', blank=True)
+    special_diets = models.ManyToManyField('SpecialDiet', blank=True, null=True)
     
     objects = UserManager()
     
@@ -131,16 +111,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __unicode__(self):
         return self.get_full_name()
 
+
+
 class Section(models.Model):
     """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc.. Denna datatyp (tillsammans med Post) styr medlemsskap i grupper."""
     name = models.CharField(max_length=256)
     description = models.TextField(blank=True)
-    group = models.ManyToManyField(Group, blank=True, null=True) #Grupp 
-    group_ex = models.ManyToManyField(Group, blank=True, null=True) 
-    
-    #TODO: Ett fält för en grupp som aktiva medlemmar hamnar i?
-    #TODO: Ett fält för en grupp som före detta medlemmar hamnar i?
-    
+
     class Meta:
         ordering = ['name']
     
@@ -165,11 +142,7 @@ class Post(models.Model):
     section = models.ForeignKey('Section', blank=True, null=True)
     post = models.CharField(max_length=256)
     description = models.TextField(blank=True)
-    show_in_timeline = models.BooleanField(default=True, help_text="Ska ett medlemskap på denna post visas i tidslinjen?")
-    
-    
-    group = models.ManyToManyField(Group, blank=True, null=True) 
-    group_ex = models.ManyToManyField(Group, blank=True, null=True) 
+    show_in_timeline = models.BooleanField(default=True, help_text="Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)")
     
     #TODO: En egenskap för om posten är arkiverad också kanske? Typ generalbas
 
@@ -183,9 +156,10 @@ class Post(models.Model):
             return u'{0} / {1}'.format(self.section.name, self.post)
         return self.post
 
-class MembershipAssignment(models.Model):
-    user = models.ForeignKey('User')
-    post = models.ForeignKey('Post')
+class Assignment(models.Model):
+    """Mellantabell som innehåller info om varje användares medlemsskap/uppdrag på olika poster."""
+    user = models.ForeignKey(User)
+    post = models.ForeignKey(Post)
     
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
@@ -205,7 +179,7 @@ class MembershipAssignment(models.Model):
     
     def __unicode__(self):
         return u'{0}: {1}'.format(self.user.get_short_name(), self.post)
-    
+
 class SpecialDiet(models.Model):
     name = models.CharField(max_length=256,help_text='Anges i formen "Allergisk mot...", "Nykterist" etc.')
 
@@ -214,7 +188,7 @@ class SpecialDiet(models.Model):
     
 class Customer(models.Model):
     name = models.CharField(max_length=256)
-    organisation_number = SEOrganisationNumberField(blank=True) #Accepterar även personnummer
+    organisation_number = SEOrganisationNumberField(min_length=0) #TODO: Kolla om det verkligen går att lämna blankt #Accepterar även personnummer
     comments = models.TextField(blank=True)
     
     contact = models.CharField(max_length=256, blank=True) #Kontaktperson
@@ -237,14 +211,3 @@ class Card(models.Model):
     
     def __unicode__(self):
         return '{0} ({1})'.format(self.card_data, self.user.get_short_name())
-
-"""
-class GroupFilter(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    group = models.ForeignKey(Group)
-    user_query = models.TextField() # A Django query that returns the desired users
-    
-    def __unicode__(self):
-        return self.name
-"""
