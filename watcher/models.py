@@ -12,6 +12,13 @@ class Watcher(models.Model):
     group = models.ForeignKey(Group)
     list = models.ForeignKey('mailing.MailingList')
      
+    def get_users(self):
+        users = []
+        for section in self.sections.all():
+            users.extend(section.get_users(self.current))
+        for post in self.posts.all():
+            users.extend(post.get_users(self.current))
+        return users
     def apply(self):
         #TODO: Allt
         

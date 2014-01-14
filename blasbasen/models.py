@@ -92,7 +92,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_assignments(self, readable=False):
         #Exkludera objekt som avslutats innan detta dygn (detta ser till att objekt utan slutdatum inte utesluts), 
         #filtrera sedan ut de objekt som påbörjats innan detta dygn
-        return self.membershipassignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
+        return self.assignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
 
     #Används internt av Django
     def get_full_name(self):
@@ -121,9 +121,11 @@ class Section(models.Model):
     class Meta:
         ordering = ['name']
     
-    def get_members(self, current=True):
-        #TODO: Slå upp alla poster som finns i sektionen. Vilka människor är knutna till dessa poster? Om current är True hämta endast nuvarande medlemmar
-        pass
+    def get_users(self, current=True):
+        users = []
+        for post in self.post_set.all():
+            users.extend(post.get_users(current))
+        return users
     
     def __unicode__(self):
         return self.name
@@ -150,6 +152,19 @@ class Post(models.Model):
     class Meta:
         unique_together = (('section', 'post',),)
         ordering = ['section', 'post']
+    
+    def get_users(self, current=True):
+        #TODO: Överväg att lösa det här på ett sätt som inte skickar så in i hundan många frågor.
+        users=[]
+        if current:
+            #Att vi väljer att exkludera åtaganden med slutdatum innan idag ser till att åtaganden utan slutdatum också kommer med.
+            assignments = self.assignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
+        else:
+            #Välj ut åtaganden med startdatum tidigare än eller lika med idag.
+            assignments = self.assignment_set.filter(start_date__lte=datetime.date.today())
+        for i in assignments:
+            users.append(i.user)
+        return users
     
     def __unicode__(self):
         if self.section:
