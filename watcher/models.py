@@ -13,6 +13,7 @@ class Watcher(models.Model):
     group = models.ForeignKey(Group, blank=True, null=True)
     list = models.ForeignKey('mailing.MailingList', blank=True, null=True)
     
+    #TODO: Överväg att lösa det här på ett sätt som inte skickar så in i hundan många frågor.
     def get_users(self):
         users = []
         for section in self.sections.all():
@@ -23,5 +24,13 @@ class Watcher(models.Model):
     
     def apply(self):
         #TODO: Allt
+        
+        users = self.get_users()
+        
+        #Lägg till personer i grupp
+        for user in users:
+            self.group.user_set.add(user)
+            
+            
         
         pass

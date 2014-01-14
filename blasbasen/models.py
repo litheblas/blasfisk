@@ -110,6 +110,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __unicode__(self):
         return self.get_full_name()
+    
+    full_name = property(get_full_name)
+    short_name = property(get_short_name)
 
 
 
@@ -154,16 +157,17 @@ class Post(models.Model):
         ordering = ['section', 'post']
     
     def get_users(self, current=True):
-        #TODO: Överväg att lösa det här på ett sätt som inte skickar så in i hundan många frågor.
         users=[]
         if current:
             #Att vi väljer att exkludera åtaganden med slutdatum innan idag ser till att åtaganden utan slutdatum också kommer med.
             assignments = self.assignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
-        else:
+        elif not current:
             #Välj ut åtaganden med startdatum tidigare än eller lika med idag.
             assignments = self.assignment_set.filter(start_date__lte=datetime.date.today())
-        for i in assignments:
-            users.append(i.user)
+        
+        # select_related för att minska antalet databasfrågor en aning.
+        for assig in assignments.select_related('user'):
+            users.append(assig.user)
         return users
     
     def __unicode__(self):
@@ -225,4 +229,4 @@ class Card(models.Model):
     description = models.CharField(max_length=256, blank=True, help_text="Anges förslagsvis om du har fler än ett kort")
     
     def __unicode__(self):
-        return '{0} ({1})'.format(self.card_data, self.user.get_short_name())
+        return u'{0} ({1})'.format(self.card_data, self.user.get_short_name())
