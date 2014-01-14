@@ -5,6 +5,8 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, PermissionsMixin, AbstractBaseUser, Group
 from localflavor.se.forms import SEOrganisationNumberField
 
+from litheblas.mailing.models import MailingList
+
 # TODO: Lägg till alla länder
 countries = (
     ('SE', 'Sverige'),
@@ -53,11 +55,26 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+class Watcher(models.Model):
+    """Lägger automatiskt till användare till en grupp och/eller mailinglista baserat på sektion eller post."""
+    #Leta i
+    sections = models.ManyToManyField('Section', blank=True, null=True)
+    posts = models.ManyToManyField('Post', blank=True, null=True)
+    
+    #Lägg till i
+    group = models.ForeignKey(Group)
+    list = models.ForeignKey(MailingList)
+    
+    def apply(self):
+        for i in self.sections:
+            pass
+        pass
+
 class User(AbstractBaseUser, PermissionsMixin):
     #Auth related information and other fields required by Django
     email = models.EmailField(verbose_name='email address', max_length=256, unique=True, db_index=True)
     username = models.CharField(max_length=256, default=str(uuid.uuid1())) #TODO: Kolla om det går att lösa så detta fält kan tas bort. Finns bara för att Mezzanine inte ska balla ur.
-    is_active = models.BooleanField(default=True) #Ska inte användas för att markera gamlingsskap osv.! Det görs mycket bättre på automatisk väg via posts
+    is_active = models.BooleanField(default=True, help_text="Detta är INTE ett fält för att markera att någon blivit gamling") #Ska inte användas för att markera gamlingsskap osv.! Det görs mycket bättre på automatisk väg via posts
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     
@@ -66,7 +83,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     nickname = models.CharField(max_length=256, blank=True)
     last_name = models.CharField(max_length=256)
     date_of_birth = models.DateField(blank=True, null=True)
-    personal_id_number = models.CharField(max_length=4, blank=True) #Last 4 characters in Swedish personal id number
+    personal_id_number = models.CharField(max_length=4, blank=True, help_text="Sista 4 siffrorna i personnumret") #Last 4 characters in Swedish personal id number
+    
+    posts = models.ManyToManyField('Post', through='MembershipAssignment')
     
     #Address information
     address = models.CharField(max_length=256, blank=True)
@@ -74,12 +93,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     city = models.CharField(max_length=256, blank=True)
     country = models.CharField(max_length=2, choices=countries, default='SE', blank=True)
     
-    special_diets = models.ManyToManyField('SpecialDiet', blank=True)
+    
     liu_id = models.CharField(max_length=8, verbose_name='LiU-ID', blank=True)
     
-    posts = models.ManyToManyField('Post', through='MembershipAssignment') #Föreslår att detta bara tilldelas människor som faktiskt har en formell anknytning till föreningen.
     
-    about = models.TextField() #Kan förslagsvis användas för att t.ex. beskriva vad som gör en hedersmedlem så hedersvärd eller bara fritext av personen själv.
+    about = models.TextField(blank=True) #Kan förslagsvis användas för att t.ex. beskriva vad som gör en hedersmedlem så hedersvärd eller bara fritext av personen själv.
+    special_diets = models.ManyToManyField('SpecialDiet', blank=True)
     
     objects = UserManager()
     
@@ -113,9 +132,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.get_full_name()
 
 class Section(models.Model):
-    """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc."""
+    """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc.. Denna datatyp (tillsammans med Post) styr medlemsskap i grupper."""
     name = models.CharField(max_length=256)
     description = models.TextField(blank=True)
+    group = models.ManyToManyField(Group, blank=True, null=True) #Grupp 
+    group_ex = models.ManyToManyField(Group, blank=True, null=True) 
+    
+    #TODO: Ett fält för en grupp som aktiva medlemmar hamnar i?
+    #TODO: Ett fält för en grupp som före detta medlemmar hamnar i?
     
     class Meta:
         ordering = ['name']
@@ -128,19 +152,25 @@ class Section(models.Model):
         return self.name
 
 class Post(models.Model):
-    """Exempelvis elbas, dictator, gamling, hedersmedlem. 
-    Bäst att spara gamling som en egen slags medlemstyp eftersom 
-    man inte blir gamling på nåt specifikt instrument/sektion. 
+    """Exempelvis elbas, dictator, gamling, hedersmedlem, vän till blåset, sektionschef etc.. 
+    Bäst att spara gamling som en egen slags medlemstyp utan sektion eftersom systemet 
+    själv kan hålla reda på vilka sektioner man tillhört.
+    Avlidna/uteslutna medlemmar tas lämpligtvis bort från alla poster. 
     
     #TODO: Ett skript som körs vid ändring av posterna tilldelar gruppmedlemsskap i Djangos egna tabeller.
-    Hur ska dessa grupper genereras automatiskt?
-    Det är alltså gruppmedlemsskap som styr rättigheter och inte denna tabell.
+    Det är alltså gruppmedlemsskap som styr egentliga rättigheter och inte denna tabell.
     Detta eftersom Django redan har inbyggda rutiner för rättighetshantering
-    som fungerar mycket bra och är utbyggbara"""
+    som fungerar mycket bra och är utbyggbara."""
     
     section = models.ForeignKey('Section', blank=True, null=True)
     post = models.CharField(max_length=256)
     description = models.TextField(blank=True)
+    show_in_timeline = models.BooleanField(default=True, help_text="Ska ett medlemskap på denna post visas i tidslinjen?")
+    
+    
+    group = models.ManyToManyField(Group, blank=True, null=True) 
+    group_ex = models.ManyToManyField(Group, blank=True, null=True) 
+    
     #TODO: En egenskap för om posten är arkiverad också kanske? Typ generalbas
 
     
@@ -161,8 +191,10 @@ class MembershipAssignment(models.Model):
     end_date = models.DateField(blank=True, null=True)
     
     class Meta:
-        verbose_name = 'membership/assignment'
-        verbose_name_plural = 'memberships/assignments'
+        verbose_name = 'medlemsskap/uppdrag'
+        verbose_name_plural = verbose_name
+    
+    #TODO: När instanser av denna sparas skall gruppmedlemsskap uppdateras, både från poster och sektioner. Dessutom behöver någon slags skript köras varje natt för att uppdatera poster som gått ut.
     
     def is_ongoing(self):
         #TODO: Kolla om startdatum finns och om före dagens datum. 
@@ -175,18 +207,18 @@ class MembershipAssignment(models.Model):
         return u'{0}: {1}'.format(self.user.get_short_name(), self.post)
     
 class SpecialDiet(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=256,help_text='Anges i formen "Allergisk mot...", "Nykterist" etc.')
 
     def __unicode__(self):
         return self.name
     
 class Customer(models.Model):
     name = models.CharField(max_length=256)
-    organisation_number = SEOrganisationNumberField() #Accepterar även personnummer
-    comments = models.TextField()
+    organisation_number = SEOrganisationNumberField(blank=True) #Accepterar även personnummer
+    comments = models.TextField(blank=True)
     
-    contact = models.CharField(max_length=256) #Kontaktperson
-    phone_number = models.CharField(max_length=64)
+    contact = models.CharField(max_length=256, blank=True) #Kontaktperson
+    phone_number = models.CharField(max_length=64, blank=True)
     
     #Address information
     address = models.CharField(max_length=256, blank=True)
@@ -196,6 +228,15 @@ class Customer(models.Model):
     
     def __unicode__(self):
         return self.name
+
+class Card(models.Model):
+    enabled = models.BooleanField(default=True, help_text="Avmarkera om du tillfälligt vill spärra ditt kort")
+    card_data = models.CharField(max_length=256, help_text="Be någon kolla i loggen efter ditt kortnummer") #TODO: Kolla exakt vad av kortets data som läses av. Vad av detta skall lagras?
+    user = models.ForeignKey(User) #Kort _måste_ associeras med en användare. Låt det vara så så slipper vi "temporära lösningar" och vilsna kort som ingen vet vem de tillhör.
+    description = models.CharField(max_length=256, blank=True, help_text="Anges förslagsvis om du har fler än ett kort")
+    
+    def __unicode__(self):
+        return '{0} ({1})'.format(self.card_data, self.user.get_short_name())
 
 """
 class GroupFilter(models.Model):

@@ -248,7 +248,6 @@ INSTALLED_APPS = (
     "litheblas.blasbasen",
     "litheblas.mailing",
     "litheblas.events",
-    "litheblas.cards",
 )
 
 # List of processors used by RequestContext to populate the context.

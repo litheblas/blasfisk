@@ -11,6 +11,7 @@ class MailingListInline(admin.TabularInline):
 
 class CardInline(admin.TabularInline):
     model = Card
+    extra = 1
     
 class UserAdmin(admin.ModelAdmin):
     inlines = [MembershipAssignmentInline, CardInline, MailingListInline]
