@@ -5,13 +5,14 @@ from django.contrib.auth.models import Group
 class Watcher(models.Model):
     """Lägger automatiskt till användare till en grupp och/eller mailinglista baserat på sektion eller post."""
     #Leta i
-    sections = models.ManyToManyField('blasbasen.Section', blank=True, null=True)
-    posts = models.ManyToManyField('blasbasen.Post', blank=True, null=True)
-     
+    sections = models.ManyToManyField('blasbasen.Section', blank=True, null=True, help_text="En sektion som skall övervakas. Alla medlemmar i alla poster i sektionen inkluderas.")
+    posts = models.ManyToManyField('blasbasen.Post', blank=True, null=True, help_text="En specifik post som skall övervakas. Om posten ingår i någon sektion som angetts behöver du inte ange den här.")
+    current = models.BooleanField(default=True, help_text="Inkludera endast aktiva.")
+    
     #Lägg till i
-    group = models.ForeignKey(Group)
-    list = models.ForeignKey('mailing.MailingList')
-     
+    group = models.ForeignKey(Group, blank=True, null=True)
+    list = models.ForeignKey('mailing.MailingList', blank=True, null=True)
+    
     def get_users(self):
         users = []
         for section in self.sections.all():
@@ -19,6 +20,7 @@ class Watcher(models.Model):
         for post in self.posts.all():
             users.extend(post.get_users(self.current))
         return users
+    
     def apply(self):
         #TODO: Allt
         
