@@ -249,6 +249,8 @@ INSTALLED_APPS = (
     "litheblas.blasbasen",
     "litheblas.events",
     "litheblas.watcher",
+    "debug_toolbar",
+    #"south",
 )
 
 # List of processors used by RequestContext to populate the context.
