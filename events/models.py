@@ -17,7 +17,7 @@ class EventType(models.Model):
 class Attendance(models.Model):
     #Skapas när användaren bjuds in till eller själv går med i ett evenemang
     event = models.ForeignKey('Event')
-    user = models.ForeignKey('blasbasen.User')
+    person = models.ForeignKey('blasbasen.Person')
     
     answer = models.CharField(max_length=8, choices=answers, blank=True) # Blank = inget svar
 
@@ -28,7 +28,7 @@ class Event(models.Model):
     end = models.DateTimeField()
     type = models.ForeignKey(EventType)
     public = models.BooleanField()
-    attendees = models.ManyToManyField('blasbasen.User', through=Attendance)
+    attendees = models.ManyToManyField('blasbasen.Person', through=Attendance)
     
     customer = models.ForeignKey('blasbasen.Customer')
     price = models.DecimalField(max_digits=10, decimal_places=2)

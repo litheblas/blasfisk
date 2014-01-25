@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from litheblas.blasbasen.models import User, Section, Post, Assignment, SpecialDiet, Card
+from litheblas.blasbasen.models import User, Person, Section, Post, Assignment, SpecialDiet, Card
 from litheblas.mailing.models import Membership as MailingMembership
 from litheblas.watcher.models import Watcher
 
@@ -17,23 +17,27 @@ class CardInline(admin.TabularInline):
 class PostInline(admin.TabularInline):
     model = Post
     
-class UserInline(admin.TabularInline):
+class GroupMemberInline(admin.TabularInline):
     model = User.groups.through
     readonly_fields = ['user']
+    extra = 0
+    
+class UserInline(admin.StackedInline):
+    model = User
     extra = 0
 
 class WatcherInline(admin.TabularInline):
     model = Watcher
 
 class GroupAdmin(admin.ModelAdmin):
-    inlines = [WatcherInline,UserInline]
+    inlines = [WatcherInline,GroupMemberInline]
     exclude = ('groups',)
 
 class SectionAdmin(admin.ModelAdmin):
     inlines = [PostInline]
 
-class UserAdmin(admin.ModelAdmin):
-    inlines = [AssignmentInline, CardInline, MailingListInline]
+class PersonAdmin(admin.ModelAdmin):
+    inlines = [AssignmentInline, CardInline, MailingListInline, UserInline]
     
     list_display = ('first_name', 'nickname', 'last_name')
 #     fieldsets = (
@@ -47,7 +51,7 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.unregister(Group)
 admin.site.register(Group, GroupAdmin)
-admin.site.register(User, UserAdmin)
+admin.site.register(Person, PersonAdmin)
 #admin.site.register(Post)
 admin.site.register(Section, SectionAdmin)
 #admin.site.register(Assignment)

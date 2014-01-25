@@ -6,58 +6,7 @@ from django.contrib.auth.models import BaseUserManager, PermissionsMixin, Abstra
 from localflavor.se.forms import SEOrganisationNumberField
 from litheblas.globals import countries
 
-class UserManager(BaseUserManager):
-    """Plankat från Djangos dokumentation. Används för Blåsbasens användarmodell."""
-    def create_user(self, email, first_name, last_name, password):
-        if not email:
-            raise ValueError('Users must have an email address')
-        
-        if not first_name:
-            raise ValueError('Users must have a first name')
-        
-        if not last_name:
-            raise ValueError('Users must have a last name')
-        
-        if not password:
-            raise ValueError('Users must have a password')
-
-        user = self.model(
-            email=self.normalize_email(email),
-            first_name=first_name,
-            last_name=last_name,
-            password=password,
-        )
-
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, first_name, last_name, password):
-        #Use the normal method for creating users
-        user = self.create_user(email,
-            first_name,
-            last_name,
-            password,
-        )
-        
-        #Add superuser properties
-        user.is_admin = True
-        user.is_staff = True
-        user.is_superuser = True
-
-        user.save(using=self._db)
-        return user
-
-
-
-class User(AbstractBaseUser, PermissionsMixin):
-    #Auth related information and other fields required by Django
-    email = models.EmailField(verbose_name='email address', max_length=256, unique=True, db_index=True)
-    username = models.CharField(max_length=256, default=str(uuid.uuid1())) #TODO: Kolla om det går att lösa så detta fält kan tas bort. Finns bara för att Mezzanine inte ska balla ur.
-    is_active = models.BooleanField(default=True, help_text="Detta är INTE ett fält för att markera att någon blivit gamling") #Ska inte användas för att markera gamlingsskap osv.! Det görs mycket bättre på automatisk väg via posts
-    is_admin = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
-    
+class Person(models.Model):
     #Personal information
     first_name = models.CharField(max_length=256)
     nickname = models.CharField(max_length=256, blank=True)
@@ -77,41 +26,104 @@ class User(AbstractBaseUser, PermissionsMixin):
     about = models.TextField(blank=True) #Kan förslagsvis användas för att t.ex. beskriva vad som gör en hedersmedlem så hedersvärd eller bara fritext av personen själv.
     special_diets = models.ManyToManyField('SpecialDiet', blank=True, null=True)
     
-    objects = UserManager()
-    
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
-    
     class Meta:
-        ordering = ['last_name', 'first_name']
+        ordering = ['first_name', 'last_name', 'nickname']
         verbose_name = 'person'
         verbose_name_plural = 'personer'
-    
-    def is_active_member(self):
-        #TODO: Returnera en bool för om användaren har medlemsskap eller något åtagande i föreningen.
-        pass
     
     def get_assignments(self, readable=False):
         #Exkludera objekt som avslutats innan detta dygn (detta ser till att objekt utan slutdatum inte utesluts), 
         #filtrera sedan ut de objekt som påbörjats innan detta dygn
         return self.assignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
-
+    
     #Används internt av Django
     def get_full_name(self):
         if self.nickname:
             return u'{0} "{1}" {2}'.format(self.first_name, self.nickname, self.last_name) # Leif "Pappa Blås" Holm
 
         return u'{0} {1}'.format(self.first_name, self.last_name) # Leif Holm
-
+    
     #Används internt av Django
     def get_short_name(self):
         if self.nickname:
             return self.nickname # Pappa Blås
 
         return u'{0} {1}'.format(self.first_name, self.last_name[0]) # Leif H
-
+    
     def __unicode__(self):
         return self.get_full_name()
+    
+    full_name = property(get_full_name)
+    short_name = property(get_short_name)
+
+
+class UserManager(BaseUserManager):
+    """Plankat från Djangos dokumentation. Används för Blåsbasens användarmodell."""
+    def create_user(self, person, email, password):
+        if not person:
+            raise ValueError('Users must have a relation to a Person object')
+        
+        if not email:
+            raise ValueError('Users must have an email address')
+        
+        if not password:
+            raise ValueError('Users must have a password')
+
+        user = self.model(
+            person=person,
+            email=self.normalize_email(email),
+            password=password,
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, person, email, password):
+        #Use the normal method for creating users
+        user = self.create_user(
+            person,
+            email,
+            password,
+        )
+        
+        #Add superuser properties
+        user.is_admin = True
+        user.is_staff = True
+        user.is_superuser = True
+
+        user.save(using=self._db)
+        return user
+
+class User(AbstractBaseUser, PermissionsMixin):
+    #Auth related information and other fields required by Django
+    email = models.EmailField(verbose_name='email address', max_length=256, unique=True, db_index=True)
+    username = models.CharField(max_length=256, default=str(uuid.uuid1())) #TODO: Kolla om det går att lösa så detta fält kan tas bort. Finns bara för att Mezzanine inte ska balla ur.
+    is_active = models.BooleanField(default=True, help_text="Detta är INTE ett fält för att markera att någon blivit gamling") #Ska inte användas för att markera gamlingsskap osv.! Det görs mycket bättre på automatisk väg via posts
+    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    
+    person = models.OneToOneField(Person, related_name='user')
+    
+    objects = UserManager()
+    
+    USERNAME_FIELD = 'email'
+    
+    class Meta:
+        ordering = ['person', 'email']
+        verbose_name = 'användarkonto'
+        verbose_name_plural = 'användarkonton'
+    
+    #Används internt av Django
+    def get_full_name(self):
+        return self.person.full_name
+
+    #Används internt av Django
+    def get_short_name(self):
+        return self.person.short_name
+        
+    def __unicode__(self):
+        return self.person.full_name
     
     full_name = property(get_full_name)
     short_name = property(get_short_name)
@@ -185,7 +197,7 @@ class Post(models.Model):
 
 class Assignment(models.Model):
     """Mellantabell som innehåller info om varje användares medlemsskap/uppdrag på olika poster."""
-    user = models.ForeignKey(User)
+    person = models.ForeignKey(Person)
     post = models.ForeignKey(Post)
     
     start_date = models.DateField()
@@ -205,7 +217,7 @@ class Assignment(models.Model):
         
     
     def __unicode__(self):
-        return u'{0}: {1}'.format(self.user.get_short_name(), self.post)
+        return u'{0}: {1}'.format(self.person.get_short_name(), self.post)
 
 class SpecialDiet(models.Model):
     name = models.CharField(max_length=256,help_text='Anges i formen "Allergisk mot...", "Nykterist" etc.')
@@ -233,7 +245,7 @@ class Customer(models.Model):
 class Card(models.Model):
     enabled = models.BooleanField(default=True, help_text="Avmarkera om du tillfälligt vill spärra ditt kort")
     card_data = models.CharField(max_length=256, help_text="Be någon kolla i loggen efter ditt kortnummer") #TODO: Kolla exakt vad av kortets data som läses av. Vad av detta skall lagras?
-    user = models.ForeignKey(User) #Kort _måste_ associeras med en användare. Låt det vara så så slipper vi "temporära lösningar" och vilsna kort som ingen vet vem de tillhör.
+    person = models.ForeignKey(Person) #Kort _måste_ associeras med en användare. Låt det vara så så slipper vi "temporära lösningar" och vilsna kort som ingen vet vem de tillhör.
     description = models.CharField(max_length=256, blank=True, help_text="Anges förslagsvis om du har fler än ett kort")
     
     def __unicode__(self):

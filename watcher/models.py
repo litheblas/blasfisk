@@ -24,7 +24,7 @@ class Watcher(models.Model):
         return self.description
     
     #TODO: Överväg att lösa det här på ett sätt som inte skickar så in i hundan många frågor.
-    def get_users(self):
+    def get_people(self):
         users = []
         for section in self.sections.all():
             users.extend(section.get_users(self.current))
@@ -35,9 +35,8 @@ class Watcher(models.Model):
     def apply(self):
         #TODO: Allt
         
-        users = self.get_users()
+        people = self.get_people()
         
         #Lägg till personer i grupp
-        for user in users:
-            self.group.user_set.add(user)
-    
+        for person in people:
+            self.group.user_set.add(person.user)
