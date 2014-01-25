@@ -4,6 +4,7 @@ from django.contrib import admin
 
 from mezzanine.core.views import direct_to_template
 
+from litheblas.blasbasen import urls as blasbasen_urls
 
 admin.autodiscover()
 
@@ -12,6 +13,7 @@ admin.autodiscover()
 # to the project's homepage.
 
 urlpatterns = patterns("",
+    url("^user/", direct_to_template, {"template": "pages/user.html"}, name="user"),
 
     # Change the admin prefix here to use an alternate URL for the
     # admin interface, which would be marginally more secure.
