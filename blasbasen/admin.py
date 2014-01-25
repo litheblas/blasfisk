@@ -25,6 +25,7 @@ class GroupMemberInline(admin.TabularInline):
 class UserInline(admin.StackedInline):
     model = User
     extra = 0
+    
 
 class WatcherInline(admin.TabularInline):
     model = Watcher

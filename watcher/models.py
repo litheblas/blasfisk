@@ -25,12 +25,12 @@ class Watcher(models.Model):
     
     #TODO: Överväg att lösa det här på ett sätt som inte skickar så in i hundan många frågor.
     def get_people(self):
-        users = []
+        people = []
         for section in self.sections.all():
-            users.extend(section.get_users(self.current))
+            people.extend(section.get_people(self.current))
         for post in self.posts.all():
-            users.extend(post.get_users(self.current))
-        return users
+            people.extend(post.get_people(self.current))
+        return people
     
     def apply(self):
         #TODO: Allt

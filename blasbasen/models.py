@@ -59,15 +59,16 @@ class Person(models.Model):
 
 class UserManager(BaseUserManager):
     """Plankat från Djangos dokumentation. Används för Blåsbasens användarmodell."""
-    def create_user(self, person, email, password):
-        if not person:
-            raise ValueError('Users must have a relation to a Person object')
-        
+    def create_user(self, email, password):
         if not email:
             raise ValueError('Users must have an email address')
         
         if not password:
             raise ValueError('Users must have a password')
+        
+        #TODO: Fixa nåt snyggare
+        person = Person(first_name='root', last_name='root')
+        person.save()
 
         user = self.model(
             person=person,
@@ -79,10 +80,9 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, person, email, password):
+    def create_superuser(self, email, password):
         #Use the normal method for creating users
         user = self.create_user(
-            person,
             email,
             password,
         )
@@ -139,11 +139,11 @@ class Section(models.Model):
         verbose_name = 'sektion'
         verbose_name_plural = 'sektioner'
     
-    def get_users(self, current=True):
-        users = []
+    def get_people(self, current=True):
+        people = []
         for post in self.post_set.all():
-            users.extend(post.get_users(current))
-        return users
+            people.extend(post.get_people(current))
+        return people
     
     def __unicode__(self):
         return self.name
@@ -176,8 +176,8 @@ class Post(models.Model):
         verbose_name = 'post'
         verbose_name_plural = 'poster'
     
-    def get_users(self, current=True):
-        users=[]
+    def get_people(self, current=True):
+        people=[]
         if current:
             #Att vi väljer att exkludera åtaganden med slutdatum innan idag ser till att åtaganden utan slutdatum också kommer med.
             assignments = self.assignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
@@ -186,9 +186,9 @@ class Post(models.Model):
             assignments = self.assignment_set.filter(start_date__lte=datetime.date.today())
         
         # select_related för att minska antalet databasfrågor en aning.
-        for assig in assignments.select_related('user'):
-            users.append(assig.user)
-        return users
+        for assig in assignments.select_related('person'):
+            people.append(assig.person)
+        return people
     
     def __unicode__(self):
         if self.section:
@@ -249,4 +249,4 @@ class Card(models.Model):
     description = models.CharField(max_length=256, blank=True, help_text="Anges förslagsvis om du har fler än ett kort")
     
     def __unicode__(self):
-        return u'{0} ({1})'.format(self.card_data, self.user.get_short_name())
+        return u'{0} ({1})'.format(self.card_data, self.person.get_short_name())

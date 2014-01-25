@@ -14,7 +14,7 @@ class MailingList(models.Model):
 
 class Membership(models.Model):
     list = models.ForeignKey(MailingList)
-    user = models.ForeignKey('blasbasen.Person')
+    person = models.ForeignKey('blasbasen.Person')
     
     auto = models.BooleanField(default=False) # Anger om medlemskapet är automatiskt tillagt. Ser till att man inte tas ur listor man gått med i manuellt.
     enabled = models.BooleanField(default=True) # Anger om medlemskapet skall inaktiveras. Möjliggör att man kan gå ur listor man hamnat i automatiskt.
