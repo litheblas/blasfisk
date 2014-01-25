@@ -1,5 +1,4 @@
 .middle {
-    text-align: center;
     vertical-align: middle;
 }
 
@@ -8,35 +7,44 @@ body {
     padding-bottom: 0;
 }
 
+
+
 header {
-    background-image: url('/static/img/bg.png');
+    background-image: url('/static/img/bg.svg');
 }
 
 header .top {
-    padding: 15px;
+    padding: 30px 10px 0px 10px;
 }
 
-.navbar {
+header .head {
+    .hidden-sm();
+    .hidden-xs();
+}
 
+header .lead {
+    color: #FFF26E;
+    margin-bottom: 30px;
 }
 
 /* Set the fixed height of the footer here */
 footer {
     padding: 20px 20px 10px;
     text-align: center;
-    background-color: #f5f5f5;
+    /*background-color: #f5f5f5;*/
 }
+
+
+#user-tabs {
+    margin-bottom: 15px;
+}
+
 
 /* Customize container */
 @media (min-width: 992px) {
     .container {
         max-width: 850px;
     }
-}
-
-.navbar {
-    border-radius: 0;
-    margin-bottom: 0px;
 }
 
 .marketing .col-md-4 {

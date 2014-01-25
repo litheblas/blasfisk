@@ -58,13 +58,13 @@
         <header>
             <div class="container top">
                 <div class="row">
-                    <div class="col-md-3">
-                        <img src="/static/img/blottartuban.svg" width="150">
+                    <div class="col-sm-3 head hidden-xs">
+                        <img src="/static/img/huvud.svg" height="160">
                     </div>
-                    <div class="col-md-9">
-                        <h1>LiTHe Blås</h1>
+                    <div class="col-sm-9">
+                        <img src="/static/img/logo.svg" alt="LiTHe Blås" class="img-responsive" width="400">
                         <p class="lead">
-                            Linköpings Tekniska Högskolas Blåscorps
+                            Linköpings Tekniska Högskolas Blåscorps sedan 1973
                         </p>
                     </div>
                 </div>
@@ -166,14 +166,14 @@
                             </ul>-->
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="dropdown">
-                                    <a href="#" class=""><span class="glyphicon glyphicon-user"></span> Olle "Olle" Vidner</a>
+                                    <a href="/user/1" class=""><span class="glyphicon glyphicon-user"></span> Olle "Olle" Vidner</a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="#">Profil</a>
+                                            <a href="/user/1">Profil</a>
                                         </li>
                                         <li class="divider"></li>
                                         <li>
-                                            <a href="#">Admin</a>
+                                            <a href="/admin/">Admin</a>
                                         </li>
                                         <li class="divider"></li>
                                         <li>
@@ -188,7 +188,9 @@
             </div>
         </header>
         <div class="container">
-            <h1>{% block title %}{% endblock %}</h1>
+            <div class="page-header">
+                <h1>{% block title %}{% endblock %}</h1>
+            </div>
 
             {% block main %}{% endblock %}
         </div>
