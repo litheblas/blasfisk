@@ -13,13 +13,13 @@ header {
     background-image: url('/static/img/bg.svg');
 }
 
-header .top {
-    padding: 30px 10px 0px 10px;
+header .head {
+    min-height: 100%;
+    height: 100%;
 }
 
-header .head {
-    .hidden-sm();
-    .hidden-xs();
+header .top {
+    padding: 30px 20px 0px 20px;
 }
 
 header .lead {
@@ -40,12 +40,12 @@ footer {
 }
 
 
-/* Customize container */
+/* Customize container 
 @media (min-width: 992px) {
     .container {
-        max-width: 850px;
+        max-width: 992px;
     }
-}
+} */
 
 .marketing .col-md-4 {
     text-align: center;
