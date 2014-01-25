@@ -1,95 +1,14 @@
 {% extends "base.html" %}
 {% load i18n %}
-{# Add Carousel CSS to the head #}
+
 {% block extra_css %}
-<!-- <link rel="stylesheet" href="/static/css/carousel.css"> -->
+    
 {% endblock %}
+
 {% block extra_js %}
-<script src="/static/js/holder.js"></script>
+    
 {% endblock %}
 
 {% block main %}
-<div class="container">
-    <div id="myCarousel" class="carousel slide">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>
-
-        <div class="carousel-inner">
-            <div class="item active">
-                <img src="/static/img/carousel/1.jpg" alt="First slide">
-                <div class="container">
-                    <div class="carousel-caption">
-                        <p>
-                            LiTHe Blås är orkestern som hängivet ägnar sig åt studentmusik. Våra färger är blå och off-yellow och vi kommer från Linköpings universitet.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="/static/img/carousel/2.jpg" alt="Second slide">
-                <div class="container">
-                    <div class="carousel-caption">
-                        <p>
-                            LiTHe Blås brukar uppträda på diverse muntra tillställningar på universitetet eller annorstädes i vårt vackra land. Ibland räcker inte ens Sverige till. Då styr vi kosan mot mer exotiska länder, bl.a. under Eurotour.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="data:image/png;base64," data-src="holder.js/100%x500/auto/#777:#7a7a7a/text:Third slide" alt="Third slide">
-                <div class="container">
-                    <div class="carousel-caption">
-                        <h1>One more for good measure.</h1>
-                        <p>
-                            Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div><!-- /.carousel -->
-</div>
-
-<div class="container marketing">
-    <div class="row">
-        <div class="col-md-4 middle">
-            <img class="img-circle" src="/static/img/small/3.jpg" alt="Generic placeholder image">
-            <h2>Se Blåset!</h2>
-            <p>
-                2013-09-28 kl 12:00<br>
-                Gyllentorget, Linköping
-            </p>
-            <p>
-                <a class="btn btn-info" href="#">Se spelningar</a>
-            </p>
-        </div>
-        <div class="col-md-4 middle">
-            <img class="img-circle" src="/static/img/small/2.jpg" alt="Generic placeholder image">
-            <h2>Boka Blåset!</h2>
-            <p>
-                Många över hela Europa har redan upptäckt att LiTHe Blås med baletten Blåsyran kan få alla lokaler att svänga i takt till tonerna från äkta svensk studentmusik, så varför inte bli ännu en av Blåsets nöjda kunder?
-            </p>
-            <p>
-                <a class="btn btn-warning" href="#">Boka</a>
-            </p>
-        </div>
-        <div class="col-md-4 middle">
-            <img class="img-circle" src="/static/img/small/1.jpg" alt="Generic placeholder image">
-            <h2>Sök Blåset!</h2>
-            <p>
-                Vill du också ha skoj och spelar något instrument eller kan tänka dig att vara med i vår färgsprakande balett?
-            </p>
-            <p>
-                <a class="btn btn-success" href="#">Ansök</a>
-            </p>
-        </div>
-    </div>
-
-</div>
+    
 {% endblock %}
