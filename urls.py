@@ -11,7 +11,7 @@ admin.autodiscover()
 # to the project's homepage.
 
 urlpatterns = patterns("",
-    url("^user/", direct_to_template, {"template": "pages/user.html"}, name="user"),
+    url("^user/", direct_to_template, {"template": "user.html"}, name="user"),
 
     # Change the admin prefix here to use an alternate URL for the
     # admin interface, which would be marginally more secure.
