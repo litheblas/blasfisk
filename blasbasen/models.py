@@ -64,6 +64,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=256)
     date_of_birth = models.DateField(blank=True, null=True)
     personal_id_number = models.CharField(max_length=4, blank=True, help_text="Sista 4 siffrorna i personnumret") #Last 4 characters in Swedish personal id number
+    liu_id = models.CharField(max_length=8, verbose_name='LiU-ID', blank=True)
     
     posts = models.ManyToManyField('Post', through='Assignment')
     
@@ -73,10 +74,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     city = models.CharField(max_length=256, blank=True)
     country = models.CharField(max_length=2, choices=countries, default='SE', blank=True)
     
-    
-    liu_id = models.CharField(max_length=8, verbose_name='LiU-ID', blank=True)
-    
-    
     about = models.TextField(blank=True) #Kan förslagsvis användas för att t.ex. beskriva vad som gör en hedersmedlem så hedersvärd eller bara fritext av personen själv.
     special_diets = models.ManyToManyField('SpecialDiet', blank=True, null=True)
     
@@ -84,6 +81,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
+    
+    class Meta:
+        ordering = ['last_name', 'first_name']
+        verbose_name = 'person'
+        verbose_name_plural = 'personer'
     
     def is_active_member(self):
         #TODO: Returnera en bool för om användaren har medlemsskap eller något åtagande i föreningen.
@@ -114,15 +116,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     full_name = property(get_full_name)
     short_name = property(get_short_name)
 
-
-
 class Section(models.Model):
     """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc.. Denna datatyp (tillsammans med Post) styr medlemsskap i grupper."""
     name = models.CharField(max_length=256)
     description = models.TextField(blank=True)
-
+    
+    
     class Meta:
         ordering = ['name']
+        verbose_name = 'sektion'
+        verbose_name_plural = 'sektioner'
     
     def get_users(self, current=True):
         users = []
@@ -147,14 +150,19 @@ class Post(models.Model):
     section = models.ForeignKey('Section', blank=True, null=True)
     post = models.CharField(max_length=256)
     description = models.TextField(blank=True)
+    
+    
+    
     show_in_timeline = models.BooleanField(default=True, help_text="Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)")
     
+    
     #TODO: En egenskap för om posten är arkiverad också kanske? Typ generalbas
-
     
     class Meta:
         unique_together = (('section', 'post',),)
         ordering = ['section', 'post']
+        verbose_name = 'post'
+        verbose_name_plural = 'poster'
     
     def get_users(self, current=True):
         users=[]
