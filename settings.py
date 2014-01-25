@@ -225,6 +225,8 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 
 INSTALLED_APPS = (
     "litheblas.theme",
+    #"django_admin_bootstrapped.bootstrap3",
+    #"django_admin_bootstrapped",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -249,8 +251,6 @@ INSTALLED_APPS = (
     "litheblas.blasbasen",
     "litheblas.events",
     "litheblas.watcher",
-    "debug_toolbar",
-    #"south",
 )
 
 # List of processors used by RequestContext to populate the context.
