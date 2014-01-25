@@ -1,10 +1,20 @@
 # -*- coding: utf-8 -*-
 import uuid
 import datetime
+import os.path
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, PermissionsMixin, AbstractBaseUser
 from localflavor.se.forms import SEOrganisationNumberField
 from litheblas.globals import countries
+from litheblas.settings import MEDIA_ROOT
+
+
+
+def generate_avatar_filename(instance, filename):
+    extension = os.path.splitext(filename)[1].lower()
+    
+    # Döper filen till ett UUID eftersom vi inte ännu inte sparat objektet i databasen och därmed inte fått någon PK. Tror att det här borde funka bra. /Olle
+    return os.path.join('avatars', str(uuid.uuid1()) + extension) # Ger typ avatars/02b9672e-85f3-11e3-9e44-542696dae887.jpg
 
 class Person(models.Model):
     #Personal information
@@ -56,6 +66,28 @@ class Person(models.Model):
     full_name = property(get_full_name)
     short_name = property(get_short_name)
 
+class Avatar(models.Model):
+    picture = models.ImageField(max_length=256, upload_to=generate_avatar_filename)
+    person = models.ForeignKey('Person')
+    
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'profilbild'
+        verbose_name_plural = 'profilbilder'
+    
+    def __unicode__(self):
+        return u'{0}: {1}'.format(self.person.short_name, self.id)
+    
+    def get_url(self):
+        '''Hämtar (publik) URL till bilden'''
+        return self.picture.url
+    
+    def get_path(self):
+        '''Hämtar sökväg (i filsystemet) till bilden'''
+        return self.picture._get_path()
+    
+    url = property(get_url)
+    path = property(get_path)
 
 class UserManager(BaseUserManager):
     """Plankat från Djangos dokumentation. Används för Blåsbasens användarmodell."""

@@ -1,11 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from litheblas.blasbasen.models import User, Person, Section, Post, Assignment, SpecialDiet, Card
+from litheblas.blasbasen.models import Avatar, User, Person, Section, Post, Assignment, SpecialDiet, Card
 from litheblas.mailing.models import Membership as MailingMembership
 from litheblas.watcher.models import Watcher
 
 class AssignmentInline(admin.TabularInline):
     model = Assignment
+
+class AvatarInline(admin.TabularInline):
+    model = Avatar
+    extra = 1
     
 class MailingListInline(admin.TabularInline):
     model = MailingMembership
@@ -24,7 +28,7 @@ class GroupMemberInline(admin.TabularInline):
     
 class UserInline(admin.StackedInline):
     model = User
-    extra = 0
+    max_num = 1
     
 
 class WatcherInline(admin.TabularInline):
@@ -38,7 +42,7 @@ class SectionAdmin(admin.ModelAdmin):
     inlines = [PostInline]
 
 class PersonAdmin(admin.ModelAdmin):
-    inlines = [AssignmentInline, CardInline, MailingListInline, UserInline]
+    inlines = [AvatarInline, AssignmentInline, CardInline, MailingListInline, UserInline]
     
     list_display = ('first_name', 'nickname', 'last_name')
 #     fieldsets = (

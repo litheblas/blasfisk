@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 from mezzanine.core.views import direct_to_template
+
+from litheblas import settings
 
 admin.autodiscover()
 
@@ -84,6 +87,12 @@ urlpatterns = patterns("",
     # ("^%s/" % settings.SITE_PREFIX, include("mezzanine.urls"))
 
 )
+
+# Serva /media/ i DEBUG-läge, dvs. när testservern kör
+if settings.DEBUG:
+    urlpatterns += patterns('django.views.static',
+        (r'media/(?P<path>.*)', 'serve', {'document_root': settings.MEDIA_ROOT}),
+    )
 
 # Adds ``STATIC_URL`` to the context of error pages, so that error
 # pages can use JS, CSS and images.
