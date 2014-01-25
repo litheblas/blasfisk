@@ -3,34 +3,34 @@
 
 
 {% block title %}
-    Olle "Kungen" Vidner <small>2010-</small> <div class="pull-right"><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span> Ändra</button>
-        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirm-deletion"><span class="glyphicon glyphicon-trash"></span> Ta bort</button></div>
+    Olle "Kungen" Vidner <small>2010-</small>
+    <div class="pull-right">
+        <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span> Ändra</button>
+        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirm-deletion"><span class="glyphicon glyphicon-trash"></span> Ta bort</button>
+    </div>
 {% endblock %}
 
 {% block main %}
-    <!-- Modal -->
-<div class="modal fade" id="confirm-deletion" tabindex="-1" role="dialog" aria-labelledby="confirm-deletion" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Bekräfta borttagning</h4>
-      </div>
-      <div class="modal-body">
-        Du håller på att ta bort en person ur Blåsbasen. Detta är en permanent åtgärd och <strong>bör i normala fall aldrig göras.</strong> Med detta sagt – är du helt säker?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
-        <button type="button" class="btn btn-danger">Ta bort person</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
+    <div class="modal fade" id="confirm-deletion" tabindex="-1" role="dialog" aria-labelledby="confirm-deletion" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Bekräfta borttagning</h4>
+                </div>
+                <div class="modal-body">
+                    Du håller på att ta bort en person ur Blåsbasen. Detta är en permanent åtgärd och <strong>bör i normala fall aldrig göras.</strong> Med detta sagt – är du helt säker?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
+                    <button type="button" class="btn btn-danger">Ta bort person</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="col-md-3">
-        <img src="/static/img/olle.jpg" class="img-rounded img-responsive"><br>
+        <img src="/static/img/olle.jpg" class="img-rounded img-responsive">
     </div>
     <div class="col-md-9">
         <ul class="nav nav-tabs" id="user-tabs">
