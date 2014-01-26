@@ -1,3 +1,8 @@
 *.pyc
 dev.db
 media/avatars/*
+.settings/org.eclipse.core.resources.prefs
+
+.pydevproject
+
+.project
