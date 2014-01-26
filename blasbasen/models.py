@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import uuid
 import datetime
+from dateutil.relativedelta import relativedelta
 import os.path
 from django.db import models
 from django.contrib.auth.models import (BaseUserManager, 
@@ -19,18 +20,20 @@ def generate_avatar_filename(instance, filename):
     # Döper filen till ett UUID eftersom vi inte ännu inte sparat objektet i databasen och därmed inte fått någon PK. Tror att det här borde funka bra. /Olle
     return os.path.join('avatars', str(uuid.uuid1()) + extension) # Ger typ avatars/02b9672e-85f3-11e3-9e44-542696dae887.jpg
 
+
+
 class Person(models.Model):
-    #Personal information
     first_name = models.CharField(max_length=256, verbose_name='förnamn')
     nickname = models.CharField(max_length=256, blank=True, verbose_name='blåsnamn')
     last_name = models.CharField(max_length=256, verbose_name='efternamn')
-    date_of_birth = models.DateField(blank=True, null=True, verbose_name='födelsedatum')
+    born = models.DateField(blank=True, null=True, verbose_name='födelsedatum')
+    deceased = models.DateField(blank=True, null=True, verbose_name='dödsdatum')
     personal_id_number = models.CharField(max_length=4, blank=True, verbose_name='personnummer', help_text="Sista 4 siffrorna i personnumret") #Last 4 characters in Swedish personal id number
     liu_id = models.CharField(max_length=8, blank=True, verbose_name='LiU-ID')
     
     posts = models.ManyToManyField('Post', through='Assignment', verbose_name='poster')
     
-    #Address information
+    # Kontaktinformation
     address = models.CharField(max_length=256, blank=True, verbose_name='adress')
     postcode = models.CharField(max_length=256, blank=True, verbose_name='postnummer')
     city = models.CharField(max_length=256, blank=True, verbose_name='stad')
@@ -45,6 +48,17 @@ class Person(models.Model):
         ordering = ['first_name', 'last_name', 'nickname']
         verbose_name = 'person'
         verbose_name_plural = 'personer'
+    
+    #TODO: Lägg till en validator som kontrollerar födelse- och dödsdatum
+    
+    def get_age(self):
+        # Ge -1 istället för t.ex. None eller False. Någon skulle ju kunna lägga in ett blåsbarn som är 0 år och då skulle det bli fel.
+        if not self.born:
+            return -1
+        elif self.deceased:
+            return relativedelta(self.deceased, self.born).years
+        else:
+            return relativedelta(datetime.date.today(), self.born).years
     
     def get_assignments(self):
         #Exkludera objekt som avslutats innan detta dygn (detta ser till att objekt utan slutdatum inte utesluts), 
@@ -68,15 +82,17 @@ class Person(models.Model):
     def __unicode__(self):
         return self.get_full_name()
     
+    age = property(get_age)
     full_name = property(get_full_name)
     short_name = property(get_short_name)
 
 class Avatar(models.Model):
-    picture = models.ImageField(max_length=256, upload_to=generate_avatar_filename)
-    person = models.ForeignKey('Person')
+    picture = models.ImageField(max_length=256, upload_to=generate_avatar_filename, verbose_name='bild')
+    person = models.ForeignKey('Person', verbose_name='person')
+    primary = models.BooleanField(default=True, verbose_name='standard') #TODO: Skriv nåt skript som tar bort standard på alla andra bilder tillhörande samma person
     
     class Meta:
-        ordering = ['id']
+        ordering = ['primary', 'id']
         verbose_name = 'profilbild'
         verbose_name_plural = 'profilbilder'
     
@@ -184,8 +200,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Section(models.Model):
     """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc.. Denna datatyp (tillsammans med Post) styr medlemsskap i grupper."""
-    name = models.CharField(max_length=256)
-    description = models.TextField(blank=True)
+    name = models.CharField(max_length=256, verbose_name='namn')
+    description = models.TextField(blank=True, verbose_name='beskrivning')
     
     permissions = models.ManyToManyField(Permission, blank=True, null=True, verbose_name='rättigheter')
     
@@ -214,17 +230,21 @@ class Post(models.Model):
     Detta eftersom Django redan har inbyggda rutiner för rättighetshantering
     som fungerar mycket bra och är utbyggbara."""
     
-    section = models.ForeignKey('Section', blank=True, null=True)
-    post = models.CharField(max_length=256)
-    description = models.TextField(blank=True)
-    
+    section = models.ForeignKey('Section', blank=True, null=True, verbose_name='sektion')
+    post = models.CharField(max_length=256, verbose_name='post') #TODO: Byt namn till name så det blir mer konsekvent
     
     permissions = models.ManyToManyField(Permission, blank=True, null=True, verbose_name='rättigheter')
     
-    show_in_timeline = models.BooleanField(default=True, help_text="Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)")
+    # Metadata
+    description = models.TextField(blank=True, verbose_name='beskrivning')
+    membership = models.BooleanField(default=False, verbose_name='innebär medlemsskap', help_text='Räknas man som medlem i föreningen enkom av att vara med i denna post, dvs. kan man <em>antas</em> på denna post? Det här vill vi antagligen bara använda för instrument.')
+    engagement = models.BooleanField(default=False, verbose_name='uppdrag', help_text='Är denna post ett uppdrag utöver det vanliga medlemsskapet?')
+    show_in_timeline = models.BooleanField(default=True, verbose_name='visa på tidslinje', help_text="Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)")
     
-    
-    #TODO: En egenskap för om posten är arkiverad också kanske? Typ generalbas
+    #TODO: En egenskap för om posten är arkiverad också kanske? Typ generalbas. /Olle
+    # Nej förresten, det riskerar bara en massa redundant och/eller felaktig information. 
+    # En post som ingen haft på många år hör ju per definition till historien, så det behöver inte anges explicit.
+    # Dessutom skulle det inte uppdateras. /Olle
     
     class Meta:
         unique_together = (('section', 'post',),)
@@ -233,6 +253,7 @@ class Post(models.Model):
         verbose_name_plural = 'poster'
     
     def get_people(self, current=True):
+        #TODO: Byt ut till set()
         people=[]
         if current:
             #Att vi väljer att exkludera åtaganden med slutdatum innan idag ser till att åtaganden utan slutdatum också kommer med.
@@ -263,11 +284,13 @@ class Post(models.Model):
 
 class Assignment(models.Model):
     """Mellantabell som innehåller info om varje användares medlemsskap/uppdrag på olika poster."""
-    person = models.ForeignKey(Person)
-    post = models.ForeignKey(Post)
+    person = models.ForeignKey(Person, verbose_name='person')
+    post = models.ForeignKey(Post, verbose_name='post')
     
-    start_date = models.DateField()
-    end_date = models.DateField(blank=True, null=True)
+    start_date = models.DateField(verbose_name='startdatum')
+    end_date = models.DateField(blank=True, null=True, verbose_name='slutdatum')
+    
+    trial = models.BooleanField(default=False, verbose_name='provantagning')
     
     class Meta:
         verbose_name = 'medlemsskap/uppdrag'
