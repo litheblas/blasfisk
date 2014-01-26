@@ -3,11 +3,16 @@ import uuid
 import datetime
 import os.path
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, PermissionsMixin, AbstractBaseUser
+from django.contrib.auth.models import (BaseUserManager, 
+                                        PermissionsMixin, 
+                                        AbstractBaseUser, 
+                                        Permission, 
+                                        _user_get_all_permissions)
 from localflavor.se.forms import SEOrganisationNumberField
 from litheblas.globals import countries
 from litheblas.settings import MEDIA_ROOT
 
+from blasbasen.backends import make_permission_set
 
 
 def generate_avatar_filename(instance, filename):
@@ -33,6 +38,8 @@ class Person(models.Model):
     city = models.CharField(max_length=256, blank=True, verbose_name='stad')
     country = models.CharField(max_length=2, choices=countries, default='SE', blank=True, verbose_name='land')
     
+    email = models.EmailField(max_length=256, blank=True, verbose_name='e-postadress')
+    
     about = models.TextField(blank=True, verbose_name='om') #Kan förslagsvis användas för att t.ex. beskriva vad som gör en hedersmedlem så hedersvärd eller bara fritext av personen själv.
     special_diets = models.ManyToManyField('SpecialDiet', blank=True, null=True, verbose_name='speciella kostvanor')
     
@@ -41,7 +48,7 @@ class Person(models.Model):
         verbose_name = 'person'
         verbose_name_plural = 'personer'
     
-    def get_assignments(self, readable=False):
+    def get_assignments(self):
         #Exkludera objekt som avslutats innan detta dygn (detta ser till att objekt utan slutdatum inte utesluts), 
         #filtrera sedan ut de objekt som påbörjats innan detta dygn
         return self.assignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
@@ -91,20 +98,20 @@ class Avatar(models.Model):
 
 class UserManager(BaseUserManager):
     """Plankat från Djangos dokumentation. Används för Blåsbasens användarmodell."""
-    def create_user(self, email, password):
-        if not email:
-            raise ValueError('Users must have an email address')
+    def create_user(self, username, password):
+        if not username:
+            raise ValueError('Users must have a username')
         
         if not password:
             raise ValueError('Users must have a password')
         
         #TODO: Fixa nåt snyggare
-        person = Person(first_name='root', last_name='root')
+        person = Person(first_name='first', last_name='last')
         person.save()
 
         user = self.model(
             person=person,
-            email=self.normalize_email(email),
+            username=username,
             password=password,
         )
 
@@ -112,10 +119,10 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, username, password):
         #Use the normal method for creating users
         user = self.create_user(
-            email,
+            username,
             password,
         )
         
@@ -128,9 +135,8 @@ class UserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser, PermissionsMixin):
-    #Auth related information and other fields required by Django
-    email = models.EmailField(max_length=256, unique=True, db_index=True, verbose_name='e-postadress')
-    username = models.CharField(max_length=256, default=str(uuid.uuid1()), verbose_name='användar-ID') #TODO: Kolla om det går att lösa så detta fält kan tas bort. Finns bara för att Mezzanine inte ska balla ur.
+    """En avskalad användarmodell vars enda uppgift i stort sett är att lagra användarnamn och lösenord. Resten lagras i datatypen Person."""
+    username = models.CharField(max_length=256, unique=True, db_index=True, verbose_name='användarnamn')
     is_active = models.BooleanField(default=True, verbose_name='aktivt konto', help_text="Detta är INTE ett fält för att markera att någon blivit gamling") #Ska inte användas för att markera gamlingsskap osv.! Det görs mycket bättre på automatisk väg via posts
     is_admin = models.BooleanField(default=False, verbose_name='administratörskonto (?)', help_text='#TODO: Osäker på vad detta fält faktiskt används för. Kolla upp.')
     is_staff = models.BooleanField(default=False, verbose_name='maktkonto', help_text='Bestämmer om användaren kan logga in i admingränssnittet')
@@ -139,32 +145,51 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     objects = UserManager()
     
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
     
     class Meta:
-        ordering = ['person', 'email']
+        ordering = ['person', 'username']
         verbose_name = 'användarkonto'
         verbose_name_plural = 'användarkonton'
     
-    #Används internt av Django
+    def get_assignment_permissions(self, obj=None):
+        """Hämtar rättigheter från den kopplade personens poster och sektioner"""
+        perms = set()
+        #set(["%s.%s" % (p.content_type.app_label, p.codename) for p in user_obj.user_permissions.select_related()])
+        for assignment in self.person.get_assignments():
+            perms.update(assignment.post.get_all_permissions())
+        return perms
+    
+    # Ersätt Djangos egna get_all_permissions för att få med rättigheter från poster/sektioner 
+    def get_all_permissions(self, obj=None):
+        perms = set()
+        perms.update(_user_get_all_permissions(self, obj)) # Hämta rättigheter på vanligt vis
+        perms.update(self.get_assignment_permissions(obj))
+        return perms
+    
     def get_full_name(self):
         return self.person.full_name
 
-    #Används internt av Django
     def get_short_name(self):
         return self.person.short_name
+    
+    def get_email(self):
+        return self.person.email
         
     def __unicode__(self):
-        return self.person.full_name
+        return self.get_full_name()
     
+    # Langar lite egenskaper som många appar förväntar sig finnas i User-modellen.
     full_name = property(get_full_name)
     short_name = property(get_short_name)
+    email = property(get_email)
 
 class Section(models.Model):
     """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc.. Denna datatyp (tillsammans med Post) styr medlemsskap i grupper."""
     name = models.CharField(max_length=256)
     description = models.TextField(blank=True)
     
+    permissions = models.ManyToManyField(Permission, blank=True, null=True, verbose_name='rättigheter')
     
     class Meta:
         ordering = ['name']
@@ -196,6 +221,7 @@ class Post(models.Model):
     description = models.TextField(blank=True)
     
     
+    permissions = models.ManyToManyField(Permission, blank=True, null=True, verbose_name='rättigheter')
     
     show_in_timeline = models.BooleanField(default=True, help_text="Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)")
     
@@ -221,6 +247,16 @@ class Post(models.Model):
         for assig in assignments.select_related('person'):
             people.append(assig.person)
         return people
+    
+    def get_section_permissions(self):
+        return make_permission_set(self.section.permissions.all())
+        #return set(["%s.%s" % (p.content_type.app_label, p.codename) for p in self.section.permissions.all()])
+    
+    def get_all_permissions(self):
+        perms = set()
+        perms.update(self.get_section_permissions())
+        perms.update(make_permission_set(self.permissions.all()))
+        return perms
     
     def __unicode__(self):
         if self.section:
