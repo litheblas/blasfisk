@@ -1,8 +1,9 @@
 from django.contrib import admin
+
 from django.contrib.auth.models import Group
-from litheblas.blasbasen.models import Avatar, User, Person, Section, Post, Assignment, SpecialDiet, Card
-from litheblas.mailing.models import Membership as MailingMembership
-from litheblas.watcher.models import Watcher
+from blasbasen.models import Avatar, User, Person, Section, Post, Assignment, SpecialDiet, Card
+from mailing.models import Membership as MailingMembership
+from watcher.models import Watcher
 
 class AssignmentInline(admin.TabularInline):
     model = Assignment

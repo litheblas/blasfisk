@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from litheblas.watcher.models import Watcher
+from watcher.models import Watcher
 
 class WatcherAdmin(admin.ModelAdmin):
     list_display = ('description', 'group', 'list')

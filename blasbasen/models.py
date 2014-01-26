@@ -9,9 +9,7 @@ from django.contrib.auth.models import (BaseUserManager,
                                         Permission, 
                                         _user_get_all_permissions)
 from localflavor.se.forms import SEOrganisationNumberField
-from litheblas.globals import countries
-from litheblas.settings import MEDIA_ROOT
-
+from globals import countries
 from blasbasen.backends import make_permission_set
 
 
