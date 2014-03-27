@@ -1,5 +1,5 @@
 *.pyc
-dev.db
+db.sqlite3
 media/avatars/*
 .settings/org.eclipse.core.resources.prefs
 

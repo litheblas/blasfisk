@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
 # TODO: Lägg till alla länder
-countries = (
+COUNTRIES = (
     ('SE', 'Sverige'),
     ('US', 'USA')
+)
+
+GENDERS = (
+    ('f', 'Kvinna'),
+    ('m', 'Man')
 )

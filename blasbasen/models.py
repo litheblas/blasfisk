@@ -10,26 +10,31 @@ from django.contrib.auth.models import (BaseUserManager,
                                         Permission, 
                                         _user_get_all_permissions)
 from localflavor.se.forms import SEOrganisationNumberField
-from globals import countries
+from globals import GENDERS, COUNTRIES
 from blasbasen.backends import make_permission_set
 
 
 def generate_avatar_filename(instance, filename):
     extension = os.path.splitext(filename)[1].lower()
     
-    # Döper filen till ett UUID eftersom vi inte ännu inte sparat objektet i databasen och därmed inte fått någon PK. Tror att det här borde funka bra. /Olle
+    # Döper filen till ett UUID eftersom vi inte ännu inte sparat objektet i databasen och därmed inte fått någon PK. Tror att det här borde funka tillräckligt bra. /Olle
     return os.path.join('avatars', str(uuid.uuid1()) + extension) # Ger typ avatars/02b9672e-85f3-11e3-9e44-542696dae887.jpg
 
-
-
 class Person(models.Model):
+    """Lagrar personer (som i människor) och är den datatyp som nästan allt i Blåsbasen kopplas till."""
     first_name = models.CharField(max_length=256, verbose_name='förnamn')
     nickname = models.CharField(max_length=256, blank=True, verbose_name='blåsnamn')
     last_name = models.CharField(max_length=256, verbose_name='efternamn')
+    gender = models.CharField(max_length=1, choices=GENDERS, blank=True, verbose_name='kön')
     born = models.DateField(blank=True, null=True, verbose_name='födelsedatum')
     deceased = models.DateField(blank=True, null=True, verbose_name='dödsdatum')
-    personal_id_number = models.CharField(max_length=4, blank=True, verbose_name='personnummer', help_text="Sista 4 siffrorna i personnumret") #Last 4 characters in Swedish personal id number
+    personal_id_number = models.CharField(max_length=4, blank=True, verbose_name='personnummer', help_text='Sista 4 siffrorna i personnumret') #Last 4 characters in Swedish personal id number
     liu_id = models.CharField(max_length=8, blank=True, verbose_name='LiU-ID')
+    
+    about = models.TextField(blank=True, verbose_name='om', help_text='Godtycklig text.')
+    
+    special_diets = models.ManyToManyField('SpecialDiet', blank=True, null=True, verbose_name='speciella kostvanor')
+    special_diets_extra = models.CharField(max_length=256, blank=True, verbose_name='kommentarer till speciella kostvanor')
     
     posts = models.ManyToManyField('Post', through='Assignment', verbose_name='poster')
     
@@ -37,24 +42,18 @@ class Person(models.Model):
     address = models.CharField(max_length=256, blank=True, verbose_name='adress')
     postcode = models.CharField(max_length=256, blank=True, verbose_name='postnummer')
     city = models.CharField(max_length=256, blank=True, verbose_name='stad')
-    country = models.CharField(max_length=2, choices=countries, default='SE', blank=True, verbose_name='land')
+    country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name='land')
     
     email = models.EmailField(max_length=256, blank=True, verbose_name='e-postadress')
-    
-    about = models.TextField(blank=True, verbose_name='om') #Kan förslagsvis användas för att t.ex. beskriva vad som gör en hedersmedlem så hedersvärd eller bara fritext av personen själv.
-    special_diets = models.ManyToManyField('SpecialDiet', blank=True, null=True, verbose_name='speciella kostvanor')
     
     class Meta:
         ordering = ['first_name', 'last_name', 'nickname']
         verbose_name = 'person'
         verbose_name_plural = 'personer'
     
-    #TODO: Lägg till en validator som kontrollerar födelse- och dödsdatum
-    
     def get_age(self):
-        # Ge -1 istället för t.ex. None eller False. Någon skulle ju kunna lägga in ett blåsbarn som är 0 år och då skulle det bli fel.
         if not self.born:
-            return -1
+            return None
         elif self.deceased:
             return relativedelta(self.deceased, self.born).years
         else:
@@ -174,10 +173,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             perms.update(assignment.post.get_all_permissions())
         return perms
     
-    # Ersätt Djangos egna get_all_permissions för att få med rättigheter från poster/sektioner 
+    # Ersätter Djangos egna get_all_permissions för att få med rättigheter från poster/sektioner 
     def get_all_permissions(self, obj=None):
         perms = set()
-        perms.update(_user_get_all_permissions(self, obj)) # Hämta rättigheter på vanligt vis
+        perms.update(_user_get_all_permissions(self, obj)) # Hämtar rättigheter på vanligt vis
         perms.update(self.get_assignment_permissions(obj))
         return perms
     
@@ -223,15 +222,10 @@ class Post(models.Model):
     """Exempelvis elbas, dictator, gamling, hedersmedlem, vän till blåset, sektionschef etc.. 
     Bäst att spara gamling som en egen slags medlemstyp utan sektion eftersom systemet 
     själv kan hålla reda på vilka sektioner man tillhört.
-    Avlidna/uteslutna medlemmar tas lämpligtvis bort från alla poster. 
+    Avlidna/uteslutna medlemmar tas lämpligtvis bort från alla poster."""
     
-    #TODO: Ett skript som körs vid ändring av posterna tilldelar gruppmedlemsskap i Djangos egna tabeller.
-    Det är alltså gruppmedlemsskap som styr egentliga rättigheter och inte denna tabell.
-    Detta eftersom Django redan har inbyggda rutiner för rättighetshantering
-    som fungerar mycket bra och är utbyggbara."""
-    
+    name = models.CharField(max_length=256, verbose_name='namn')
     section = models.ForeignKey('Section', blank=True, null=True, verbose_name='sektion')
-    post = models.CharField(max_length=256, verbose_name='post') #TODO: Byt namn till name så det blir mer konsekvent
     
     permissions = models.ManyToManyField(Permission, blank=True, null=True, verbose_name='rättigheter')
     
@@ -239,16 +233,16 @@ class Post(models.Model):
     description = models.TextField(blank=True, verbose_name='beskrivning')
     membership = models.BooleanField(default=False, verbose_name='innebär medlemsskap', help_text='Räknas man som medlem i föreningen enkom av att vara med i denna post, dvs. kan man <em>antas</em> på denna post? Det här vill vi antagligen bara använda för instrument.')
     engagement = models.BooleanField(default=False, verbose_name='uppdrag', help_text='Är denna post ett uppdrag utöver det vanliga medlemsskapet?')
-    show_in_timeline = models.BooleanField(default=True, verbose_name='visa på tidslinje', help_text="Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)")
+    show_in_timeline = models.BooleanField(default=True, verbose_name='visa på tidslinje', help_text='Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)')
     
-    #TODO: En egenskap för om posten är arkiverad också kanske? Typ generalbas. /Olle
+    # En egenskap för om posten är arkiverad också kanske? Typ generalbas. /Olle
     # Nej förresten, det riskerar bara en massa redundant och/eller felaktig information. 
     # En post som ingen haft på många år hör ju per definition till historien, så det behöver inte anges explicit.
     # Dessutom skulle det inte uppdateras. /Olle
     
     class Meta:
-        unique_together = (('section', 'post',),)
-        ordering = ['section', 'post']
+        unique_together = (('section', 'name',),)
+        ordering = ['section', 'name']
         verbose_name = 'post'
         verbose_name_plural = 'poster'
     
@@ -295,9 +289,7 @@ class Assignment(models.Model):
     class Meta:
         verbose_name = 'medlemsskap/uppdrag'
         verbose_name_plural = verbose_name
-    
-    #TODO: När instanser av denna sparas skall gruppmedlemsskap uppdateras, både från poster och sektioner. Dessutom behöver någon slags skript köras varje natt för att uppdatera poster som gått ut.
-    
+            
     def is_ongoing(self):
         #TODO: Kolla om startdatum finns och om före dagens datum. 
         #Om ja, kolla om slutdatum finns och om efter dagens datum. 
@@ -331,7 +323,7 @@ class Customer(models.Model):
     address = models.CharField(max_length=256, blank=True, verbose_name='adress')
     postcode = models.CharField(max_length=256, blank=True, verbose_name='postnummer')
     city = models.CharField(max_length=256, blank=True, verbose_name='stad')
-    country = models.CharField(max_length=2, choices=countries, default='SE', blank=True, verbose_name='land')
+    country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name='land')
     
     class Meta:
         ordering = ['name', 'contact']

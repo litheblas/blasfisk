@@ -1,0 +1,164 @@
+{% load cms_tags staticfiles sekizai_tags menu_tags %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}LiTHe Blås{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    {% render_block "css" %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+  </head>
+  <body>
+    {% cms_toolbar %}
+    <header>
+        <div class="container top">
+                <div class="row">
+                    <div class="hidden-xs col-sm-4 head">
+                        <br>
+                        <img src="{% static 'img/overkropp.svg' %}" class="img-responsive center-block">
+                    </div>
+                    <div class="col-xs-12 col-sm-8">
+                        <img src="{% static 'img/logo.svg' %}" alt="LiTHe Blås" class="img-responsive" width="500">
+                        <p class="lead">
+                            Linköpings Tekniska Högskolas Blåscorps sedan 1973
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-wrapper">
+                <div class="navbar navbar-default">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                {% show_menu 0 1 100 100 'elements/menu.html' %}
+                            </ul>
+                            <!-- <ul class="nav navbar-nav">
+                                <li class="active">
+                                    <a href="#">Hem</a>
+                                </li>
+                                <li>
+                                    <a href="#about">Ansök</a>
+                                </li>
+                                <li>
+                                    <a href="#contact">Boka</a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Lyssna <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Kommande spelningar</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Musikvideos</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Skivor</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Om <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">Föreningen</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Blåsrummet</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Blottartuban</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Eurotour</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Uppslagsverket</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown-header">
+                                            Sektioner
+                                        </li>
+                                        <li>
+                                            <a href="#">Basunsektionen</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Baletten Blåsyran</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Klarinettsektionen</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Kompet</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Phloytsektionen</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Saxsekten</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Trumpetsektionen</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown-header">
+                                            Relaterade grupperingar
+                                        </li>
+                                        <li>
+                                            <a href="#">Baren Baren</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">LiTHe Grås</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#about">Kontakt</a>
+                                </li>
+                            </ul>-->
+                            <ul class="nav navbar-nav navbar-right">
+                                <!--<li><a href="http://en.litheblas.org/"><img src="/static/img/flags/48x34/en.png" width="24" height="17"></a></li>
+                                <li><a href="http://de.litheblas.org/"><img src="/static/img/flags/48x34/de.png" width="24" height="17"></a></li>
+                                <li><a href="http://litheblas.org/"><img src="/static/img/flags/48x34/se.png" width="24" height="17"></a></li>-->
+                                <li class="dropdown">
+                                    <a href="/user/1" class=""><span class="glyphicon glyphicon-user"></span> Olle "Olle" Vidner</a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="/user/1">Profil</a>
+                                        </li>
+                                        <li>
+                                            <a href="/admin/">Admin</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Logga ut</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            {% block content %}
+            {% endblock content %}
+        </div>
+        <footer>
+            <div class="container">
+                {% static_placeholder 'footer' %}
+            </div>
+        </footer>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    {% render_block "js" %}
+  </body>
+</html>
+
