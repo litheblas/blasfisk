@@ -58,7 +58,7 @@ class PersonAdmin(admin.ModelAdmin):
 admin.site.unregister(Group)
 admin.site.register(Group, GroupAdmin)
 admin.site.register(Person, PersonAdmin)
-#admin.site.register(Post)
+admin.site.register(Post)
 admin.site.register(Section, SectionAdmin)
 #admin.site.register(Assignment)
 admin.site.register(SpecialDiet)
