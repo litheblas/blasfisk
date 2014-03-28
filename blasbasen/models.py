@@ -40,10 +40,11 @@ class Person(models.Model):
     
     # Kontaktinformation
     address = models.CharField(max_length=256, blank=True, verbose_name='adress')
-    postcode = models.CharField(max_length=256, blank=True, verbose_name='postnummer')
+    postcode = models.CharField(max_length=256, blank=True, verbose_name='postnummer') #Byt namn till post_code
     city = models.CharField(max_length=256, blank=True, verbose_name='stad')
     country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name='land')
     
+    #phone = models.CharField(max_length=256, blank=True, verbose_name='telefonnummer', help_text='Ange landskod om annat land än Sverige.')
     email = models.EmailField(max_length=256, blank=True, verbose_name='e-postadress')
     
     class Meta:
@@ -64,6 +65,12 @@ class Person(models.Model):
         #filtrera sedan ut de objekt som påbörjats innan detta dygn
         return self.assignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
     
+    def get_primary_avatar(self):
+        return self.avatar_set.get(primary=True)
+    
+    def get_secondary_avatars(self):
+        return self.avatar_set.exclude(primary=True)
+    
     #Används internt av Django
     def get_full_name(self):
         if self.nickname:
@@ -78,12 +85,33 @@ class Person(models.Model):
 
         return u'{0} {1}'.format(self.first_name, self.last_name[0]) # Leif H
     
+    def get_start_date(self):
+        '''Hämtar alla assignments vars poster innebär medlemsskap och som inte är provmedlemsskap, 
+        sorterar stigande på startdatum, tar det första objektet och ger detta objekts startdatum'''
+        return self.assignment_set.filter(post__membership=True).filter(trial=False).order_by('start_date')[0].start_date
+    
+    def get_end_date(self):
+        a = self.assignment_set.filter(post__membership=True).filter(trial=False)
+        
+        #Kolla om någon assignment är pågående, bryt och returnera None i så fall
+        for i in a:
+            if i.ongoing:
+                return None
+        
+        '''Hämtar alla assignments vars poster innebär medlemsskap och som inte är provmedlemsskap, 
+        sorterar fallande på slutdatum, tar det första objektet och ger detta objekts slutdatum'''
+        return a.order_by('-end_date')[0].end_date
+
     def __unicode__(self):
         return self.get_full_name()
     
     age = property(get_age)
     full_name = property(get_full_name)
     short_name = property(get_short_name)
+    start_date = property(get_start_date)
+    end_date = property(get_end_date)
+    primary_avatar = property(get_primary_avatar)
+    secondary_avatars = property(get_secondary_avatars)
 
 class Avatar(models.Model):
     picture = models.ImageField(max_length=256, upload_to=generate_avatar_filename, verbose_name='bild')
@@ -221,8 +249,7 @@ class Section(models.Model):
 class Post(models.Model):
     """Exempelvis elbas, dictator, gamling, hedersmedlem, vän till blåset, sektionschef etc.. 
     Bäst att spara gamling som en egen slags medlemstyp utan sektion eftersom systemet 
-    själv kan hålla reda på vilka sektioner man tillhört.
-    Avlidna/uteslutna medlemmar tas lämpligtvis bort från alla poster."""
+    själv kan hålla reda på vilka sektioner man tillhört."""
     
     name = models.CharField(max_length=256, verbose_name='namn')
     section = models.ForeignKey('Section', blank=True, null=True, verbose_name='sektion')
@@ -231,7 +258,7 @@ class Post(models.Model):
     
     # Metadata
     description = models.TextField(blank=True, verbose_name='beskrivning')
-    membership = models.BooleanField(default=False, verbose_name='innebär medlemsskap', help_text='Räknas man som medlem i föreningen enkom av att vara med i denna post, dvs. kan man <em>antas</em> på denna post? Det här vill vi antagligen bara använda för instrument.')
+    membership = models.BooleanField(default=False, verbose_name='innebär medlemsskap', help_text='Räknas man som medlem i föreningen enkom av att vara med i denna post, dvs. kan man <em>antas</em> på denna post? Det här vill vi antagligen bara använda för instrument.') #TODO: Byt namn till implies_membership
     engagement = models.BooleanField(default=False, verbose_name='uppdrag', help_text='Är denna post ett uppdrag utöver det vanliga medlemsskapet?')
     show_in_timeline = models.BooleanField(default=True, verbose_name='visa på tidslinje', help_text='Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)')
     
@@ -273,8 +300,8 @@ class Post(models.Model):
     
     def __unicode__(self):
         if self.section:
-            return u'{0} / {1}'.format(self.section.name, self.post)
-        return self.post
+            return u'{0} / {1}'.format(self.section.name, self.name)
+        return self.name
 
 class Assignment(models.Model):
     """Mellantabell som innehåller info om varje användares medlemsskap/uppdrag på olika poster."""
@@ -289,16 +316,33 @@ class Assignment(models.Model):
     class Meta:
         verbose_name = 'medlemsskap/uppdrag'
         verbose_name_plural = verbose_name
-            
-    def is_ongoing(self):
-        #TODO: Kolla om startdatum finns och om före dagens datum. 
-        #Om ja, kolla om slutdatum finns och om efter dagens datum. 
-        #Om ja, returnera True.
-        pass
-        
+    
+    def get_if_implies_membership(self):
+        return self.post.membership
+    
+    def get_if_engagement(self):
+        return self.post.engagement
+    
+    def get_if_on_timeline(self):
+        return self.post.show_in_timeline
+    
+    def get_if_ongoing(self):
+        #Fall 1: slutdatum är satt
+        if self.end_date:
+            #Är slutdatumet satt till idag eller efter?
+            return self.end_date >= datetime.date.today()
+        #Fall 2: inget slutdatum är satt
+        else:
+            #Är startdatumet satt till idag eller före?
+            return self.start_date <= datetime.date.today()
     
     def __unicode__(self):
         return u'{0}: {1}'.format(self.person.get_short_name(), self.post)
+    
+    implies_membership = property(get_if_implies_membership)
+    engagement = property(get_if_engagement)
+    on_timeline = property(get_if_on_timeline)
+    ongoing = property(get_if_ongoing)
 
 class SpecialDiet(models.Model):
     name = models.CharField(max_length=256, verbose_name='beskrivning', help_text='Anges i formen "Allergisk mot...", "Nykterist" etc.')
