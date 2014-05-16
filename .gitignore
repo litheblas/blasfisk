@@ -1,7 +1,7 @@
 *.pyc
 db.sqlite3
-litheblas/media/avatars/*
-
+litheblas/media/*
+litheblas/secret.py
 .settings/org.eclipse.core.resources.prefs
 .pydevproject
 .project

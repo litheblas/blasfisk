@@ -22,7 +22,7 @@ gettext = lambda s: s
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd*dvb_n#28xx9ij*f(-5=*9k9s57_=#!rqgrjl!2$&+b=%ujr$'
+from litheblas.secret import SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
