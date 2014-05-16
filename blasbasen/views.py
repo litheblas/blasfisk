@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from django.http import Http404
+from django.views.generic import ListView, DetailView, TemplateView
 from blasbasen.models import Person
 
 # Create your views here.
-def index(request):
-    return render(request, 'page.html')
 
 def person_detail(request, person):
     try:
@@ -16,4 +15,8 @@ def person_detail(request, person):
     memberships = a.filter(post__engagement=False).filter(post__membership=True)
     engagements = a.filter(post__engagement=True)
     
-    return render(request, 'person_detail.html', {'person': p, 'memberships': memberships, 'engagements': engagements})
+    return render(request, 'blasbasen/person_detail.html', {'person': p, 'memberships': memberships, 'engagements': engagements})
+
+class PersonList(ListView):
+    model = Person
+    context_object_name = 'people'
