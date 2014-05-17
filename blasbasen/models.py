@@ -126,6 +126,25 @@ class Avatar(models.Model):
     def __unicode__(self):
         return u'{0}: {1}'.format(self.person.short_name, self.id)
     
+    def save(self, *args, **kwargs):
+        #Sparar objektet som vanligt
+        super(Avatar, self).save(*args, **kwargs)
+        
+        #Hämtar alla avatarer tillhörande samma person som aktuellt objekt
+        avatars = self.person.avatar_set
+        
+        if self.primary:
+            #Tar bort primary från alla avatarer tillhörande samma människa. Exkluderar aktuellt objekt om det redan finns.
+            avatars.exclude(pk=self.pk).update(primary=False)
+        
+        else:
+            #Om det inte finns någon avatar tillhörande denna person som är märkt som primär...
+            if not avatars.filter(primary=True).exists():
+                #...välj den senast tillagda avataren och välj som primär, välj bort aktuellt objekt om det finns
+                a = avatars.exclude(pk=self.pk).order_by('-pk')[0]
+                a.primary = True
+                a.save()
+    
     def get_url(self):
         '''Hämtar (publik) URL till bilden'''
         return self.picture.url
