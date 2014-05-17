@@ -44,8 +44,8 @@ class Person(models.Model):
     city = models.CharField(max_length=256, blank=True, verbose_name='stad')
     country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name='land')
     
-    #phone = models.CharField(max_length=256, blank=True, verbose_name='telefonnummer', help_text='Ange landskod om annat land än Sverige.')
     email = models.EmailField(max_length=256, blank=True, verbose_name='e-postadress')
+    phone = models.CharField(max_length=256, blank=True, verbose_name=u'telefonnummer', help_text=u'Ange landskod om annat land än Sverige.')
     
     class Meta:
         ordering = ['first_name', 'last_name', 'nickname']
