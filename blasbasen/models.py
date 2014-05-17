@@ -208,6 +208,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         perms.update(self.get_assignment_permissions(obj))
         return perms
     
+    def get_first_name(self):
+        return self.person.first_name
+    
+    def get_last_name(self):
+        return self.person.last_name
+    
     def get_full_name(self):
         return self.person.full_name
 
@@ -223,6 +229,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Langar lite egenskaper som många appar förväntar sig finnas i User-modellen.
     full_name = property(get_full_name)
     short_name = property(get_short_name)
+    first_name = property(get_first_name)
+    last_name = property(get_last_name)
     email = property(get_email)
 
 class Section(models.Model):
