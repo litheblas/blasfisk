@@ -29,7 +29,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -207,5 +207,4 @@ CMS_TEMPLATES = (
 )
 
 CMS_PERMISSION = False
-
 CMS_PLACEHOLDER_CONF = {}
