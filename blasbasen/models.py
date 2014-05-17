@@ -22,35 +22,35 @@ def generate_avatar_filename(instance, filename):
 
 class Person(models.Model):
     """Lagrar personer (som i människor) och är den datatyp som nästan allt i Blåsbasen kopplas till."""
-    first_name = models.CharField(max_length=256, verbose_name='förnamn')
-    nickname = models.CharField(max_length=256, blank=True, verbose_name='blåsnamn')
-    last_name = models.CharField(max_length=256, verbose_name='efternamn')
-    gender = models.CharField(max_length=1, choices=GENDERS, blank=True, verbose_name='kön')
-    born = models.DateField(blank=True, null=True, verbose_name='födelsedatum')
-    deceased = models.DateField(blank=True, null=True, verbose_name='dödsdatum')
-    personal_id_number = models.CharField(max_length=4, blank=True, verbose_name='personnummer', help_text='Sista 4 siffrorna i personnumret') #Last 4 characters in Swedish personal id number
-    liu_id = models.CharField(max_length=8, blank=True, verbose_name='LiU-ID')
+    first_name = models.CharField(max_length=256, verbose_name=u'förnamn')
+    nickname = models.CharField(max_length=256, blank=True, verbose_name=u'blåsnamn')
+    last_name = models.CharField(max_length=256, verbose_name=u'efternamn', help_text=u'Ange gärna tidigare efternamn inom parentes, t.ex. Vidner (Eriksson)')
+    gender = models.CharField(max_length=1, choices=GENDERS, blank=True, verbose_name=u'kön')
+    born = models.DateField(blank=True, null=True, verbose_name=u'födelsedatum')
+    deceased = models.DateField(blank=True, null=True, verbose_name=u'dödsdatum')
+    personal_id_number = models.CharField(max_length=4, blank=True, verbose_name=u'personnummer', help_text=u'Sista 4 siffrorna i personnumret') #Last 4 characters in Swedish personal id number
+    liu_id = models.CharField(max_length=8, blank=True, verbose_name=u'LiU-ID')
     
-    about = models.TextField(blank=True, verbose_name='om', help_text='Godtycklig text.')
+    about = models.TextField(blank=True, verbose_name=u'om', help_text=u'Godtycklig text.')
     
-    special_diets = models.ManyToManyField('SpecialDiet', blank=True, null=True, verbose_name='speciella kostvanor')
-    special_diets_extra = models.CharField(max_length=256, blank=True, verbose_name='kommentarer till speciella kostvanor')
+    special_diets = models.ManyToManyField('SpecialDiet', blank=True, null=True, verbose_name=u'speciella kostvanor')
+    special_diets_extra = models.CharField(max_length=256, blank=True, verbose_name=u'kommentarer till speciella kostvanor')
     
-    posts = models.ManyToManyField('Post', through='Assignment', verbose_name='poster')
+    posts = models.ManyToManyField('Post', through='Assignment', verbose_name=u'poster')
     
     # Kontaktinformation
-    address = models.CharField(max_length=256, blank=True, verbose_name='adress')
-    postcode = models.CharField(max_length=256, blank=True, verbose_name='postnummer') #Byt namn till post_code
-    city = models.CharField(max_length=256, blank=True, verbose_name='stad')
-    country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name='land')
+    address = models.CharField(max_length=256, blank=True, verbose_name=u'adress')
+    postcode = models.CharField(max_length=256, blank=True, verbose_name=u'postnummer') #Byt namn till post_code
+    city = models.CharField(max_length=256, blank=True, verbose_name=u'stad')
+    country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name=u'land')
     
-    email = models.EmailField(max_length=256, blank=True, verbose_name='e-postadress')
     phone = models.CharField(max_length=256, blank=True, verbose_name=u'telefonnummer', help_text=u'Ange landskod om annat land än Sverige.')
+    email = models.EmailField(max_length=256, blank=True, verbose_name=u'e-postadress')
     
     class Meta:
         ordering = ['first_name', 'last_name', 'nickname']
-        verbose_name = 'person'
-        verbose_name_plural = 'personer'
+        verbose_name = u'person'
+        verbose_name_plural = u'personer'
     
     def get_age(self):
         if not self.born:
@@ -91,15 +91,17 @@ class Person(models.Model):
         return self.assignment_set.filter(post__membership=True).filter(trial=False).order_by('start_date')[0].start_date
     
     def get_end_date(self):
+        #Hämtar alla assignments vars poster innebär medlemsskap och som inte är provmedlemsskap
         a = self.assignment_set.filter(post__membership=True).filter(trial=False)
         
         #Kolla om någon assignment är pågående, bryt och returnera None i så fall
+        #Kan inte göras med vanliga databasfrågor eftersom ongoing är en metod och inte ett fält
+        #Man kan dock implementera samma sak som is_ongoing() för att optimera, men det torde vara överflödigt i det här fallet
         for i in a:
             if i.ongoing:
                 return None
         
-        '''Hämtar alla assignments vars poster innebär medlemsskap och som inte är provmedlemsskap, 
-        sorterar fallande på slutdatum, tar det första objektet och ger detta objekts slutdatum'''
+        #Sorterar fallande på slutdatum, tar det första objektet och ger detta objekts slutdatum
         return a.order_by('-end_date')[0].end_date
 
     def __unicode__(self):
@@ -114,14 +116,14 @@ class Person(models.Model):
     secondary_avatars = property(get_secondary_avatars)
 
 class Avatar(models.Model):
-    picture = models.ImageField(max_length=256, upload_to=generate_avatar_filename, verbose_name='bild')
-    person = models.ForeignKey('Person', verbose_name='person')
-    primary = models.BooleanField(default=True, verbose_name='standard') #TODO: Skriv nåt skript som tar bort standard på alla andra bilder tillhörande samma person
+    picture = models.ImageField(max_length=256, upload_to=generate_avatar_filename, verbose_name=u'bild')
+    person = models.ForeignKey('Person', verbose_name=u'person')
+    primary = models.BooleanField(default=True, verbose_name=u'standard')
     
     class Meta:
         ordering = ['primary', 'id']
-        verbose_name = 'profilbild'
-        verbose_name_plural = 'profilbilder'
+        verbose_name = u'profilbild'
+        verbose_name_plural = u'profilbilder'
     
     def __unicode__(self):
         return u'{0}: {1}'.format(self.person.short_name, self.id)
@@ -160,10 +162,10 @@ class UserManager(BaseUserManager):
     """Plankat från Djangos dokumentation. Används för Blåsbasens användarmodell."""
     def create_user(self, username, password):
         if not username:
-            raise ValueError('Users must have a username')
+            raise ValueError(u'Users must have a username')
         
         if not password:
-            raise ValueError('Users must have a password')
+            raise ValueError(u'Users must have a password')
         
         #TODO: Fixa nåt snyggare
         person = Person(first_name='first', last_name='last')
@@ -196,12 +198,12 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     """En avskalad användarmodell vars enda uppgift i stort sett är att lagra användarnamn och lösenord. Resten lagras i datatypen Person."""
-    username = models.CharField(max_length=256, unique=True, db_index=True, verbose_name='användarnamn')
-    is_active = models.BooleanField(default=True, verbose_name='aktivt konto', help_text="Detta är INTE ett fält för att markera att någon blivit gamling") #Ska inte användas för att markera gamlingsskap osv.! Det görs mycket bättre på automatisk väg via posts
-    is_admin = models.BooleanField(default=False, verbose_name='administratörskonto (?)', help_text='#TODO: Osäker på vad detta fält faktiskt används för. Kolla upp.')
-    is_staff = models.BooleanField(default=False, verbose_name='maktkonto', help_text='Bestämmer om användaren kan logga in i admingränssnittet')
+    username = models.CharField(max_length=256, unique=True, db_index=True, verbose_name=u'användarnamn')
+    is_active = models.BooleanField(default=True, verbose_name=u'aktivt konto', help_text=u"Detta är INTE ett fält för att markera att någon blivit gamling") #Ska inte användas för att markera gamlingsskap osv.! Det görs mycket bättre på automatisk väg via posts
+    is_admin = models.BooleanField(default=False, verbose_name=u'administratörskonto (?)', help_text=u'#TODO: Osäker på vad detta fält faktiskt används för. Kolla upp.')
+    is_staff = models.BooleanField(default=False, verbose_name=u'maktkonto', help_text=u'Bestämmer om användaren kan logga in i admingränssnittet')
     
-    person = models.OneToOneField(Person, related_name='user', verbose_name='person')
+    person = models.OneToOneField(Person, related_name='user', verbose_name=u'person')
     
     objects = UserManager()
     
@@ -209,8 +211,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     class Meta:
         ordering = ['person', 'username']
-        verbose_name = 'användarkonto'
-        verbose_name_plural = 'användarkonton'
+        verbose_name = u'användarkonto'
+        verbose_name_plural = u'användarkonton'
     
     def get_assignment_permissions(self, obj=None):
         """Hämtar rättigheter från den kopplade personens poster och sektioner"""
@@ -253,16 +255,16 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = property(get_email)
 
 class Section(models.Model):
-    """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc.. Denna datatyp (tillsammans med Post) styr medlemsskap i grupper."""
-    name = models.CharField(max_length=256, verbose_name='namn')
-    description = models.TextField(blank=True, verbose_name='beskrivning')
+    """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc.."""
+    name = models.CharField(max_length=256, verbose_name=u'namn')
+    description = models.TextField(blank=True, verbose_name=u'beskrivning')
     
-    permissions = models.ManyToManyField(Permission, blank=True, null=True, verbose_name='rättigheter')
+    permissions = models.ManyToManyField(Permission, blank=True, null=True, verbose_name=u'rättigheter')
     
     class Meta:
         ordering = ['name']
-        verbose_name = 'sektion'
-        verbose_name_plural = 'sektioner'
+        verbose_name = u'sektion'
+        verbose_name_plural = u'sektioner'
     
     def get_people(self, current=True):
         people = []
@@ -278,16 +280,16 @@ class Post(models.Model):
     Bäst att spara gamling som en egen slags medlemstyp utan sektion eftersom systemet 
     själv kan hålla reda på vilka sektioner man tillhört."""
     
-    name = models.CharField(max_length=256, verbose_name='namn')
-    section = models.ForeignKey('Section', blank=True, null=True, verbose_name='sektion')
+    name = models.CharField(max_length=256, verbose_name=u'namn')
+    section = models.ForeignKey('Section', blank=True, null=True, verbose_name=u'sektion')
     
-    permissions = models.ManyToManyField(Permission, blank=True, null=True, verbose_name='rättigheter')
+    permissions = models.ManyToManyField(Permission, blank=True, null=True, verbose_name=u'rättigheter')
     
     # Metadata
-    description = models.TextField(blank=True, verbose_name='beskrivning')
-    membership = models.BooleanField(default=False, verbose_name='innebär medlemsskap', help_text='Räknas man som medlem i föreningen enkom av att vara med i denna post, dvs. kan man <em>antas</em> på denna post? Det här vill vi antagligen bara använda för instrument.') #TODO: Byt namn till implies_membership
-    engagement = models.BooleanField(default=False, verbose_name='uppdrag', help_text='Är denna post ett uppdrag utöver det vanliga medlemsskapet?')
-    show_in_timeline = models.BooleanField(default=True, verbose_name='visa på tidslinje', help_text='Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)')
+    description = models.TextField(blank=True, verbose_name=u'beskrivning')
+    membership = models.BooleanField(default=False, verbose_name=u'innebär medlemsskap', help_text=u'Räknas man som medlem i föreningen enkom av att vara med i denna post, dvs. kan man <em>antas</em> på denna post? Det här vill vi antagligen bara använda för instrument.') #TODO: Byt namn till implies_membership
+    engagement = models.BooleanField(default=False, verbose_name=u'uppdrag', help_text=u'Är denna post ett uppdrag utöver det vanliga medlemsskapet?')
+    show_in_timeline = models.BooleanField(default=True, verbose_name=u'visa på tidslinje', help_text=u'Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)')
     
     # En egenskap för om posten är arkiverad också kanske? Typ generalbas. /Olle
     # Nej förresten, det riskerar bara en massa redundant och/eller felaktig information. 
@@ -297,8 +299,8 @@ class Post(models.Model):
     class Meta:
         unique_together = (('section', 'name',),)
         ordering = ['section', 'name']
-        verbose_name = 'post'
-        verbose_name_plural = 'poster'
+        verbose_name = u'post'
+        verbose_name_plural = u'poster'
     
     def get_people(self, current=True):
         #TODO: Byt ut till set()
@@ -332,16 +334,16 @@ class Post(models.Model):
 
 class Assignment(models.Model):
     """Mellantabell som innehåller info om varje användares medlemsskap/uppdrag på olika poster."""
-    person = models.ForeignKey(Person, verbose_name='person')
-    post = models.ForeignKey(Post, verbose_name='post')
+    person = models.ForeignKey(Person, verbose_name=u'person')
+    post = models.ForeignKey(Post, verbose_name=u'post')
     
-    start_date = models.DateField(verbose_name='startdatum')
-    end_date = models.DateField(blank=True, null=True, verbose_name='slutdatum')
+    start_date = models.DateField(verbose_name=u'startdatum')
+    end_date = models.DateField(blank=True, null=True, verbose_name=u'slutdatum')
     
-    trial = models.BooleanField(default=False, verbose_name='provantagning')
+    trial = models.BooleanField(default=False, verbose_name=u'provantagning')
     
     class Meta:
-        verbose_name = 'medlemsskap/uppdrag'
+        verbose_name = u'medlemsskap/uppdrag'
         verbose_name_plural = verbose_name
     
     def get_if_implies_membership(self):
@@ -372,47 +374,47 @@ class Assignment(models.Model):
     ongoing = property(get_if_ongoing)
 
 class SpecialDiet(models.Model):
-    name = models.CharField(max_length=256, verbose_name='beskrivning', help_text='Anges i formen "Allergisk mot...", "Nykterist" etc.')
+    name = models.CharField(max_length=256, verbose_name=u'beskrivning', help_text=u'Anges i formen "Allergisk mot...", "Nykterist" etc.')
     
     class Meta:
         ordering = ['name']
-        verbose_name = 'speciell kostvana'
-        verbose_name_plural = 'speciella kostvanor'
+        verbose_name = u'speciell kostvana'
+        verbose_name_plural = u'speciella kostvanor'
 
     def __unicode__(self):
         return self.name
     
 class Customer(models.Model):
-    name = models.CharField(max_length=256, verbose_name='namn')
+    name = models.CharField(max_length=256, verbose_name=u'namn')
     organisation_number = SEOrganisationNumberField(min_length=0) #TODO: Fixa verbose_name. Kolla om det verkligen går att lämna blankt #Accepterar även personnummer
-    comments = models.TextField(blank=True, verbose_name='kommentar')
+    comments = models.TextField(blank=True, verbose_name=u'kommentar')
     
-    contact = models.CharField(max_length=256, blank=True, verbose_name='kontaktperson')
-    phone_number = models.CharField(max_length=64, blank=True, verbose_name='telefonnummer')
+    contact = models.CharField(max_length=256, blank=True, verbose_name=u'kontaktperson')
+    phone_number = models.CharField(max_length=64, blank=True, verbose_name=u'telefonnummer')
     
     #Address information
-    address = models.CharField(max_length=256, blank=True, verbose_name='adress')
-    postcode = models.CharField(max_length=256, blank=True, verbose_name='postnummer')
-    city = models.CharField(max_length=256, blank=True, verbose_name='stad')
-    country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name='land')
+    address = models.CharField(max_length=256, blank=True, verbose_name=u'adress')
+    postcode = models.CharField(max_length=256, blank=True, verbose_name=u'postnummer')
+    city = models.CharField(max_length=256, blank=True, verbose_name=u'stad')
+    country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name=u'land')
     
     class Meta:
         ordering = ['name', 'contact']
-        verbose_name = 'kund'
-        verbose_name_plural = 'kunder'
+        verbose_name = u'kund'
+        verbose_name_plural = u'kunder'
     
     def __unicode__(self):
         return self.name
 
 class Card(models.Model):
-    enabled = models.BooleanField(default=True, verbose_name='aktiverat', help_text="Avmarkera om du tillfälligt vill spärra ditt kort")
-    card_data = models.CharField(max_length=256, verbose_name='kortdata', help_text="Be någon kolla i loggen efter ditt kortnummer") #TODO: Kolla exakt vad av kortets data som läses av. Vad av detta skall lagras?
-    person = models.ForeignKey(Person, verbose_name='person') #Kort _måste_ associeras med en person. Låt det vara så så slipper vi "temporära lösningar" och vilsna kort som ingen vet vem de tillhör.
-    description = models.CharField(max_length=256, verbose_name='beskrivning', blank=True, help_text="Anges förslagsvis om du har fler än ett kort")
+    enabled = models.BooleanField(default=True, verbose_name=u'aktiverat', help_text=u"Avmarkera om du tillfälligt vill spärra ditt kort")
+    card_data = models.CharField(max_length=256, verbose_name=u'kortdata', help_text=u"Be någon kolla i loggen efter ditt kortnummer") #TODO: Kolla exakt vad av kortets data som läses av. Vad av detta skall lagras?
+    person = models.ForeignKey(Person, verbose_name=u'person') #Kort _måste_ associeras med en person. Låt det vara så så slipper vi "temporära lösningar" och vilsna kort som ingen vet vem de tillhör.
+    description = models.CharField(max_length=256, verbose_name=u'beskrivning', blank=True, help_text=u"Anges förslagsvis om du har fler än ett kort")
     
     class Meta:
-        verbose_name = 'kort'
-        verbose_name_plural = 'kort'
+        verbose_name = u'kort'
+        verbose_name_plural = u'kort'
     
     def __unicode__(self):
         return u'{0} ({1})'.format(self.card_data, self.person.get_short_name())
