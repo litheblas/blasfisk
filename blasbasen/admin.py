@@ -7,6 +7,7 @@ from watcher.models import Watcher
 
 class AssignmentInline(admin.TabularInline):
     model = Assignment
+    extra = 1
 
 class AvatarInline(admin.TabularInline):
     model = Avatar
@@ -21,6 +22,7 @@ class CardInline(admin.TabularInline):
 
 class PostInline(admin.TabularInline):
     model = Post
+    extra = 1
     
 class GroupMemberInline(admin.TabularInline):
     model = User.groups.through
