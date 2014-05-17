@@ -2,25 +2,35 @@
 
 {% block content %}
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+<div class="page-header"><h1>Inloggning för medlemmar</h1></div>
 
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
+{% for error in form.non_field_errors %}
+<div class="alert alert-danger">
+    {{ error }}
+</div>
+{% endfor %}
 
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
+<form method="post" class="form-horizontal" action="{% url 'django.contrib.auth.views.login' %}?next={{ next }}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username" class="control-label col-sm-3">Användarnamn</label>
+        <div class="col-sm-9">
+            <input id="username" name="username" class="form-control" type="text" placeholder="Användarnamn">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="login_pass" class="control-label col-sm-3">Lösenord</label>
+        <div class="col-sm-9">
+            <input id="password" name="password" class="form-control" type="password" placeholder="Lösenord">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            <button type="submit" class="btn btn-success">
+                Logga in
+            </button>
+        </div>
+    </div>
 </form>
 
 {% endblock %}

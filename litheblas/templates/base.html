@@ -57,7 +57,7 @@
                                 <!--<li><a href="http://en.litheblas.org/"><img src="/static/img/flags/48x34/en.png" width="24" height="17"></a></li>
                                 <li><a href="http://de.litheblas.org/"><img src="/static/img/flags/48x34/de.png" width="24" height="17"></a></li>
                                 <li><a href="http://litheblas.org/"><img src="/static/img/flags/48x34/se.png" width="24" height="17"></a></li>-->
-                                
+                                {% language_chooser 'elements/language_chooser.html' %}
                             </ul>
                         </div>
                     </div>
@@ -77,28 +77,20 @@
                                     <!--{% static_placeholder 'footer' %}-->
                                     <ul class="nav navbar-nav">
                                             {% if user.is_anonymous %}
-                                                <li>
-                                                    <a href="" data-toggle="modal" data-target="#login">Logga in</a>
-                                                </li>
+                                                <li><a href="" data-toggle="modal" data-target="#login">Internt</a></li>
                                             {% else %}
                                                 <li class="dropdown">
-                                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.full_name }}</a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="/blasbasen/person/{{ user.id }}">Profil</a>
-                                        </li>
-                                        {% if user.is_admin %}
-                                        <li>
-                                            <a href="/admin/">Admin</a>
-                                        </li>
-                                        {% endif %}
-                                        <li>
-                                            <a href="{% url 'django.contrib.auth.views.logout' %}">Logga ut</a>
-                                        </li>
-                                    </ul>
-                                </li>
+                                                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.full_name }}</a>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="/blasbasen/person/{{ user.id }}">Profil</a></li>
+                                                        {% if user.is_admin %}
+                                                        <li><a href="/admin/">Admin</a></li>
+                                                        {% endif %}
+                                                        <li class="divider"></li>
+                                                        <li><a href="{% url 'django.contrib.auth.views.logout' %}">Logga ut</a></li>
+                                                    </ul>
+                                                </li>
                                             {% endif %}
-                                        
                                     </ul>
                                 </div>
                         </div>
@@ -113,8 +105,8 @@
                     <h4 class="modal-title" id="myModalLabel">Inloggning för medlemmar</h4>
                 </div>
                 <form role="form" class="form-horizontal" method="post" action="/login/?next={{ request.path }}">
+                {% csrf_token %}
                 <div class="modal-body">
-                        {% csrf_token %}
                         <div class="form-group">
                             <label for="username" class="control-label col-sm-3">Användarnamn</label>
                             <div class="col-sm-9">
@@ -131,7 +123,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
-                    <button type="submit" class="btn btn-success">Logga in</button>
+                    <input type="submit" class="btn btn-success" value="Logga in">
                 </div>
                 </form>
             </div>
