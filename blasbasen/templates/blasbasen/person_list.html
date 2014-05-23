@@ -2,38 +2,327 @@
 {% load cms_tags %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>Blåsbasen
-            <small>
-                
-            </small>
-        </h1>
-    </div>
+<div class="page-header">
+    <h1>Blåsbasen <small>Personregistret</small></h1>
+</div>
 
-    <div class="col-lg-3">
-        
-    </div>
-    <div class="col-lg-9">
-        <table class="table table-hover">
-            <tr>
-                <th>Förnamn</th>
-                <th>Blåsnamn</th>
-                <th>Efternamn</th>
-                <th>Sektion</th>
-                <th>Började</th>
-                <th>Slutade</th>
-            </tr>
-     
-            {% for person in people %}
+<div class="col-md-9">
+    <ul class="nav nav-pills nav-justified">
+        <li class="active">
+            <a href="#all" data-toggle="tab">Alla</a>
+        </li>
+        <li>
+            <a href="#active" data-toggle="tab">Aktiva</a>
+        </li>
+        <li>
+            <a href="#oldies" data-toggle="tab">Gamlingar</a>
+        </li>
+        <li>
+            <a href="#honorary" data-toggle="tab">Hedersmedlemmar</a>
+        </li>
+        <li>
+            <a href="#others" data-toggle="tab">Löst folk</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane {% if request.GET.tab = 'all' or not request.GET.tab %}active{% endif %}" id="all">
+            <table class="table table-hover">
                 <tr>
-                    <td><a href="{{ person.id }}">{{ person.first_name }}</a></td>
-                    <td><a href="{{ person.id }}">{{ person.nickname }}</a></td>
-                    <td><a href="{{ person.id }}">{{ person.last_name }}</a></td>
+                    {% if perms.blasbasen.change_person %}
+                    <th></th>
+                    {% endif %}
+                    <th>Förnamn <a href="?sort=first_name&{{ search_params.urlencode }}" class="pull-right"><span class="fa fa-sort-alpha-asc"></span></a></th>
+                    <th>Blåsnamn <a href="?sort=nickname&{{ search_params.urlencode }}" class="pull-right"><span class="fa fa-sort-alpha-asc"></span></a></th>
+                    <th>Efternamn <a href="?sort=last_name&{{ search_params.urlencode }}" class="pull-right"><span class="fa fa-sort-alpha-asc"></span></a></th>
+                    <th>Sektion</th>
+                    <th>Startår</th>
+                    <th>Slutår</th>
+                </tr>
+
+                {% for person in people %}
+                <tr>
+                    {% if perms.blasbasen.change_person %}
+                    <td><a href=""><span class="fa fa-edit"></span></a></td>
+                    {% endif %}
+                    <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
+                    <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
+                    <td><a href="{{ person.id }}/">{{ person.last_name }}</a></td>
                     <td>#TODO</td>
                     <td>{{ person.start_date.year }}</td>
                     <td>{{ person.end_date.year }}</td>
                 </tr>
-            {% endfor %}
-        </table>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="tab-pane {% if request.GET.tab = 'active' %}active{% endif %}" id="active">
+            <table class="table table-hover">
+                <tr>
+                    {% if perms.blasbasen.change_person %}
+                    <th></th>
+                    {% endif %}
+                    <th>Förnamn</th>
+                    <th>Blåsnamn</th>
+                    <th>Efternamn</th>
+                    <th>Sektion</th>
+                    <th>Startår</th>
+                    <th>Slutår</th>
+                </tr>
+
+                {% for person in active %}
+                <tr>
+                    {% if perms.blasbasen.change_person %}
+                    <td><a href=""><span class="fa fa-edit"></span></a></td>
+                    {% endif %}
+                    <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
+                    <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
+                    <td><a href="{{ person.id }}/">{{ person.last_name }}</a></td>
+                    <td>#TODO</td>
+                    <td>{{ person.start_date.year }}</td>
+                    <td>{{ person.end_date.year }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="tab-pane {% if request.GET.tab = 'oldies'%}active{% endif %}" id="oldies">
+            <table class="table table-hover">
+                <tr>
+                    {% if perms.blasbasen.change_person %}
+                    <th></th>
+                    {% endif %}
+                    <th>Förnamn</th>
+                    <th>Blåsnamn</th>
+                    <th>Efternamn</th>
+                    <th>Sektion</th>
+                    <th>Startår</th>
+                    <th>Slutår</th>
+                </tr>
+
+                {% for person in oldies %}
+                <tr>
+                    {% if perms.blasbasen.change_person %}
+                    <td><a href=""><span class="fa fa-edit"></span></a></td>
+                    {% endif %}
+                    <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
+                    <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
+                    <td><a href="{{ person.id }}/">{{ person.last_name }}</a></td>
+                    <td>#TODO</td>
+                    <td>{{ person.start_date.year }}</td>
+                    <td>{{ person.end_date.year }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="tab-pane {% if request.GET.tab = 'honorary'%}active{% endif %}" id="honorary">
+            <table class="table table-hover">
+                <tr>
+                    {% if perms.blasbasen.change_person %}
+                    <th></th>
+                    {% endif %}
+                    <th>Förnamn</th>
+                    <th>Blåsnamn</th>
+                    <th>Efternamn</th>
+                    <th>Sektion</th>
+                    <th>Startår</th>
+                    <th>Slutår</th>
+                </tr>
+
+                {% for person in honorary %}
+                <tr>
+                    {% if perms.blasbasen.change_person %}
+                    <td><a href=""><span class="fa fa-edit"></span></a></td>
+                    {% endif %}
+                    <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
+                    <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
+                    <td><a href="{{ person.id }}/">{{ person.last_name }}</a></td>
+                    <td>#TODO</td>
+                    <td>{{ person.start_date.year }}</td>
+                    <td>{{ person.end_date.year }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="tab-pane {% if request.GET.tab = 'others'%}active{% endif %}" id="others">
+            <table class="table table-hover">
+                <tr>
+                    {% if perms.blasbasen.change_person %}
+                    <th></th>
+                    {% endif %}
+                    <th>Förnamn</th>
+                    <th>Blåsnamn</th>
+                    <th>Efternamn</th>
+                    <th>Sektion</th>
+                    <th>Startår</th>
+                    <th>Slutår</th>
+                </tr>
+
+                {% for person in others %}
+                <tr>
+                    {% if perms.blasbasen.change_person %}
+                    <td><a href=""><span class="fa fa-edit"></span></a></td>
+                    {% endif %}
+                    <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
+                    <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
+                    <td><a href="{{ person.id }}/">{{ person.last_name }}</a></td>
+                    <td>#TODO</td>
+                    <td>{{ person.start_date.year }}</td>
+                    <td>{{ person.end_date.year }}</td>
+                </tr>
+                
+                {% endfor %}
+            </table>
+        </div>
     </div>
+
+</div>
+<div class="col-md-3">
+    
+    <div class="panel-group">
+        <form role="form" method="get" action=".">
+        <input type="hidden" name="search" value="s">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" name="name" value="{{ request.GET.name }}" placeholder="Snabbsök på namn">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        <span class="fa fa-search"></span>
+                    </button> </span>
+
+            </div>
+        </div>
+    </form>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#advancedsearch"> Avancerad sökning </a></h4>
+            </div>
+            <div id="advancedsearch" class="panel-collapse collapse{% if request.GET.search = 'a' %} in{% endif %}">
+
+                <form role="form" method="get" action=".">
+                    <input type="hidden" name="search" value="a">
+
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="name">Namn</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ request.GET.name }}" placeholder="Namn">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Kön</label>
+                            <select class="form-control" id="gender" name="gender">
+                                <option {% if request.GET.gender = '' %}selected=""{% endif %} value="">Vilket som</option>
+                                <option {% if request.GET.gender = 'f' %}selected=""{% endif %} value="f">Kvinna</option>
+                                <option {% if request.GET.gender = 'm' %}selected=""{% endif %} value="m">Man</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">Stad</label>
+                            <input type="text" class="form-control" id="city" name="city" value="{{ request.GET.city }}" placeholder="Stad">
+                            <p class="help-block">
+                                Använd kommatecken för att ange flera
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="countries">Länder</label>
+                            <select multiple class="form-control" id="countries" name="country">
+                                <option>1</option>
+                            </select>
+                            <p class="help-block">
+                                Tips: Använd Ctrl eller Cmd (⌘)
+                            </p>
+                        </div>
+                        <h5>Medlemsskap</h5>
+                        
+                        <div class="form-group">
+                            <label for="sections">Sektioner</label>
+                            <select multiple class="form-control" id="sections" name="section">
+                                {% for s in sections %}
+                                    <option value="{{ s.id }}">{{ s }}</option>
+                                {% endfor %}
+                            </select>
+                            <p class="help-block">
+                                Tips: Använd Ctrl eller Cmd (⌘)
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="posts">Poster</label>
+                            <select multiple class="form-control" id="posts" name="post">
+                                {% for p in posts %}
+                                    <option value="{{ p.id }}">{{ p }}</option>
+                                {% endfor %}
+                            </select>
+                            <p class="help-block">
+                                Tips: Använd Ctrl eller Cmd (⌘)
+                            </p>
+                        </div>
+                        <h5>Visa</h5>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" {% if request.GET.w_login or not request.GET.search = 'a' %}checked="checked"{% endif %} name="w_login">
+                                Personer med inloggningskonto </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" {% if request.GET.wo_login or not request.GET.search = 'a' %}checked="checked"{% endif %} name="wo_login">
+                                Personer utan inloggningskonto </label>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <button type="submit" class="btn btn-primary btn-sm form-control">
+                            <span class="fa fa-search"></span> Sök
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <h3>Åtgärder</h3>
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#export"> Exportera och visa</a></h4>
+            </div>
+            <div class="panel-body panel-collapse collapse"></div>
+            <div id="export" class="list-group panel-collapse collapse">
+                    <a href="" class="list-group-item"><span class="fa fa-fw fa-globe"></span> Visa på Google Maps</a>
+                    <a href="" class="list-group-item"><span class="fa fa-fw fa-file-o"></span> Exportera vCard</a>
+                    <a href="" class="list-group-item"><span class="fa fa-fw fa-file-text-o"></span> Exportera CSV</a>
+                    <a href="" class="list-group-item"><span class="fa fa-fw fa-file-pdf-o"></span> Exportera PDF</a>
+            </div>
+
+        </div>
+        {% if perms.blasbasen.add_person or perms.blasbasen.change_person or perms.blasbasen.delete_person %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#admin"> Administrera </a></h4>
+            </div>
+            <div class="panel-body panel-collapse collapse"></div>
+            <div id="admin" class="list-group panel-collapse collapse">
+                    <a href="" class="list-group-item"><span class="fa fa-fw fa-user"></span> Lägg till person</a>
+                    <a href="" class="list-group-item"><span class="fa fa-fw fa-users"></span> Lägg till sektion</a>
+                    <a href="" class="list-group-item"><span class="fa fa-fw fa-graduation-cap"></span> Lägg till post</a>
+            </div>
+            
+            <div id="admin" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <button class="btn btn-xs btn-success form-control">
+                            <span class="fa fa-user"></span> Lägg till person
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-xs btn-success form-control">
+                            <span class="fa fa-th"></span> Lägg till sektion
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-xs btn-success form-control">
+                            <span class="fa fa-th-large"></span> Lägg till post
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock content %}
