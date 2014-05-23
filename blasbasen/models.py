@@ -4,6 +4,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 import os.path
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import (BaseUserManager, 
                                         PermissionsMixin, 
                                         AbstractBaseUser, 
@@ -345,6 +346,17 @@ class Post(models.Model):
             return u'{0} / {1}'.format(self.section.name, self.name)
         return self.name
 
+class AssignmentManager(models.Manager):
+    def active(self):
+        return self.model.objects.filter(Q(post__membership=True),
+                                         Q(start_date__lte=datetime.date.today()), 
+                                         Q(end_date=None) | Q(end_date__gt=datetime.date.today()))
+        
+    def oldies(self):
+        return self.model.objects.filter(Q(post__membership=True),
+                                         Q(start_date__lte=datetime.date.today()), 
+                                         Q(end_date__lte=datetime.date.today()))
+
 class Assignment(models.Model):
     """Mellantabell som innehåller info om varje användares medlemsskap/uppdrag på olika poster."""
     person = models.ForeignKey(Person, verbose_name=u'person')
@@ -354,6 +366,8 @@ class Assignment(models.Model):
     end_date = models.DateField(blank=True, null=True, verbose_name=u'slutdatum')
     
     trial = models.BooleanField(default=False, verbose_name=u'provantagning')
+    
+    objects = AssignmentManager()
     
     class Meta:
         verbose_name = u'medlemsskap/uppdrag'
