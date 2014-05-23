@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = (
+    'debug_toolbar',
     #CMS-specifikt
     'djangocms_admin_style',
     'djangocms_text_ckeditor',

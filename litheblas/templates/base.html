@@ -1,30 +1,31 @@
 {% load cms_tags staticfiles sekizai_tags menu_tags %}
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{% block title %}LiTHe Blås{% endblock title %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
-    {% render_block "css" %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-    
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-    <script src="{% static 'js/pull-down.js' %}"></script>
-    {% render_block "js" %}
-  </head>
-  <body>
-    {% cms_toolbar %}
-    <header>
-        <div class="container top">
+    <head>
+        <title>{% block title %}LiTHe Blås{% endblock title %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+        {% render_block "css" %}
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+        <script src="{% static 'js/pull-down.js' %}"></script>
+        {% render_block "js" %}
+    </head>
+    <body>
+        {% cms_toolbar %}
+        <header>
+            <div class="container top">
                 <div class="row">
                     <div class="hidden-xs col-sm-4 pull-down logo">
                         <br>
@@ -69,68 +70,78 @@
             {% endblock content %}
         </div>
         <footer>
-            
-                <div class="navbar-wrapper">
-                    <div class="navbar navbar-fixed-bottom navbar-default">
-                        <div class="container">
-                                <div class="navbar-collapse">
-                                    <!--{% static_placeholder 'footer' %}-->
-                                    <ul class="nav navbar-nav">
-                                            {% if user.is_anonymous %}
-                                                <li><a href="" data-toggle="modal" data-target="#login">Internt</a></li>
-                                            {% else %}
-                                                <li class="dropdown">
-                                                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.full_name }}</a>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a href="/blasbasen/person/{{ user.id }}">Profil</a></li>
-                                                        {% if user.is_admin %}
-                                                        <li><a href="/admin/">Admin</a></li>
-                                                        {% endif %}
-                                                        <li class="divider"></li>
-                                                        <li><a href="{% url 'django.contrib.auth.views.logout' %}">Logga ut</a></li>
-                                                    </ul>
-                                                </li>
-                                            {% endif %}
+
+            <div class="navbar-wrapper">
+                <div class="navbar navbar-fixed-bottom navbar-default">
+                    <div class="container">
+                        <div class="navbar-collapse">
+                            <!--{% static_placeholder 'footer' %}-->
+                            <ul class="nav navbar-nav">
+                                {% if user.is_anonymous %}
+                                <li>
+                                    <a href="" data-toggle="modal" data-target="#login">Logga in</a>
+                                </li>
+                                {% else %}
+                                <li class="dropdown">
+                                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-user"></span> {{ user.full_name }}</a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="/blasbasen/person/{{ user.id }}">Profil</a>
+                                        </li>
+                                        {% if user.is_admin %}
+                                        <li>
+                                            <a href="/admin/">Admin</a>
+                                        </li>
+                                        {% endif %}
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="{% url 'django.contrib.auth.views.logout' %}"><span class="fa fa-sign-out"></span> Logga ut</a>
+                                        </li>
                                     </ul>
-                                </div>
+                                </li>
+                                {% endif %}
+                            </ul>
                         </div>
                     </div>
                 </div>
+            </div>
         </footer>
-    <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Inloggning för medlemmar</h4>
-                </div>
-                <form role="form" class="form-horizontal" method="post" action="/login/?next={{ request.path }}">
-                {% csrf_token %}
-                <div class="modal-body">
-                        <div class="form-group">
-                            <label for="username" class="control-label col-sm-3">Användarnamn</label>
-                            <div class="col-sm-9">
-                                <input id="username" name="username" class="form-control" type="text" placeholder="Användarnamn">
+        <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Inloggning för medlemmar</h4>
+                    </div>
+                    <form role="form" class="form-horizontal" method="post" action="/login/?next={{ request.path }}">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="username" class="control-label col-sm-3">Användarnamn</label>
+                                <div class="col-sm-9">
+                                    <input id="username" name="username" class="form-control" type="text" placeholder="Användarnamn">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="login_pass" class="control-label col-sm-3">Lösenord</label>
+                                <div class="col-sm-9">
+                                    <input id="password" name="password" class="form-control" type="password" placeholder="Lösenord">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="login_pass" class="control-label col-sm-3">Lösenord</label>
-                            <div class="col-sm-9">
-                                <input id="password" name="password" class="form-control" type="password" placeholder="Lösenord">
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Avbryt
+                            </button>
+                            <input type="submit" class="btn btn-success" value="Logga in">
                         </div>
-                    
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
-                    <input type="submit" class="btn btn-success" value="Logga in">
-                </div>
-                </form>
             </div>
         </div>
-    </div>
-    
-    
-  </body>
+
+    </body>
 </html>
 

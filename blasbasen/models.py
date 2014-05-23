@@ -4,6 +4,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 import os.path
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import (BaseUserManager, 
                                         PermissionsMixin, 
                                         AbstractBaseUser, 
@@ -19,6 +20,17 @@ def generate_avatar_filename(instance, filename):
     
     # Döper filen till ett UUID eftersom vi inte ännu inte sparat objektet i databasen och därmed inte fått någon PK. Tror att det här borde funka tillräckligt bra. /Olle
     return os.path.join('avatars', str(uuid.uuid1()) + extension) # Ger typ avatars/02b9672e-85f3-11e3-9e44-542696dae887.jpg
+
+
+
+class PersonManager(models.Manager):
+    def active(self):        
+        #Hämtar personer som är relaterade till aktiva assignments. distinct() tar bort eventuella dubletter.
+        return self.model.objects.filter(assignment=Assignment.objects.active()).distinct()
+    
+    def oldies(self):
+        #Hämtar personer som är relaterade till utgångna assignments och tar bort aktiva. distinct() tar bort eventuella dubletter.
+        return self.model.objects.filter(assignment=Assignment.objects.oldies()).exclude(assignment=Assignment.objects.active()).distinct()
 
 class Person(models.Model):
     """Lagrar personer (som i människor) och är den datatyp som nästan allt i Blåsbasen kopplas till."""
@@ -46,6 +58,8 @@ class Person(models.Model):
     
     phone = models.CharField(max_length=256, blank=True, verbose_name=u'telefonnummer', help_text=u'Ange landskod om annat land än Sverige.')
     email = models.EmailField(max_length=256, blank=True, verbose_name=u'e-postadress')
+    
+    objects = PersonManager()
     
     class Meta:
         ordering = ['first_name', 'last_name', 'nickname']
@@ -332,6 +346,17 @@ class Post(models.Model):
             return u'{0} / {1}'.format(self.section.name, self.name)
         return self.name
 
+class AssignmentManager(models.Manager):
+    def active(self):
+        return self.model.objects.filter(Q(post__membership=True),
+                                         Q(start_date__lte=datetime.date.today()), 
+                                         Q(end_date=None) | Q(end_date__gt=datetime.date.today()))
+        
+    def oldies(self):
+        return self.model.objects.filter(Q(post__membership=True),
+                                         Q(start_date__lte=datetime.date.today()), 
+                                         Q(end_date__lte=datetime.date.today()))
+
 class Assignment(models.Model):
     """Mellantabell som innehåller info om varje användares medlemsskap/uppdrag på olika poster."""
     person = models.ForeignKey(Person, verbose_name=u'person')
@@ -341,6 +366,8 @@ class Assignment(models.Model):
     end_date = models.DateField(blank=True, null=True, verbose_name=u'slutdatum')
     
     trial = models.BooleanField(default=False, verbose_name=u'provantagning')
+    
+    objects = AssignmentManager()
     
     class Meta:
         verbose_name = u'medlemsskap/uppdrag'
@@ -364,6 +391,16 @@ class Assignment(models.Model):
         else:
             #Är startdatumet satt till idag eller före?
             return self.start_date <= datetime.date.today()
+    
+    def convert_to_regular_membership(self, date=datetime.date.today()):
+        a = Assignment(person=self.person, post=self.post, start_date=date, trial=False)
+        a.save()
+        
+        self.end_date=date
+        self.save()
+    
+    def convert_to_oldie_membership(self, date):
+        pass
     
     def __unicode__(self):
         return u'{0}: {1}'.format(self.person.get_short_name(), self.post)

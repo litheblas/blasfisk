@@ -19,7 +19,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Bekräfta borttagning</h4>
+                    <h4 class="modal-title" id="myModalLabel">Bekräfta borttagning</h4>
                 </div>
                 
                 <div class="modal-footer">
@@ -66,10 +66,8 @@
             <div class="tab-pane active" id="contact">
                 <h3>Kontaktuppgifter</h3>
                 <dl class="dl-horizontal">
-                    {% if person.phone %}
                     <dt>Telefon</dt>
-                    <dd><a href="tel:{{ person.phone }}">{{ person.phone }}</a></dd>
-                    {% endif %}
+                    <dd><a href="tel:070-730 63 76">070-730 63 76</a></dd>
                     
                     {% if person.email %}
                     <dt>E-post</dt>
@@ -95,7 +93,7 @@
                     {% for i in memberships %}
                     <tr>
                         <td>{% if i.post.section %}{{ i.post.section }}{% endif %}</td>
-                        <td>{{ i.post.name }}{% if i.trial %} <span class="label label-info">Prov</span>{% endif %}</td>
+                        <td>{{ i.post.name }}{% if i.trial %} (Prov){% endif %}</td>
                         <td>{{ i.start_date}}</td>
                         <td>{% if i.end_date %}{{ i.end_date }}{% endif %}</td>
                     </tr>
@@ -116,7 +114,7 @@
                     {% for i in engagements %}
                     <tr>
                         <td>{% if i.post.section %}{{ i.post.section }}{% endif %}</td>
-                        <td>{{ i.post.name }}{% if i.trial %} <span class="label label-info">Prov</span>{% endif %}</td>
+                        <td>{{ i.post.name }}{% if i.trial %} (Prov){% endif %}</td>
                         <td>{{ i.start_date}}</td>
                         <td>{% if i.end_date %}{{ i.end_date }}{% endif %}</td>
                     </tr>
