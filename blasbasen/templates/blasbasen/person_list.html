@@ -8,42 +8,34 @@
 
 <div class="col-md-9">
     <ul class="nav nav-pills nav-justified">
-        <li class="active">
-            <a href="#all" data-toggle="tab">Alla</a>
+        {% for f in filters %}
+        <li{% if request.GET.tab = f.id or not request.GET.tab and f.default %} class="active"{% endif %}>
+            <a href="#{{ f.id }}" data-toggle="tab">{{ f.name }}</a>
         </li>
-        <li>
-            <a href="#active" data-toggle="tab">Aktiva</a>
-        </li>
-        <li>
-            <a href="#oldies" data-toggle="tab">Gamlingar</a>
-        </li>
-        <li>
-            <a href="#honorary" data-toggle="tab">Hedersmedlemmar</a>
-        </li>
-        <li>
-            <a href="#others" data-toggle="tab">Löst folk</a>
-        </li>
+        {% endfor %}
     </ul>
+    
 
     <div class="tab-content">
-        <div class="tab-pane {% if request.GET.tab = 'all' or not request.GET.tab %}active{% endif %}" id="all">
+        {% for f in filters %}
+        <div class="tab-pane {% if request.GET.tab = f.id or not request.GET.tab and f.default %}active{% endif %}" id="{{ f.id }}">
             <table class="table table-hover">
                 <tr>
                     {% if perms.blasbasen.change_person %}
                     <th></th>
                     {% endif %}
-                    <th>Förnamn <a href="?sort=first_name&{{ search_params.urlencode }}" class="pull-right"><span class="fa fa-sort-alpha-asc"></span></a></th>
-                    <th>Blåsnamn <a href="?sort=nickname&{{ search_params.urlencode }}" class="pull-right"><span class="fa fa-sort-alpha-asc"></span></a></th>
-                    <th>Efternamn <a href="?sort=last_name&{{ search_params.urlencode }}" class="pull-right"><span class="fa fa-sort-alpha-asc"></span></a></th>
+                    <th>Förnamn<a href="?sort=first_name&tab={{ f.id }}&{{ search_params.urlencode }}" class="pull-right"><span class="fa fa-sort-alpha-asc"></span></a></th>
+                    <th>Blåsnamn<a href="?sort=nickname&tab={{ f.id }}&{{ search_params.urlencode }}" class="pull-right"><span class="fa fa-sort-alpha-asc"></span></a></th>
+                    <th>Efternamn<a href="?sort=last_name&tab={{ f.id }}&{{ search_params.urlencode }}" class="pull-right"><span class="fa fa-sort-alpha-asc"></span></a></th>
                     <th>Sektion</th>
                     <th>Startår</th>
                     <th>Slutår</th>
                 </tr>
 
-                {% for person in people %}
+                {% for person in f.content %}
                 <tr>
                     {% if perms.blasbasen.change_person %}
-                    <td><a href=""><span class="fa fa-edit"></span></a></td>
+                    <td><a href="{{ person.id }}/change/"><span class="fa fa-edit"></span></a></td>
                     {% endif %}
                     <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
                     <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
@@ -55,123 +47,7 @@
                 {% endfor %}
             </table>
         </div>
-        <div class="tab-pane {% if request.GET.tab = 'active' %}active{% endif %}" id="active">
-            <table class="table table-hover">
-                <tr>
-                    {% if perms.blasbasen.change_person %}
-                    <th></th>
-                    {% endif %}
-                    <th>Förnamn</th>
-                    <th>Blåsnamn</th>
-                    <th>Efternamn</th>
-                    <th>Sektion</th>
-                    <th>Startår</th>
-                    <th>Slutår</th>
-                </tr>
-
-                {% for person in active %}
-                <tr>
-                    {% if perms.blasbasen.change_person %}
-                    <td><a href=""><span class="fa fa-edit"></span></a></td>
-                    {% endif %}
-                    <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
-                    <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
-                    <td><a href="{{ person.id }}/">{{ person.last_name }}</a></td>
-                    <td>#TODO</td>
-                    <td>{{ person.start_date.year }}</td>
-                    <td>{{ person.end_date.year }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <div class="tab-pane {% if request.GET.tab = 'oldies'%}active{% endif %}" id="oldies">
-            <table class="table table-hover">
-                <tr>
-                    {% if perms.blasbasen.change_person %}
-                    <th></th>
-                    {% endif %}
-                    <th>Förnamn</th>
-                    <th>Blåsnamn</th>
-                    <th>Efternamn</th>
-                    <th>Sektion</th>
-                    <th>Startår</th>
-                    <th>Slutår</th>
-                </tr>
-
-                {% for person in oldies %}
-                <tr>
-                    {% if perms.blasbasen.change_person %}
-                    <td><a href=""><span class="fa fa-edit"></span></a></td>
-                    {% endif %}
-                    <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
-                    <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
-                    <td><a href="{{ person.id }}/">{{ person.last_name }}</a></td>
-                    <td>#TODO</td>
-                    <td>{{ person.start_date.year }}</td>
-                    <td>{{ person.end_date.year }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <div class="tab-pane {% if request.GET.tab = 'honorary'%}active{% endif %}" id="honorary">
-            <table class="table table-hover">
-                <tr>
-                    {% if perms.blasbasen.change_person %}
-                    <th></th>
-                    {% endif %}
-                    <th>Förnamn</th>
-                    <th>Blåsnamn</th>
-                    <th>Efternamn</th>
-                    <th>Sektion</th>
-                    <th>Startår</th>
-                    <th>Slutår</th>
-                </tr>
-
-                {% for person in honorary %}
-                <tr>
-                    {% if perms.blasbasen.change_person %}
-                    <td><a href=""><span class="fa fa-edit"></span></a></td>
-                    {% endif %}
-                    <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
-                    <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
-                    <td><a href="{{ person.id }}/">{{ person.last_name }}</a></td>
-                    <td>#TODO</td>
-                    <td>{{ person.start_date.year }}</td>
-                    <td>{{ person.end_date.year }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <div class="tab-pane {% if request.GET.tab = 'others'%}active{% endif %}" id="others">
-            <table class="table table-hover">
-                <tr>
-                    {% if perms.blasbasen.change_person %}
-                    <th></th>
-                    {% endif %}
-                    <th>Förnamn</th>
-                    <th>Blåsnamn</th>
-                    <th>Efternamn</th>
-                    <th>Sektion</th>
-                    <th>Startår</th>
-                    <th>Slutår</th>
-                </tr>
-
-                {% for person in others %}
-                <tr>
-                    {% if perms.blasbasen.change_person %}
-                    <td><a href=""><span class="fa fa-edit"></span></a></td>
-                    {% endif %}
-                    <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
-                    <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
-                    <td><a href="{{ person.id }}/">{{ person.last_name }}</a></td>
-                    <td>#TODO</td>
-                    <td>{{ person.start_date.year }}</td>
-                    <td>{{ person.end_date.year }}</td>
-                </tr>
-                
-                {% endfor %}
-            </table>
-        </div>
+        {% endfor %}
     </div>
 
 </div>
@@ -282,6 +158,7 @@
             </div>
             <div class="panel-body panel-collapse collapse"></div>
             <div id="export" class="list-group panel-collapse collapse">
+                    <a href="" class="list-group-item"><span class="fa fa-fw fa-link"></span> Permalänk</a>
                     <a href="" class="list-group-item"><span class="fa fa-fw fa-globe"></span> Visa på Google Maps</a>
                     <a href="" class="list-group-item"><span class="fa fa-fw fa-file-o"></span> Exportera vCard</a>
                     <a href="" class="list-group-item"><span class="fa fa-fw fa-file-text-o"></span> Exportera CSV</a>
