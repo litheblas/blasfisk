@@ -392,6 +392,16 @@ class Assignment(models.Model):
             #Är startdatumet satt till idag eller före?
             return self.start_date <= datetime.date.today()
     
+    def convert_to_regular_membership(self, date=datetime.date.today()):
+        a = Assignment(person=self.person, post=self.post, start_date=date, trial=False)
+        a.save()
+        
+        self.end_date=date
+        self.save()
+    
+    def convert_to_oldie_membership(self, date):
+        pass
+    
     def __unicode__(self):
         return u'{0}: {1}'.format(self.person.get_short_name(), self.post)
     
