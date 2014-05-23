@@ -60,13 +60,17 @@ class PersonList(ListView):
         context['posts'] = Post.objects.all().order_by('name').order_by('section')
         
         if self.request.GET:
-            #Hämtar alla GET-parametrar men tar bort sort. Används av "sorterings-väljaren" för att behålla alla sökparametrar.
+            #Hämtar alla GET-parametrar men tar bort sort och tab. Används av "sorterings-väljaren" för att behålla alla sökparametrar.
             
             #GET är immutable, så vi kopierar den istället
             get_params = self.request.GET.copy()
             
-            if get_params['sort']:
+            if 'sort' in get_params:
                 get_params.__delitem__(u'sort')
+            
+            if 'tab' in get_params:
+                get_params.__delitem__(u'tab')
+                
             context['search_params'] = get_params
         
         return context
