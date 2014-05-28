@@ -6,6 +6,10 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 from blasbasen.models import Person, Section, Post
 
+class SectionList(ListView):
+    model = Section
+    context_object_name = 'sections'
+
 class PersonList(ListView):
     context_object_name = 'people'
     
