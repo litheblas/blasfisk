@@ -168,6 +168,12 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.eggs.Loader',
 )
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
 SITE_ID = 1
 
 LANGUAGES = (
@@ -212,3 +218,8 @@ CMS_TEMPLATES = (
 
 CMS_PERMISSION = False
 CMS_PLACEHOLDER_CONF = {}
+
+if DEBUG:
+    CMS_CACHE_DURATIONS = {'content': 0,
+                           'menus': 0,
+                           'permissions': 0}
