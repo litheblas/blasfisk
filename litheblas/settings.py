@@ -202,9 +202,9 @@ CMS_LANGUAGES = {
 }
 
 CMS_TEMPLATES = (
-    ## Customize this
-    ('page.html', _('Page')),
-    ('feature.html', _('Page with Feature'))
+    ('cms/home.html', _('LiTHe Hem')),
+    ('cms/page.html', _('Page')),
+    ('cms/feature.html', _('Page with Feature'))
 )
 
 CMS_PERMISSION = False
