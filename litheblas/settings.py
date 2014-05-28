@@ -134,7 +134,7 @@ AUTH_USER_MODEL = 'blasbasen.User'
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'se'
+LANGUAGE_CODE = 'sv'
 
 TIME_ZONE = 'UTC'
 
@@ -177,8 +177,7 @@ CACHES = {
 SITE_ID = 1
 
 LANGUAGES = (
-    ## Customize this
-    ('se', _('Swedish')),
+    ('sv', _('Swedish')),
     ('en', _('English')),
     ('de', _('German')),
 )
@@ -188,10 +187,11 @@ CMS_LANGUAGES = {
         'hide_untranslated': True,
         'redirect_on_fallback': True,
         'public': True,
+        'fallbacks': ['sv'],
     },
     1: [
         {
-            'code': 'se',
+            'code': 'sv',
             'name': _('Swedish'),
             'hide_untranslated': False,
             'public': True,
@@ -200,12 +200,13 @@ CMS_LANGUAGES = {
             'code': 'en',
             'name': _('English'),
             'public': True,
+            'fallbacks': ['sv']
         },
         {
             'code': 'de',
             'name': _('German'),
             'public': True,
-            'fallbacks': ['en']
+            'fallbacks': ['en', 'sv']
         },
     ],
 }
