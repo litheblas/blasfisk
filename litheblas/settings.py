@@ -35,11 +35,11 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = (
-    'debug_toolbar',
     #CMS-specifikt
     'djangocms_admin_style',
     'djangocms_text_ckeditor',
     
+    #Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -72,6 +72,9 @@ INSTALLED_APPS = (
     'blasbasen',
     'events',
     'watcher',
+    
+    #Annat
+    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
