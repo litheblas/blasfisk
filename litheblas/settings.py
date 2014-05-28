@@ -218,8 +218,34 @@ CMS_TEMPLATES = (
     ('pages/feature.html', _('Page with Feature'))
 )
 
+CMS_TEMPLATE_INHERITANCE = False #Annars ärver en massa sidor hem-mallen, vilken egentligen bara ska finnas på startsidan
+
 CMS_PERMISSION = False
-CMS_PLACEHOLDER_CONF = {}
+
+#Definierar några placeholders med standardinnehåll, typ vanliga sidor som bara behöver ha en text-plugin.
+CMS_PLACEHOLDER_CONF = {
+    'Page content': {
+        'default_plugins':[
+            {
+                'plugin_type': 'TextPlugin',
+                'values':{
+                    'body': u'<p>Denna sida är tom. :(</p>'
+                },
+            },
+        ]
+    },
+    'Subtitle': {
+        'plugins': ['TextPlugin'],
+        'default_plugins':[
+            {
+                'plugin_type': 'TextPlugin',
+                'values':{
+                    'body': u''
+                },
+            },
+        ]
+    },
+}
 
 if DEBUG:
     CMS_CACHE_DURATIONS = {'content': 0,
