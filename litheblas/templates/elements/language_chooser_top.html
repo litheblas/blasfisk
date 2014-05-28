@@ -3,7 +3,7 @@
 {% get_available_languages as languages %}
 {% if languages|length > 1 %}
     {% for language in languages %}
-    <li class="lang{% ifequal current_language language.0 %} active{% endifequal %}">
+    <li class="btn btn-xs lang{% ifequal current_language language.0 %} active{% endifequal %}">
         <a href="{% page_language_url language.0 %}" title="{{ language.1 }}">
             <img width="24" height="17" src="/static/img/flags/48x34/{{ language.0 }}.png">
         </a>
