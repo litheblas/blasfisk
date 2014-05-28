@@ -53,12 +53,9 @@
                         </div>
                         <div class="navbar-collapse collapse" id="nav">
                             <ul class="nav navbar-nav">
-                                {% show_menu 0 1 100 100 'elements/menu.html' %}
+                                {% show_menu 0 100 100 100 'elements/menu.html' %}
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
-                                <!--<li><a href="http://en.litheblas.org/"><img src="/static/img/flags/48x34/en.png" width="24" height="17"></a></li>
-                                <li><a href="http://de.litheblas.org/"><img src="/static/img/flags/48x34/de.png" width="24" height="17"></a></li>
-                                <li><a href="http://litheblas.org/"><img src="/static/img/flags/48x34/se.png" width="24" height="17"></a></li>-->
                                 {% language_chooser 'elements/language_chooser.html' %}
                             </ul>
                         </div>
@@ -75,16 +72,16 @@
             <div class="navbar-wrapper">
                 <div class="navbar navbar-fixed-bottom navbar-default">
                     <div class="container">
-                        <div class="navbar-collapse">
+                        <div class="navbar-collapse collapse">
                             <!--{% static_placeholder 'footer' %}-->
                             <ul class="nav navbar-nav">
                                 {% if user.is_anonymous %}
                                 <li>
-                                    <a href="" data-toggle="modal" data-target="#login">Logga in</a>
+                                    <a href="" data-toggle="modal" data-target="#login"><span class="fa fa-lg fa-fw fa-sign-in"></span> Logga in</a>
                                 </li>
                                 {% else %}
                                 <li class="dropdown">
-                                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-user"></span> {{ user.full_name }}</a>
+                                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-lg fa-fw fa-user"></span> {{ user.full_name }}</a>
                                     <ul class="dropdown-menu">
                                         <li>
                                             <a href="/sv/internt/blasbasen/person/{{ user.pk }}/">Profil</a>
@@ -96,7 +93,7 @@
                                         {% endif %}
                                         <li class="divider"></li>
                                         <li>
-                                            <a href="{% url 'django.contrib.auth.views.logout' %}"><span class="fa fa-sign-out"></span> Logga ut</a>
+                                            <a href="{% url 'django.contrib.auth.views.logout' %}"><span class="fa fa-fw fa-sign-out"></span> Logga ut</a>
                                         </li>
                                     </ul>
                                 </li>
