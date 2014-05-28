@@ -10,7 +10,7 @@
                 {% show_menu from_level to_level extra_inactive extra_active template "" "" child %}
             </ul>
         {% else %}
-            <a href="{{ child.get_absolute_url }}"><span>{{ child.get_menu_title }}</span></a>
+            <a href="{{ child.get_absolute_url }}">{% autoescape off %}{{ child.get_menu_title }}{% endautoescape %}</a>
         {% endif %}
     </li>
 
