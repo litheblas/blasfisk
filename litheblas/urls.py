@@ -17,11 +17,11 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^login/$', 'django.contrib.auth.views.login'),
     
-    url(r'^400/$', TemplateView.as_view(template_name='400.html')), #Test för 404-sidan
-    url(r'^403/$', TemplateView.as_view(template_name='403.html')), #Test för 500-sidan
-    url(r'^404/$', TemplateView.as_view(template_name='404.html')), #Test för 404-sidan
-    url(r'^500/$', TemplateView.as_view(template_name='500.html')), #Test för 500-sidan
-    url(r'^test/$', TemplateView.as_view(template_name='test.html')),
+    #url(r'^400/$', TemplateView.as_view(template_name='400.html')), #Test för 404-sidan
+    #url(r'^403/$', TemplateView.as_view(template_name='403.html')), #Test för 500-sidan
+    #url(r'^404/$', TemplateView.as_view(template_name='404.html')), #Test för 404-sidan
+    #url(r'^500/$', TemplateView.as_view(template_name='500.html')), #Test för 500-sidan
+    #url(r'^test/$', TemplateView.as_view(template_name='test.html')),
     
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': {'cmspages': CMSSitemap}}),
     url(r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),

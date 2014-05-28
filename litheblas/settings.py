@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from cfmfile import DEBUG
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 gettext = lambda s: s
@@ -26,12 +26,28 @@ gettext = lambda s: s
 from litheblas.secret import SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = False
 
-TEMPLATE_DEBUG = True
+ALLOWED_HOSTS = ['localhost']
 
-ALLOWED_HOSTS = ['*']
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'mydatabase',
+#        'USER': 'mydatabaseuser',
+#        'PASSWORD': 'mypassword',
+#        'HOST': '127.0.0.1',
+#        'PORT': '5432',
+#    }
+#}
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # Application definition
 
@@ -73,9 +89,6 @@ INSTALLED_APPS = (
     'blasbasen',
     #'events',
     #'watcher',
-    
-    #Annat
-    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -153,8 +166,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'litheblas', 'static'),
 )
 
-
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'litheblas', 'media')
 MEDIA_URL = '/media/'
 
@@ -168,12 +179,6 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
     'django.template.loaders.eggs.Loader',
 )
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    }
-}
 
 SITE_ID = 1
 
@@ -247,8 +252,3 @@ CMS_PLACEHOLDER_CONF = {
         ]
     },
 }
-
-if DEBUG:
-    CMS_CACHE_DURATIONS = {'content': 0,
-                           'menus': 0,
-                           'permissions': 0}
