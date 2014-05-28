@@ -69,10 +69,10 @@ INSTALLED_APPS = (
     'reversion',
     
     #LiTHe Blås
-    'mailing',
+    #'mailing',
     'blasbasen',
-    'events',
-    'watcher',
+    #'events',
+    #'watcher',
     
     #Annat
     'debug_toolbar',
@@ -214,8 +214,9 @@ CMS_LANGUAGES = {
 
 CMS_TEMPLATES = (
     ('pages/page.html', _('Page')),
+    ('pages/special_page.html', _('Special Page')),
+    ('pages/feature.html', _('Page with Feature')),
     ('pages/home.html', _('LiTHe Hem')),
-    ('pages/feature.html', _('Page with Feature'))
 )
 
 CMS_TEMPLATE_INHERITANCE = False #Annars ärver en massa sidor hem-mallen, vilken egentligen bara ska finnas på startsidan
