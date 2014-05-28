@@ -35,7 +35,7 @@
                 {% for person in f.content %}
                 <tr>
                     {% if perms.blasbasen.change_person %}
-                    <td><a href="{{ person.id }}/change/"><span class="fa fa-edit"></span></a></td>
+                    <td><a href="{{ person.id }}/change/"><span class="fa fa-lg fa-edit"></span></a></td>
                     {% endif %}
                     <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
                     <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
