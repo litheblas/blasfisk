@@ -11,10 +11,9 @@
         {% for f in filters %}
         <li{% if request.GET.tab = f.id or not request.GET.tab and f.default %} class="active"{% endif %}>
             <a href="#{{ f.id }}" data-toggle="tab">{{ f.name }}</a>
-        </li>
-        {% endfor %}
+            </li>
+            {% endfor %}
     </ul>
-    
 
     <div class="tab-content">
         {% for f in filters %}
@@ -52,9 +51,7 @@
 
 </div>
 <div class="col-md-3">
-    
-    <div class="panel-group">
-        <form role="form" method="get" action=".">
+    <form role="form" method="get" action=".">
         <input type="hidden" name="search" value="s">
         <div class="form-group">
             <div class="input-group">
@@ -67,6 +64,12 @@
             </div>
         </div>
     </form>
+    {% if request.GET.search %}
+    <div class="form-group">
+        <a href="." class="form-control btn btn-warning"><span class="fa fa-times"></span> Återställ och visa alla</a>
+    </div>
+    {% endif %}
+    <div class="panel-group">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#advancedsearch"> Avancerad sökning </a></h4>
@@ -106,12 +109,12 @@
                             </p>
                         </div>
                         <h5>Medlemsskap</h5>
-                        
+
                         <div class="form-group">
                             <label for="sections">Sektioner</label>
                             <select multiple class="form-control" id="sections" name="section">
                                 {% for s in sections %}
-                                    <option value="{{ s.id }}">{{ s }}</option>
+                                <option value="{{ s.id }}">{{ s }}</option>
                                 {% endfor %}
                             </select>
                             <p class="help-block">
@@ -122,7 +125,7 @@
                             <label for="posts">Poster</label>
                             <select multiple class="form-control" id="posts" name="post">
                                 {% for p in posts %}
-                                    <option value="{{ p.id }}">{{ p }}</option>
+                                <option value="{{ p.id }}">{{ p }}</option>
                                 {% endfor %}
                             </select>
                             <p class="help-block">
@@ -158,11 +161,11 @@
             </div>
             <div class="panel-body panel-collapse collapse"></div>
             <div id="export" class="list-group panel-collapse collapse">
-                    <a href="" class="list-group-item"><span class="fa fa-fw fa-link"></span> Permalänk</a>
-                    <a href="" class="list-group-item"><span class="fa fa-fw fa-globe"></span> Visa på Google Maps</a>
-                    <a href="" class="list-group-item"><span class="fa fa-fw fa-file-o"></span> Exportera vCard</a>
-                    <a href="" class="list-group-item"><span class="fa fa-fw fa-file-text-o"></span> Exportera CSV</a>
-                    <a href="" class="list-group-item"><span class="fa fa-fw fa-file-pdf-o"></span> Exportera PDF</a>
+                <a href="" class="list-group-item"><span class="fa fa-fw fa-link"></span> Permalänk</a>
+                <a href="" class="list-group-item"><span class="fa fa-fw fa-globe"></span> Visa på Google Maps</a>
+                <a href="" class="list-group-item"><span class="fa fa-fw fa-file-o"></span> Exportera vCard</a>
+                <a href="" class="list-group-item"><span class="fa fa-fw fa-file-text-o"></span> Exportera CSV</a>
+                <a href="" class="list-group-item"><span class="fa fa-fw fa-file-pdf-o"></span> Exportera PDF</a>
             </div>
 
         </div>
@@ -173,11 +176,11 @@
             </div>
             <div class="panel-body panel-collapse collapse"></div>
             <div id="admin" class="list-group panel-collapse collapse">
-                    <a href="" class="list-group-item"><span class="fa fa-fw fa-user"></span> Lägg till person</a>
-                    <a href="" class="list-group-item"><span class="fa fa-fw fa-users"></span> Lägg till sektion</a>
-                    <a href="" class="list-group-item"><span class="fa fa-fw fa-graduation-cap"></span> Lägg till post</a>
+                <a href="" class="list-group-item"><span class="fa fa-fw fa-user"></span> Lägg till person</a>
+                <a href="" class="list-group-item"><span class="fa fa-fw fa-users"></span> Lägg till sektion</a>
+                <a href="" class="list-group-item"><span class="fa fa-fw fa-graduation-cap"></span> Lägg till post</a>
             </div>
-            
+
             <div id="admin" class="panel-collapse collapse">
                 <div class="panel-body">
                     <div class="form-group">

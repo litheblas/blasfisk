@@ -14,9 +14,16 @@ body {
     padding-bottom: 0;
 }
 
+.navbar {
+    margin-bottom: 0px;
+}
 
+.navbar-wrapper {
+    margin-bottom: 21px;
+}
 
 header {
+    background-image: url('/static/img/bg.gif');
     background-image: url('/static/img/bg.svg');
 }
 
@@ -47,21 +54,22 @@ header .lead {
     }
 } */
 
-.marketing .col-sm-4 {
+.marketing .item {
     text-align: center;
     margin-bottom: 20px;
+    
 }
 
-.marketing .col-sm-4 p {
+.marketing p {
     margin-left: 10px;
     margin-right: 10px;
 }
 
-.marketing .col-sm-4 img {
+.marketing img {
     width: 200px;
 }
 
-.marketing h2 {
+.marketing h3 {
     font-weight: normal;
 }
 
@@ -76,4 +84,3 @@ header .lead {
     height: auto;
     vertical-align: middle;
 }
-

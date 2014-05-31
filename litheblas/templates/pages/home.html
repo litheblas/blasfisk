@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% load cms_tags staticfiles sekizai_tags menu_tags %}
 
+
+
 {% block content %}
-<script src="/static/js/holder.js"></script>
+
 <div class="row">
-    <div class="col-lg-offset-1 col-lg-10">{# Stoppar in en kolumn på var sida om karusellen så den inte blir så jävla bred. #}
+    <div class="col-lg-offset-1 col-lg-10">{# Stoppar in en tom kolumn på var sida om karusellen så den inte blir så jävla bred. #}
         <div id="carousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
@@ -77,26 +79,29 @@
 </div>
 
 <div class="row marketing">
-    <div class="col-sm-4">
+    <div class="col-sm-4 item">
         <!--{% placeholder 'Pusher 1' %}-->
-        <img src="/static/img/small/2.jpg" class="img-circle">
-        <h2>Ansök!</h2>
-        <p>Just nu söker vi altsax, tenorsax och buss. Sök redan idag!</p>
+        <img src="/static/img/small/2.jpg" class="img-responsive img-circle center-block">
+        <h3>Ansök!</h3>
+        <p>Vill du vara med i vårt gäng? Just nu söker vi altsax, tenorsax och buss. Sök redan idag!</p>
+        <p><a href="" class="btn btn-sm btn-success">Sök Blåset!</a></p>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4 item">
+        <img src="/static/img/small/3.jpg" class="img-responsive img-circle center-block">
         <!--{% placeholder 'Pusher 2' %}-->
-        <img src="/static/img/small/3.jpg" class="img-circle">
-        <h2>Boka!</h2>
-        <p></p>
+        <h3>Boka!</h3>
+        <p>Många över hela Europa har redan upptäckt att LiTHe Blås med baletten Blåsyran kan få alla lokaler att svänga i takt till tonerna från äkta svensk studentmusik, så varför inte bli ännu en av Blåsets nöjda kunder?</p>
+        <p><a href="" class="btn btn-sm btn-warning">Boka Blåset!</a></p>
+        
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4 item">
         <!--{% placeholder 'Pusher 3' %}-->
-        <img src="/static/img/small/4.jpg" class="img-circle">
-        <h2>Lyssna!</h2>
-        <p></p>
+        <img src="/static/img/small/4.jpg" class="img-responsive img-circle center-block">
+        <h3>Titta och lyssna!</h3>
+        <p>Kom och se oss på någon av våra spelningar! Dessutom har vi spelat in flera skivor genom åren.</p>
+        <p><a href="" class="btn btn-sm btn-info">Se Blåset!</a></p>
     </div>
 </div>
-
 {% placeholder 'content' %}
 
 {% endblock content %}

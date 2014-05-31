@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from cfmfile import DEBUG
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 gettext = lambda s: s
@@ -26,12 +26,28 @@ gettext = lambda s: s
 from litheblas.secret import SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = False
 
-TEMPLATE_DEBUG = True
+ALLOWED_HOSTS = ['localhost']
 
-ALLOWED_HOSTS = ['*']
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'mydatabase',
+#        'USER': 'mydatabaseuser',
+#        'PASSWORD': 'mypassword',
+#        'HOST': '127.0.0.1',
+#        'PORT': '5432',
+#    }
+#}
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # Application definition
 
@@ -56,26 +72,23 @@ INSTALLED_APPS = (
     'menus',
     'south',
     'sekizai',
-    'djangocms_style',
-    'djangocms_column',
+    #'djangocms_style',
+    #'djangocms_column',
     'djangocms_file',
     'djangocms_flash',
     'djangocms_googlemap',
     'djangocms_inherit',
     'djangocms_link',
     'djangocms_picture',
-    'djangocms_teaser',
+    #'djangocms_teaser',
     'djangocms_video',
     'reversion',
     
     #LiTHe Blås
-    'mailing',
+    #'mailing',
     'blasbasen',
-    'events',
-    'watcher',
-    
-    #Annat
-    'debug_toolbar',
+    #'events',
+    #'watcher',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -153,8 +166,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'litheblas', 'static'),
 )
 
-
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'litheblas', 'media')
 MEDIA_URL = '/media/'
 
@@ -168,12 +179,6 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
     'django.template.loaders.eggs.Loader',
 )
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    }
-}
 
 SITE_ID = 1
 
@@ -214,8 +219,9 @@ CMS_LANGUAGES = {
 
 CMS_TEMPLATES = (
     ('pages/page.html', _('Page')),
+    ('pages/special_page.html', _('Special Page')),
+    ('pages/feature.html', _('Page with Feature')),
     ('pages/home.html', _('LiTHe Hem')),
-    ('pages/feature.html', _('Page with Feature'))
 )
 
 CMS_TEMPLATE_INHERITANCE = False #Annars ärver en massa sidor hem-mallen, vilken egentligen bara ska finnas på startsidan
@@ -224,7 +230,8 @@ CMS_PERMISSION = False
 
 #Definierar några placeholders med standardinnehåll, typ vanliga sidor som bara behöver ha en text-plugin.
 CMS_PLACEHOLDER_CONF = {
-    'Page content': {
+    'page-content': {
+        'name': _(u'Page content'),
         'default_plugins':[
             {
                 'plugin_type': 'TextPlugin',
@@ -234,7 +241,8 @@ CMS_PLACEHOLDER_CONF = {
             },
         ]
     },
-    'Subtitle': {
+    'subtitle': {
+        'name': _(u'Subtitle'),
         'plugins': ['TextPlugin'],
         'default_plugins':[
             {
@@ -243,11 +251,13 @@ CMS_PLACEHOLDER_CONF = {
                     'body': u''
                 },
             },
-        ]
+        ],
     },
 }
 
-if DEBUG:
-    CMS_CACHE_DURATIONS = {'content': 0,
-                           'menus': 0,
-                           'permissions': 0}
+CKEDITOR_SETTINGS = {
+    'language': 'en',
+    'toolbar': 'CMS',
+    'skin': 'moono',
+    'allowedContent': 'false', #Stänger av filtrering av taggar.
+}
