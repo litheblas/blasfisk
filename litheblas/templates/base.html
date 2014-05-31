@@ -19,8 +19,6 @@
 
         <script src="http://code.jquery.com/jquery.js"></script>
         <script src="http://netdna.bootstrapcdn.com/bootstrap/latest/js/bootstrap.min.js"></script>
-        <script src="{% static 'js/pull-down.js' %}"></script>
-        
         {% render_block "js" %}
     </head>
     <body>
@@ -39,6 +37,7 @@
                         </p>
                         <div class="spacer"></div>
                     </div>
+                    <script src="{% static 'js/pull-down.js' %}"></script> {# Det här skriptet bör ligga just här för att verkställa 'pull-down' så snabbt som möjligt #}
                 </div>
             </div>
             <div class="navbar-wrapper">
