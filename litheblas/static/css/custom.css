@@ -14,7 +14,13 @@ body {
     padding-bottom: 0;
 }
 
+.navbar {
+    margin-bottom: 0px;
+}
 
+.navbar-wrapper {
+    margin-bottom: 21px;
+}
 
 header {
     background-image: url('/static/img/bg.gif');
