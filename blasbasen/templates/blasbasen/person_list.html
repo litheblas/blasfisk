@@ -64,6 +64,11 @@
             </div>
         </div>
     </form>
+    {% if request.GET.search %}
+    <div class="form-group">
+        <a href="." class="form-control btn btn-warning"><span class="fa fa-times"></span> Återställ och visa alla</a>
+    </div>
+    {% endif %}
     <div class="panel-group">
         <div class="panel panel-default">
             <div class="panel-heading">
