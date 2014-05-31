@@ -4,7 +4,9 @@
     <head>
         <title>LiTHe Blås{% block title %}{% endblock title %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+        
         {% render_block "css" %}
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/latest/yeti/bootstrap.min.css">
         <link rel="stylesheet" href="{% static 'css/custom.css' %}">
@@ -63,6 +65,9 @@
             </div>
         </header>
         <div class="container">
+            <!--<ol class="breadcrumb">
+                {% show_breadcrumb 0 'elements/breadcrumb.html' %}
+            </ol>-->
             {% block content %}
             {% endblock content %}
         </div>
@@ -70,7 +75,7 @@
             <div class="navbar-wrapper">
                 <div class="navbar navbar-fixed-bottom navbar-default">
                     <div class="container">
-                        <div class="navbar-collapse collapse">
+                        <div class="navbar">
                             <!--{% static_placeholder 'footer' %}-->
                             <ul class="nav navbar-nav">
                                 {% if user.is_anonymous %}
