@@ -230,7 +230,8 @@ CMS_PERMISSION = False
 
 #Definierar några placeholders med standardinnehåll, typ vanliga sidor som bara behöver ha en text-plugin.
 CMS_PLACEHOLDER_CONF = {
-    'Page content': {
+    'page-content': {
+        'name': _(u'Page content'),
         'default_plugins':[
             {
                 'plugin_type': 'TextPlugin',
@@ -240,7 +241,8 @@ CMS_PLACEHOLDER_CONF = {
             },
         ]
     },
-    'Subtitle': {
+    'subtitle': {
+        'name': _(u'Subtitle'),
         'plugins': ['TextPlugin'],
         'default_plugins':[
             {
@@ -249,6 +251,13 @@ CMS_PLACEHOLDER_CONF = {
                     'body': u''
                 },
             },
-        ]
+        ],
     },
+}
+
+CKEDITOR_SETTINGS = {
+    'language': 'en',
+    'toolbar': 'CMS',
+    'skin': 'moono',
+    'allowedContent': 'false', #Stänger av filtrering av taggar.
 }
