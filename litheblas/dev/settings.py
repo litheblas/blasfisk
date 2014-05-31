@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Utvecklingsspecfika inställningar
 
 from litheblas.settings import *
