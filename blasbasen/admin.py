@@ -38,7 +38,9 @@ class UserInline(admin.StackedInline):
 #    model = Watcher
 
 class GroupAdmin(admin.ModelAdmin):
-    inlines = [WatcherInline,GroupMemberInline]
+    #inlines = [WatcherInline,GroupMemberInline]
+    inlines = [GroupMemberInline]
+
     exclude = ('groups',)
 
 class SectionAdmin(admin.ModelAdmin):
