@@ -1,5 +1,6 @@
 server {
     server_name dev.skorpan.lysator.liu.se;
+    listen 8080;
 
     access_log off;
 
