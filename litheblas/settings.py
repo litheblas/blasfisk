@@ -34,6 +34,10 @@ ALLOWED_HOSTS = ['localhost',
                  '127.0.0.1',
                  'dev.skorpan.lysator.liu.se']
 
+ADMINS = (
+    ('Olle Vidner', 'olle@vidner.se'),
+)
+
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.postgresql_psycopg2',
