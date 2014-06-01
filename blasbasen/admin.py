@@ -2,8 +2,8 @@ from django.contrib import admin
 
 from django.contrib.auth.models import Group
 from blasbasen.models import Avatar, User, Person, Section, Post, Assignment, SpecialDiet, Card
-from mailing.models import Membership as MailingMembership
-from watcher.models import Watcher
+#from mailing.models import Membership as MailingMembership
+#from watcher.models import Watcher
 
 class AssignmentInline(admin.TabularInline):
     model = Assignment
@@ -13,8 +13,8 @@ class AvatarInline(admin.TabularInline):
     model = Avatar
     extra = 1
     
-class MailingListInline(admin.TabularInline):
-    model = MailingMembership
+#class MailingListInline(admin.TabularInline):
+#    model = MailingMembership
 
 class CardInline(admin.TabularInline):
     model = Card
@@ -34,8 +34,8 @@ class UserInline(admin.StackedInline):
     max_num = 1
     
 
-class WatcherInline(admin.TabularInline):
-    model = Watcher
+#class WatcherInline(admin.TabularInline):
+#    model = Watcher
 
 class GroupAdmin(admin.ModelAdmin):
     inlines = [WatcherInline,GroupMemberInline]
@@ -45,7 +45,9 @@ class SectionAdmin(admin.ModelAdmin):
     inlines = [PostInline]
 
 class PersonAdmin(admin.ModelAdmin):
-    inlines = [AvatarInline, AssignmentInline, CardInline, MailingListInline, UserInline]
+    #inlines = [AvatarInline, AssignmentInline, CardInline, MailingListInline, UserInline]
+
+    inlines = [AvatarInline, AssignmentInline, CardInline, UserInline]
     
     list_display = ('first_name', 'nickname', 'last_name')
 #     fieldsets = (
