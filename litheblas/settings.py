@@ -43,6 +43,21 @@ ADMINS = (
 #Från vilken adress ska debug-epost skickas?
 SERVER_EMAIL = 'django@' + getfqdn()
 
+
+# Database
+# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'litheblas',
+        'USER': 'litheblas',
+        'PASSWORD': DATABASE_PASSWORD,
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -76,7 +91,7 @@ INSTALLED_APPS = (
     'djangocms_picture',
     #'djangocms_teaser',
     #'djangocms_video',
-    'reversion',
+    #'reversion',
     
     #LiTHe Blås
     #'mailing',
@@ -123,19 +138,7 @@ ROOT_URLCONF = 'litheblas.urls'
 WSGI_APPLICATION = 'litheblas.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'litheblas',
-        'USER': 'litheblas',
-        'PASSWORD': DATABASE_PASSWORD,
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
 
 AUTHENTICATION_BACKENDS = (
     'blasbasen.backends.BlasBackend',
