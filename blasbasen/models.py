@@ -3,12 +3,13 @@ import uuid
 import datetime
 from dateutil.relativedelta import relativedelta
 import os.path
+
 from django.db import models
 from django.db.models import Q
-from django.contrib.auth.models import (BaseUserManager, 
-                                        PermissionsMixin, 
-                                        AbstractBaseUser, 
-                                        Permission, 
+from django.contrib.auth.models import (BaseUserManager,
+                                        PermissionsMixin,
+                                        AbstractBaseUser,
+                                        Permission,
                                         _user_get_all_permissions)
 from localflavor.se.forms import SEOrganisationNumberField
 from imagekit.models import ProcessedImageField, ImageSpecField
@@ -21,17 +22,18 @@ def generate_avatar_filename(instance, filename):
     extension = os.path.splitext(filename)[1].lower()
     
     # Döper filen till ett UUID eftersom vi inte ännu inte sparat objektet i databasen och därmed inte fått någon PK. Tror att det här borde funka tillräckligt bra. /Olle
-    return os.path.join('avatars', str(uuid.uuid1()) + extension) # Ger typ avatars/02b9672e-85f3-11e3-9e44-542696dae887.jpg
-
-
+    return os.path.join('avatars', str(uuid.uuid1()) + extension)  # Ger typ avatars/02b9672e-85f3-11e3-9e44-542696dae887.jpg
 
 class PersonManager(models.Manager):
-    def active(self):        
-        #Hämtar personer som är relaterade till aktiva assignments. distinct() tar bort eventuella dubletter.
+    def members(self):
+        pass # TODO: Filtrera ut alla _medlemmar_, aktiva som gamlingar
+    
+    def active(self):
+        # Hämtar personer som är relaterade till aktiva assignments. distinct() tar bort eventuella dubletter.
         return self.model.objects.filter(assignment=Assignment.objects.active()).distinct()
     
     def oldies(self):
-        #Hämtar personer som är relaterade till utgångna assignments och tar bort aktiva. distinct() tar bort eventuella dubletter.
+        # Hämtar personer som är relaterade till utgångna assignments och tar bort aktiva. distinct() tar bort eventuella dubletter.
         return self.model.objects.filter(assignment=Assignment.objects.oldies()).exclude(assignment=Assignment.objects.active()).distinct()
 
 class Person(models.Model):
@@ -42,7 +44,7 @@ class Person(models.Model):
     gender = models.CharField(max_length=1, choices=GENDERS, blank=True, verbose_name=u'kön')
     born = models.DateField(blank=True, null=True, verbose_name=u'födelsedatum')
     deceased = models.DateField(blank=True, null=True, verbose_name=u'dödsdatum')
-    personal_id_number = models.CharField(max_length=4, blank=True, verbose_name=u'personnummer', help_text=u'Sista 4 siffrorna i personnumret') #Last 4 characters in Swedish personal id number
+    personal_id_number = models.CharField(max_length=4, blank=True, verbose_name=u'personnummer', help_text=u'Sista 4 siffrorna i personnumret')  # Last 4 characters in Swedish personal id number
     liu_id = models.CharField(max_length=8, blank=True, verbose_name=u'LiU-ID')
     
     about = models.TextField(blank=True, verbose_name=u'om', help_text=u'Godtycklig text.')
@@ -54,13 +56,14 @@ class Person(models.Model):
     
     # Kontaktinformation
     address = models.CharField(max_length=256, blank=True, verbose_name=u'adress')
-    postcode = models.CharField(max_length=256, blank=True, verbose_name=u'postnummer') #Byt namn till post_code
+    postcode = models.CharField(max_length=256, blank=True, verbose_name=u'postnummer')  # Byt namn till post_code
     city = models.CharField(max_length=256, blank=True, verbose_name=u'stad')
     country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name=u'land')
     
     phone = models.CharField(max_length=256, blank=True, verbose_name=u'telefonnummer', help_text=u'Ange landskod om annat land än Sverige.')
     email = models.EmailField(max_length=256, blank=True, verbose_name=u'e-postadress')
     
+    # Låt oss fortsätta kalla den objects istället för typ people, så hålls det konsekvent mellan alla modeller
     objects = PersonManager()
     
     class Meta:
@@ -77,8 +80,8 @@ class Person(models.Model):
             return relativedelta(datetime.date.today(), self.born).years
     
     def get_assignments(self):
-        #Exkludera objekt som avslutats innan detta dygn (detta ser till att objekt utan slutdatum inte utesluts), 
-        #filtrera sedan ut de objekt som påbörjats innan detta dygn
+        # Exkludera objekt som avslutats innan detta dygn (detta ser till att objekt utan slutdatum inte utesluts), 
+        # filtrera sedan ut de objekt som påbörjats innan detta dygn
         return self.assignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
     
     def get_primary_avatar(self):
@@ -87,19 +90,19 @@ class Person(models.Model):
     def get_secondary_avatars(self):
         return self.avatar_set.exclude(primary=True)
     
-    #Används internt av Django
+    # Används internt av Django
     def get_full_name(self):
         if self.nickname:
-            return u'{0} "{1}" {2}'.format(self.first_name, self.nickname, self.last_name) # Leif "Pappa Blås" Holm
+            return u'{0} "{1}" {2}'.format(self.first_name, self.nickname, self.last_name)  # Leif "Pappa Blås" Holm
 
-        return u'{0} {1}'.format(self.first_name, self.last_name) # Leif Holm
+        return u'{0} {1}'.format(self.first_name, self.last_name)  # Leif Holm
     
-    #Används internt av Django
+    # Används internt av Django
     def get_short_name(self):
         if self.nickname:
-            return self.nickname # Pappa Blås
+            return self.nickname  # Pappa Blås
 
-        return u'{0} {1}'.format(self.first_name, self.last_name[0]) # Leif H
+        return u'{0} {1}'.format(self.first_name, self.last_name[0])  # Leif H
     
     def get_start_date(self):
         '''Hämtar alla assignments vars poster innebär medlemsskap och som inte är provmedlemsskap, 
@@ -111,17 +114,17 @@ class Person(models.Model):
             return None
     
     def get_end_date(self):
-        #Hämtar alla assignments vars poster innebär medlemsskap och som inte är provmedlemsskap
+        # Hämtar alla assignments vars poster innebär medlemsskap och som inte är provmedlemsskap
         a = self.assignment_set.filter(post__membership=True).filter(trial=False)
         
-        #Kolla om någon assignment är pågående, bryt och returnera None i så fall
-        #Kan inte göras med vanliga databasfrågor eftersom ongoing är en metod och inte ett fält
-        #Man kan dock implementera samma sak som is_ongoing() för att optimera, men det torde vara överflödigt i det här fallet
+        # Kolla om någon assignment är pågående, bryt och returnera None i så fall
+        # Kan inte göras med vanliga databasfrågor eftersom ongoing är en metod och inte ett fält
+        # Man kan dock implementera samma sak som is_ongoing() för att optimera, men det torde vara överflödigt i det här fallet
         for i in a:
             if i.ongoing:
                 return None
         
-        #Sorterar fallande på slutdatum, tar det första objektet och ger detta objekts slutdatum
+        # Sorterar fallande på slutdatum, tar det första objektet och ger detta objekts slutdatum
         return a.order_by('-end_date')[0].end_date
 
     def __unicode__(self):
@@ -150,20 +153,20 @@ class Avatar(models.Model):
         return u'{0}: {1}'.format(self.person.short_name, self.id)
     
     def save(self, *args, **kwargs):
-        #Sparar objektet som vanligt
+        # Sparar objektet som vanligt
         super(Avatar, self).save(*args, **kwargs)
         
-        #Hämtar alla avatarer tillhörande samma person som aktuellt objekt
+        # Hämtar alla avatarer tillhörande samma person som aktuellt objekt
         avatars = self.person.avatar_set
         
         if self.primary:
-            #Tar bort primary från alla avatarer tillhörande samma människa. Exkluderar aktuellt objekt om det redan finns.
+            # Tar bort primary från alla avatarer tillhörande samma människa. Exkluderar aktuellt objekt om det redan finns.
             avatars.exclude(pk=self.pk).update(primary=False)
         
         else:
-            #Om det inte finns någon avatar tillhörande denna person som är märkt som primär...
+            # Om det inte finns någon avatar tillhörande denna person som är märkt som primär...
             if not avatars.filter(primary=True).exists():
-                #...välj den senast tillagda avataren och välj som primär, välj bort aktuellt objekt om det finns
+                # ...välj den senast tillagda avataren och välj som primär, välj bort aktuellt objekt om det finns
                 a = avatars.exclude(pk=self.pk).order_by('-pk')[0]
                 a.primary = True
                 a.save()
@@ -188,7 +191,7 @@ class UserManager(BaseUserManager):
         if not password:
             raise ValueError(u'Users must have a password')
         
-        #TODO: Fixa nåt snyggare
+        # TODO: Fixa nåt snyggare
         person = Person(first_name='first', last_name='last')
         person.save()
 
@@ -203,13 +206,13 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, password):
-        #Use the normal method for creating users
+        # Use the normal method for creating users
         user = self.create_user(
             username,
             password,
         )
         
-        #Add superuser properties
+        # Add superuser properties
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
@@ -220,7 +223,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """En avskalad användarmodell vars enda uppgift i stort sett är att lagra användarnamn och lösenord. Resten lagras i datatypen Person."""
     username = models.CharField(max_length=256, unique=True, db_index=True, verbose_name=u'användarnamn')
-    is_active = models.BooleanField(default=True, verbose_name=u'aktivt konto', help_text=u"Detta är INTE ett fält för att markera att någon blivit gamling") #Ska inte användas för att markera gamlingsskap osv.! Det görs mycket bättre på automatisk väg via posts
+    is_active = models.BooleanField(default=True, verbose_name=u'aktivt konto', help_text=u"Detta är INTE ett fält för att markera att någon blivit gamling")  # Ska inte användas för att markera gamlingsskap osv.! Det görs mycket bättre på automatisk väg via posts
     is_admin = models.BooleanField(default=False, verbose_name=u'administratörskonto (?)', help_text=u'#TODO: Osäker på vad detta fält faktiskt används för. Kolla upp.')
     is_staff = models.BooleanField(default=False, verbose_name=u'maktkonto', help_text=u'Bestämmer om användaren kan logga in i admingränssnittet')
     
@@ -238,7 +241,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_assignment_permissions(self, obj=None):
         """Hämtar rättigheter från den kopplade personens poster och sektioner"""
         perms = set()
-        #set(["%s.%s" % (p.content_type.app_label, p.codename) for p in user_obj.user_permissions.select_related()])
+        # set(["%s.%s" % (p.content_type.app_label, p.codename) for p in user_obj.user_permissions.select_related()])
         for assignment in self.person.get_assignments():
             perms.update(assignment.post.get_all_permissions())
         return perms
@@ -246,7 +249,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Ersätter Djangos egna get_all_permissions för att få med rättigheter från poster/sektioner 
     def get_all_permissions(self, obj=None):
         perms = set()
-        perms.update(_user_get_all_permissions(self, obj)) # Hämtar rättigheter på vanligt vis
+        perms.update(_user_get_all_permissions(self, obj))  # Hämtar rättigheter på vanligt vis
         perms.update(self.get_assignment_permissions(obj))
         return perms
     
@@ -308,7 +311,7 @@ class Post(models.Model):
     
     # Metadata
     description = models.TextField(blank=True, verbose_name=u'beskrivning')
-    membership = models.BooleanField(default=False, verbose_name=u'innebär medlemsskap', help_text=u'Räknas man som medlem i föreningen enkom av att vara med i denna post, dvs. kan man <em>antas</em> på denna post? Det här vill vi antagligen bara använda för instrument.') #TODO: Byt namn till implies_membership
+    membership = models.BooleanField(default=False, verbose_name=u'innebär medlemsskap', help_text=u'Räknas man som medlem i föreningen enkom av att vara med i denna post, dvs. kan man <em>antas</em> på denna post? Det här vill vi antagligen bara använda för instrument.')  # TODO: Byt namn till implies_membership
     engagement = models.BooleanField(default=False, verbose_name=u'uppdrag', help_text=u'Är denna post ett uppdrag utöver det vanliga medlemsskapet?')
     show_in_timeline = models.BooleanField(default=True, verbose_name=u'visa på tidslinje', help_text=u'Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)')
     
@@ -324,13 +327,13 @@ class Post(models.Model):
         verbose_name_plural = u'poster'
     
     def get_people(self, current=True):
-        #TODO: Byt ut till set()
-        people=[]
+        # TODO: Byt ut till set()
+        people = []
         if current:
-            #Att vi väljer att exkludera åtaganden med slutdatum innan idag ser till att åtaganden utan slutdatum också kommer med.
+            # Att vi väljer att exkludera åtaganden med slutdatum innan idag ser till att åtaganden utan slutdatum också kommer med.
             assignments = self.assignment_set.exclude(end_date__lt=datetime.date.today()).filter(start_date__lte=datetime.date.today())
         elif not current:
-            #Välj ut åtaganden med startdatum tidigare än eller lika med idag.
+            # Välj ut åtaganden med startdatum tidigare än eller lika med idag.
             assignments = self.assignment_set.filter(start_date__lte=datetime.date.today())
         
         # select_related för att minska antalet databasfrågor en aning.
@@ -340,7 +343,7 @@ class Post(models.Model):
     
     def get_section_permissions(self):
         return make_permission_set(self.section.permissions.all())
-        #return set(["%s.%s" % (p.content_type.app_label, p.codename) for p in self.section.permissions.all()])
+        # return set(["%s.%s" % (p.content_type.app_label, p.codename) for p in self.section.permissions.all()])
     
     def get_all_permissions(self):
         perms = set()
@@ -356,12 +359,12 @@ class Post(models.Model):
 class AssignmentManager(models.Manager):
     def active(self):
         return self.model.objects.filter(Q(post__membership=True),
-                                         Q(start_date__lte=datetime.date.today()), 
+                                         Q(start_date__lte=datetime.date.today()),
                                          Q(end_date=None) | Q(end_date__gt=datetime.date.today()))
         
     def oldies(self):
         return self.model.objects.filter(Q(post__membership=True),
-                                         Q(start_date__lte=datetime.date.today()), 
+                                         Q(start_date__lte=datetime.date.today()),
                                          Q(end_date__lte=datetime.date.today()))
 
 class Assignment(models.Model):
@@ -390,20 +393,20 @@ class Assignment(models.Model):
         return self.post.show_in_timeline
     
     def get_if_ongoing(self):
-        #Fall 1: slutdatum är satt
+        # Fall 1: slutdatum är satt
         if self.end_date:
-            #Är slutdatumet satt till idag eller efter?
+            # Är slutdatumet satt till idag eller efter?
             return self.end_date >= datetime.date.today()
-        #Fall 2: inget slutdatum är satt
+        # Fall 2: inget slutdatum är satt
         else:
-            #Är startdatumet satt till idag eller före?
+            # Är startdatumet satt till idag eller före?
             return self.start_date <= datetime.date.today()
     
     def convert_to_regular_membership(self, date=datetime.date.today()):
         a = Assignment(person=self.person, post=self.post, start_date=date, trial=False)
         a.save()
         
-        self.end_date=date
+        self.end_date = date
         self.save()
     
     def convert_to_oldie_membership(self, date):
@@ -430,13 +433,13 @@ class SpecialDiet(models.Model):
     
 class Customer(models.Model):
     name = models.CharField(max_length=256, verbose_name=u'namn')
-    organisation_number = SEOrganisationNumberField(min_length=0) #TODO: Fixa verbose_name. Kolla om det verkligen går att lämna blankt #Accepterar även personnummer
+    organisation_number = SEOrganisationNumberField(min_length=0)  # TODO: Fixa verbose_name. Kolla om det verkligen går att lämna blankt #Accepterar även personnummer
     comments = models.TextField(blank=True, verbose_name=u'kommentar')
     
     contact = models.CharField(max_length=256, blank=True, verbose_name=u'kontaktperson')
     phone_number = models.CharField(max_length=64, blank=True, verbose_name=u'telefonnummer')
     
-    #Address information
+    # Address information
     address = models.CharField(max_length=256, blank=True, verbose_name=u'adress')
     postcode = models.CharField(max_length=256, blank=True, verbose_name=u'postnummer')
     city = models.CharField(max_length=256, blank=True, verbose_name=u'stad')
@@ -452,8 +455,8 @@ class Customer(models.Model):
 
 class Card(models.Model):
     enabled = models.BooleanField(default=True, verbose_name=u'aktiverat', help_text=u"Avmarkera om du tillfälligt vill spärra ditt kort")
-    card_data = models.CharField(max_length=256, verbose_name=u'kortdata', help_text=u"Be någon kolla i loggen efter ditt kortnummer") #TODO: Kolla exakt vad av kortets data som läses av. Vad av detta skall lagras?
-    person = models.ForeignKey(Person, verbose_name=u'person') #Kort _måste_ associeras med en person. Låt det vara så så slipper vi "temporära lösningar" och vilsna kort som ingen vet vem de tillhör.
+    card_data = models.CharField(max_length=256, verbose_name=u'kortdata', help_text=u"Be någon kolla i loggen efter ditt kortnummer")  # TODO: Kolla exakt vad av kortets data som läses av. Vad av detta skall lagras?
+    person = models.ForeignKey(Person, verbose_name=u'person')  # Kort _måste_ associeras med en person. Låt det vara så så slipper vi "temporära lösningar" och vilsna kort som ingen vet vem de tillhör.
     description = models.CharField(max_length=256, verbose_name=u'beskrivning', blank=True, help_text=u"Anges förslagsvis om du har fler än ett kort")
     
     class Meta:

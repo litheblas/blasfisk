@@ -61,11 +61,11 @@ DATABASES = {
 # Application definition
 
 INSTALLED_APPS = (
-    #CMS-specifikt
+    # CMS-specifikt
     'djangocms_admin_style',
     'djangocms_text_ckeditor',
     
-    #Django
+    # Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,7 +75,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.sitemaps',
     
-    #CMS-specifikt
+    # CMS-specifikt
     'cms',
     'mptt',
     'menus',
@@ -93,8 +93,10 @@ INSTALLED_APPS = (
     #'djangocms_video',
     #'reversion',
     
-    #LiTHe Blås
+    # Andra appar
     'imagekit',
+    
+    # LiTHe Blås
     #'mailing',
     'blasbasen',
     #'events',
