@@ -1,9 +1,14 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
 
 from django.contrib.auth.models import Group
+from django.contrib.auth.admin import UserAdmin
 from blasbasen.models import Avatar, User, Person, Section, Post, Assignment, SpecialDiet, Card
+from blasbasen.forms import BlasUserChangeForm, BlasUserCreationForm
 #from mailing.models import Membership as MailingMembership
 #from watcher.models import Watcher
+from django.utils.translation import ugettext_lazy as _
 
 class AssignmentInline(admin.TabularInline):
     model = Assignment
@@ -32,7 +37,44 @@ class GroupMemberInline(admin.TabularInline):
 class UserInline(admin.StackedInline):
     model = User
     max_num = 1
+
+class BlasUserInline(admin.StackedInline):
     
+    form = BlasUserChangeForm
+
+class BlasUserAdmin(admin.StackedInline, UserAdmin):
+    # TODO: Bättre
+    model = User
+    fk_name = 'person'
+
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        #(_('Personal info'), {'fields': ('first_name', 'last_name')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
+                                       'groups', 'user_permissions')}),
+        (_('Important dates'), {'fields': ('last_login',)}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'password1', 'password2')}
+        ),
+    )
+    form = BlasUserChangeForm
+    add_form = BlasUserCreationForm
+    #list_display = ('username', 'is_staff')
+    #search_fields = ('username',)
+    #ordering = ('username',)
+    
+    def __init__(self, parent_model, admin_site):
+        self.admin_site = admin_site
+        self.parent_model = parent_model
+        self.opts = self.model._meta
+        
+        if self.verbose_name is None:
+            self.verbose_name = self.model._meta.verbose_name
+        if self.verbose_name_plural is None:
+            self.verbose_name_plural = self.model._meta.verbose_name_plural
 
 #class WatcherInline(admin.TabularInline):
 #    model = Watcher
@@ -49,7 +91,7 @@ class SectionAdmin(admin.ModelAdmin):
 class PersonAdmin(admin.ModelAdmin):
     #inlines = [AvatarInline, AssignmentInline, CardInline, MailingListInline, UserInline]
 
-    inlines = [AvatarInline, AssignmentInline, CardInline, UserInline]
+    inlines = [AvatarInline, AssignmentInline, CardInline, BlasUserAdmin]
     
     list_display = ('first_name', 'nickname', 'last_name')
 #     fieldsets = (
@@ -60,6 +102,10 @@ class PersonAdmin(admin.ModelAdmin):
 #             'fields':()
 #         })
 #     )
+
+
+
+#admin.site.register(User, BlasUserAdmin)
 
 admin.site.unregister(Group)
 admin.site.register(Group, GroupAdmin)
