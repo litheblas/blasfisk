@@ -11,6 +11,8 @@ from django.contrib.auth.models import (BaseUserManager,
                                         Permission, 
                                         _user_get_all_permissions)
 from localflavor.se.forms import SEOrganisationNumberField
+from imagekit.models import ProcessedImageField, ImageSpecField
+
 from globals import GENDERS, COUNTRIES
 from blasbasen.backends import make_permission_set
 
@@ -134,7 +136,8 @@ class Person(models.Model):
     secondary_avatars = property(get_secondary_avatars)
 
 class Avatar(models.Model):
-    picture = models.ImageField(max_length=256, upload_to=generate_avatar_filename, verbose_name=u'bild')
+    picture = ProcessedImageField(upload_to=generate_avatar_filename, verbose_name=u'bild')
+    #thumbnail_small = ImageSpecField()
     person = models.ForeignKey('Person', verbose_name=u'person')
     primary = models.BooleanField(default=True, verbose_name=u'standard')
     

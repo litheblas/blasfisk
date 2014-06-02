@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     #'reversion',
     
     #LiTHe Blås
+    'imagekit',
     #'mailing',
     'blasbasen',
     #'events',
