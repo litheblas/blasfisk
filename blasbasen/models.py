@@ -102,7 +102,11 @@ class Person(models.Model):
     def get_start_date(self):
         '''Hämtar alla assignments vars poster innebär medlemsskap och som inte är provmedlemsskap, 
         sorterar stigande på startdatum, tar det första objektet och ger detta objekts startdatum'''
-        return self.assignment_set.filter(post__membership=True).filter(trial=False).order_by('start_date')[0].start_date
+        try:
+            return self.assignment_set.filter(post__membership=True).filter(trial=False).order_by('start_date')[0].start_date
+        except IndexError:
+            # Om man inte har något assignment som passar i filtret alls måste vi hantera det felet på något vis. Då returnerar vi None istället.
+            return None
     
     def get_end_date(self):
         #Hämtar alla assignments vars poster innebär medlemsskap och som inte är provmedlemsskap
