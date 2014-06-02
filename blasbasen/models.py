@@ -117,13 +117,17 @@ class Person(models.Model):
         # Hämtar alla assignments vars poster innebär medlemsskap och som inte är provmedlemsskap
         a = self.assignment_set.filter(post__membership=True).filter(trial=False)
         
+        # Om man inte har några sådana assignments returnerar vi None
+        if not a:
+            return None
+        
         # Kolla om någon assignment är pågående, bryt och returnera None i så fall
         # Kan inte göras med vanliga databasfrågor eftersom ongoing är en metod och inte ett fält
         # Man kan dock implementera samma sak som is_ongoing() för att optimera, men det torde vara överflödigt i det här fallet
         for i in a:
             if i.ongoing:
                 return None
-        
+
         # Sorterar fallande på slutdatum, tar det första objektet och ger detta objekts slutdatum
         return a.order_by('-end_date')[0].end_date
 
