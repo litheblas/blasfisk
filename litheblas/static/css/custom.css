@@ -4,8 +4,15 @@ html {
 }
 
 body {
-    /* Margin bottom by footer height */
-    /*margin-bottom: 60px;*/
+    /* Skjut upp innehållet lika långt som botten-navbar:en är hög. */
+    margin-bottom: 45px;
+}
+
+@media (max-width: 767px) {
+    body {
+        /* Skjut upp innehållet lika långt som botten-navbar:en är hög. */
+        margin-bottom: 100px;
+    }
 }
 
 footer {
@@ -84,4 +91,14 @@ header .lead {
     width: auto;
     height: auto;
     vertical-align: middle;
+}
+
+@media (max-width: 767px) {
+    .navbar-nowrap > li {
+        /* Det här är plankat från Bootstraps nav-justified */
+        float: none;
+        display: table-cell;
+        width: 1%;
+        text-align: center;
+    }
 }
