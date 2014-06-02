@@ -196,7 +196,7 @@ class UserManager(BaseUserManager):
             raise ValueError(u'Users must have a password')
         
         # TODO: Fixa nåt snyggare
-        person = Person(first_name='first', last_name='last')
+        person = Person(first_name='first name', last_name='last name')
         person.save()
 
         user = self.model(
