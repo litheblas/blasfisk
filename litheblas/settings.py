@@ -266,5 +266,5 @@ CKEDITOR_SETTINGS = {
     'language': 'en',
     'toolbar': 'CMS',
     'skin': 'moono',
-    'allowedContent': 'false', #Stänger av filtrering av taggar.
+    #'allowedContent': 'false', #Stänger av filtrering av taggar.
 }
