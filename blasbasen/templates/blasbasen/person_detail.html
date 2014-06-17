@@ -2,16 +2,17 @@
 {% load cms_tags %}
 
 {% block content %}
-    <div class="page-header">
+    <div class="page-header page-title">
+        <div class="container">
         <h1>{{ person.full_name }} 
             <small>
                 {% if person.start_date %}{{ person.start_date.year }}{% endif %}–{% if person.end_date %}{{ person.end_date.year }}{% endif %}
             </small>
             <div class="pull-right">
-                <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span> Ändra</button>
-                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirm-deletion"><span class="glyphicon glyphicon-trash"></span> Ta bort</button>
+                <button class="btn btn-default btn-xs"><span class="fa fa-edit"></span> Ändra</button>
+                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirm-deletion"><span class="fa fa-trash-o"></span> Ta bort</button>
             </div>
-        </h1>
+        </h1></div>
     </div>
     
     <div class="modal fade" id="edit-user" tabindex="-1" role="dialog" aria-labelledby="edit-user" aria-hidden="true">
@@ -47,7 +48,7 @@
             </div>
         </div>
     </div>
-    
+    <div class="container">
     <div class="col-sm-3">
         <img src="{{ person.primary_avatar.url }}" class="img-rounded img-responsive">
         <a href="/admin/blasbasen/person/{{ person.id }}/" data-toggle="modal" data-target="#edit-user">Ändra</a>
@@ -188,5 +189,6 @@
             </div>
             <div class="tab-pane" id="mailing">4</div>
         </div>
+    </div>
     </div>
 {% endblock content %}

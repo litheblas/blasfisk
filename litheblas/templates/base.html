@@ -8,8 +8,7 @@
         <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
         
         {% render_block "css" %}
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/latest/yeti/bootstrap.min.css">
-        <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+        <link rel="stylesheet" href="{% static 'css/blasstrap.css' %}">
         <link href="http://netdna.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -19,63 +18,62 @@
         <script src="http://cdn.jsdelivr.net/respond/latest/respond.min.js"></script>
         <![endif]-->
 
-        <script src="http://code.jquery.com/jquery.js"></script>
-        <script src="http://netdna.bootstrapcdn.com/bootstrap/latest/js/bootstrap.min.js"></script>
-        {% render_block "js" %}
+        
     </head>
     <body>
         {% cms_toolbar %}
         <header>
-            <div class="container top">
-                <div class="row">
-                    <div class="hidden-xs col-sm-4 pull-down logo">
-                        <br>
-                        <a href="/"><img src="{% static 'img/overkropp.svg' %}" class="img-responsive center-block"></a>
+            <div class="navbar navbar-default navbar-fixed-top navbar-main">
+                <div class="container">
+                    <div class="navbar-header">
+
+                        <a href="" class="navbar-brand">
+                            <img src="/static/img/logo-bla.svg" class="logo img-responsive">
+                            <small>Linköpings Tekniska Högskolas Blåscorps sedan 1973</small></a>
+                        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
                     </div>
-                    <div class="col-xs-12 col-sm-8 pull-down head">
-                        <a href="/"><img src="{% static 'img/logo.svg' %}" alt="LiTHe Blås" class="img-responsive" width="500"></a>
-                        <p class="lead hidden-xs hidden-sm">
-                            Linköpings Tekniska Högskolas Blåscorps sedan 1973
-                        </p>
-                        <div class="spacer"></div>
+                    <div class="navbar-collapse collapse" id="navbar-main">
+                        <ul class="nav navbar-nav navbar-right">
+                            {% show_menu 0 100 100 100 'elements/menu.html' %}
+                        </ul>
+
                     </div>
-                    <script src="{% static 'js/pull-down.js' %}"></script> {# Det här skriptet bör ligga just här för att verkställa 'pull-down' så snabbt som möjligt #}
-                </div>
-            </div>
-            <div class="navbar-wrapper">
-                <div class="navbar navbar-default">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav">
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                        </div>
-                        <div class="navbar-collapse collapse" id="nav">
-                            <ul class="nav navbar-nav">
-                                {% show_menu 0 100 100 100 'elements/menu.html' %}
-                            </ul>
-                            <ul class="nav navbar-nav navbar-right navbar-nowrap">
-                                {% language_chooser 'elements/language_chooser.html' %}
-                            </ul>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </header>
-        <div class="container">
             <!--<ol class="breadcrumb">
                 {% show_breadcrumb 0 'elements/breadcrumb.html' %}
             </ol>-->
             {% block content %}
             {% endblock content %}
-        </div>
         <footer>
-                <div class="navbar navbar-default">
+            <div class="page-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-7 col-sm-4"><p><strong>LiTHe Blås</strong><br>Kårallen, Linköpings universitet<br>581 83 Linköping</p>
+                            <p><a href="mailto:lithe.blas@music.liu.se" target="_blank">lithe.blas@music.liu.se</a><br>Bankgiro 189397-3</p>
+                            <p>
+                                <a href="http://open.spotify.com/artist/3gwlyGQlIZzzVTgUWXghY6" target="_blank"><span class="fa fa-spotify fa-lg"></span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="https://www.youtube.com/results?search_query=lithe+bl%C3%A5s" target="_blank"><span class="fa fa-youtube fa-lg"></span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="http://facebook.com/litheblas" target="_blank"><span class="fa fa-facebook fa-lg"></span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="http://instagram.com/litheblas" target="_blank"><span class="fa fa-instagram fa-lg"></span></a>&nbsp;&nbsp;&nbsp;
+                                <a href="https://plus.google.com/+LitheblasOrg" target="_blank"><span class="fa fa-google-plus fa-lg"></span></a>
+                            </p></div>
+                        <div class="col-xs-5 col-sm-8 pull-down"><img src="/static/img/overkropp.svg" class="pull-right img-responsive"></div>
+                            
+                            
+                            </div>
+                        </div>
+                </div>
+                
+                <!--<div class="navbar navbar-default">
                     <div class="container">
                         <div class="navbar">
-                            <!--{% static_placeholder 'footer' %}-->
                             <ul class="nav navbar-nav">
                                 {% if user.is_anonymous %}
                                 <li>
@@ -104,18 +102,9 @@
                                 </li>
                                 {% endif %}
                             </ul>
-                            <ul class="nav navbar-nav navbar-right navbar-nowrap">
-                                
-                                <li><a href="http://open.spotify.com/artist/3gwlyGQlIZzzVTgUWXghY6"><span class="fa fa-spotify fa-lg"></span></a></li>
-                                <li><a href="https://www.youtube.com/results?search_query=lithe+bl%C3%A5s"><span class="fa fa-youtube fa-lg"></span></a></li>
-                                <li><a href="http://facebook.com/litheblas"><span class="fa fa-facebook fa-lg"></span></a></li>
-                                <li><a href="http://instagram.com/litheblas"><span class="fa fa-instagram fa-lg"></span></a></li>
-                                <li><a href="https://plus.google.com/+LitheblasOrg"><span class="fa fa-google-plus fa-lg"></span></a></li>
-                                
-                            </ul>
                         </div>
                     </div>
-                </div>
+                </div>-->
         </footer>
         <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
             <div class="modal-dialog">
@@ -154,6 +143,11 @@
                 </div>
             </div>
         </div>
+        
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/latest/js/bootstrap.min.js"></script>
+        <script src="/static/js/pull-down.js"></script>
+        {% render_block "js" %}
     </body>
 </html>
 
