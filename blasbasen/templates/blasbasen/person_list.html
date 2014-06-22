@@ -115,7 +115,10 @@
                                 <div class="form-group">
                                     <label for="countries">Länder</label>
                                     <select multiple class="form-control" id="countries" name="country">
-                                        <option>1</option>
+                                        {% for c in countries %}
+                                        <option {% if request.GET.country = c.0 %}selected=""{% endif %} value="{{ c.0 }}">{{ c.1 }}</option>
+                                        {% endfor %}
+
                                     </select>
                                     <p class="help-block">
                                         Tips: Använd Ctrl eller Cmd (⌘)

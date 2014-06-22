@@ -17,6 +17,7 @@ djangocms-text-ckeditor==2.1.4
 gunicorn==18.0
 html5lib==1.0b3
 psycopg2==2.5.3
+pycountry==1.6
 python-dateutil==2.2
 six==1.6.1
 wsgiref==0.1.2

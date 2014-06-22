@@ -5,6 +5,7 @@ from django.http import Http404
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 from blasbasen.models import Person, Section, Post
+from globals import COUNTRIES
 
 class SectionList(ListView):
     model = Section
@@ -65,6 +66,7 @@ class PersonList(ListView):
         
         context['sections'] = Section.objects.all().order_by('name')
         context['posts'] = Post.objects.all().order_by('name').order_by('section')
+        context['countries'] = COUNTRIES
         
         if self.request.GET:
             #Hämtar alla GET-parametrar men tar bort sort och tab. Används av "sorterings-väljaren" för att behålla alla sökparametrar.
