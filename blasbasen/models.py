@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from localflavor.se.forms import SEOrganisationNumberField
 from imagekit.models import ProcessedImageField, ImageSpecField
 
+
 from globals import GENDERS, COUNTRIES
 from blasbasen.backends import make_permission_set
 from blasbasen import validators
@@ -63,12 +64,14 @@ class Person(models.Model):
     
     # Kontaktinformation
     address = models.CharField(max_length=256, blank=True, verbose_name=u'adress')
-    postcode = models.CharField(max_length=256, blank=True, verbose_name=u'postnummer')  # Byt namn till post_code
+    postcode = models.CharField(max_length=256, blank=True, verbose_name=u'postnummer') # Byt namn till post_code
     city = models.CharField(max_length=256, blank=True, verbose_name=u'stad')
     country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name=u'land')
     
     phone = models.CharField(max_length=256, blank=True, verbose_name=u'telefonnummer', help_text=u'Ange landskod om annat land än Sverige.')
     email = models.EmailField(max_length=256, blank=True, verbose_name=u'e-postadress')
+    
+    last_updated = models.DateTimeField(auto_now=True)
     
     # Låt oss fortsätta kalla den objects istället för typ people, så hålls det konsekvent mellan alla modeller
     objects = PersonManager()
@@ -78,6 +81,9 @@ class Person(models.Model):
         verbose_name = u'person'
         verbose_name_plural = u'personer'
     
+    def __unicode__(self):
+        return self.get_full_name()
+    
     def clean(self):
         cleaned_data = super(Person, self).clean()
         
@@ -85,6 +91,7 @@ class Person(models.Model):
         if self.born and self.deceased:
             validators.datetime_before_datetime(self.born, self.deceased, _(u'Decease date must be after birth date.'))
         return cleaned_data
+    
     def get_age(self):
         if not self.born:
             return None
@@ -145,8 +152,7 @@ class Person(models.Model):
         # Sorterar fallande på slutdatum, tar det första objektet och ger detta objekts slutdatum
         return a.order_by('-end_date')[0].end_date
 
-    def __unicode__(self):
-        return self.get_full_name()
+    
     
     age = property(get_age)
     full_name = property(get_full_name)
