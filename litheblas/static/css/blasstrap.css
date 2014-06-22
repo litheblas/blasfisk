@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic);
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
@@ -6082,14 +6083,34 @@ body {
   margin-bottom: 180px;
   padding-bottom: 20px;
 }
-.page-header.page-title {
+@media (max-width: 767px) {
+  body {
+    margin-top: 108px;
+  }
+}
+.page-header h1 > small {
+  font-weight: 300;
+}
+.page-title {
+  padding-bottom: 9px;
+  margin: 40px 0 20px;
+  border-bottom: 1px solid #eeeeee;
   margin-top: 0;
   background-color: #fffbd7;
   color: #1c4386;
   border-bottom: #fff5a4;
 }
+.page-title h1 > small {
+  font-weight: 300;
+}
 .navbar-main {
   padding: 30px 0px;
+}
+@media (max-width: 767px) {
+  .navbar-main .navbar-toggle {
+    margin-top: 19px;
+    margin-bottom: 19px;
+  }
 }
 .navbar-main .navbar-nav {
   padding-top: 20px;
@@ -6098,14 +6119,54 @@ body {
 .navbar-main .navbar-nav > li > a {
   padding: 10px 15px;
 }
+@media (max-width: 767px) {
+  .navbar-main .navbar-nav {
+    padding-top: 17px;
+    padding-bottom: 17px;
+  }
+}
 .navbar-main .navbar-brand {
   padding: 0 15px;
+}
+@media (max-width: 767px) {
+  .navbar-main .navbar-brand {
+    height: 72px;
+    max-width: 80%;
+  }
 }
 .navbar-main .navbar-brand .logo {
   height: 60px;
 }
+@media (max-width: 767px) {
+  .navbar-main .navbar-brand .logo {
+    height: 54px;
+  }
+}
 .navbar-main .navbar-brand small {
   display: block;
+}
+@media (max-width: 767px) {
+  .navbar-main .navbar-brand small {
+    font-size: small;
+  }
+}
+@media (max-width: 767px) {
+  .navbar-main {
+    padding: 18px 0px;
+  }
+}
+.dropdown-header-link {
+  display: block;
+  padding: 3px 20px;
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #999999;
+  padding-right: 0;
+  padding-left: 0;
+}
+.dropdown-header-link > a {
+  padding-right: 20px;
+  padding-left: 20px;
 }
 .navbar-nav > li > a {
   text-transform: uppercase;
@@ -6114,6 +6175,7 @@ body {
 .page-footer {
   position: absolute;
   padding-top: 20px;
+  padding-bottom: 0;
   bottom: 0;
   width: 100%;
   height: 180px;
@@ -6128,6 +6190,21 @@ body {
 }
 .page-footer a {
   color: inherit;
+}
+.page-footer img.blottartuba {
+  position: absolute;
+  bottom: -160px;
+}
+.page-footer .row {
+  position: relative;
+}
+.page-footer .row .pull-down {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.page-footer .row .contact-links {
+  margin-bottom: 20px;
 }
 .carousel-inner > .item > img {
   min-width: 100%;
@@ -6148,4 +6225,19 @@ body {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+.align-right {
+  float: right !important;
+  margin-left: 32px;
+}
+.align-left {
+  float: left !important;
+  margin-right: 32px;
+}
+.align-center > img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
