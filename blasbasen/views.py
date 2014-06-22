@@ -42,23 +42,26 @@ class PersonList(ListView):
     def get_context_data(self, **kwargs):
         context = super(PersonList, self).get_context_data(**kwargs)
         
+        # Här definieras alla filter. Skriv ett nytt här så genereras det HTML automatiskt.
+        # Om det behövs fler sätt att filtrera personer på, rekommenderar jag att man skriver en metod till PersonManager.
+        # Det är så jag gjort befintliga filter, så kör man bara en .filter(pk__in=Person.objects.hokuspokus()).
         context['filters'] = []
-        context['filters'].append({'id': 'all',
-                                   'name': 'Alla',
-                                   'default': True,
-                                   'content': context['people']})
+        context['filters'].append({'id': 'members',
+                                   'name': u'Blåsare',
+                                   'default': True, # Avgör vilken flik som är förvald. Får bara finnas på ett filter.
+                                   'content': context['people'].filter(pk__in=Person.objects.members())})
         context['filters'].append({'id': 'active',
-                                   'name': 'Aktiva',
-                                   'content': context['people'].filter(id=Person.objects.active())}) #Lite besvärligt att sortera ut eftersom context['people'] är en QuerySet. Bättre lösning välkomnas
+                                   'name': u'Aktiva',
+                                   'content': context['people'].filter(pk__in=Person.objects.active())})
         context['filters'].append({'id': 'oldies',
-                                   'name': 'Gamlingar',
-                                   'content': context['people'].filter(id=Person.objects.oldies())})
-        context['filters'].append({'id': 'honorary',
-                                   'name': 'Hedersmedlemmar',
-                                   'content': context['people']}) #TODO: Filtrera ut endast hedersmedlemmar
+                                   'name': u'Gamlingar',
+                                   'content': context['people'].filter(pk__in=Person.objects.oldies())})
         context['filters'].append({'id': 'others',
-                                   'name': 'Löst folk',
-                                   'content': context['people']}) #TODO: Filtrera ut endast löst folk
+                                   'name': u'Löst folk',
+                                   'content': context['people'].filter(pk__in=Person.objects.others())})
+        context['filters'].append({'id': 'all',
+                                   'name': u'Alla',
+                                   'content': context['people']})
         
         context['sections'] = Section.objects.all().order_by('name')
         context['posts'] = Post.objects.all().order_by('name').order_by('section')

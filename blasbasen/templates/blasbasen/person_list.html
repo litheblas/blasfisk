@@ -13,7 +13,7 @@
             <ul class="nav nav-pills nav-justified">
                 {% for f in filters %}
                 <li{% if request.GET.tab = f.id or not request.GET.tab and f.default %} class="active"{% endif %}>
-                    <a href="#{{ f.id }}" data-toggle="tab">{{ f.name }}</a>
+                    <a href="#{{ f.id }}" data-toggle="tab">{{ f.name }} <span class="badge">{{ f.content.count }}</span></a>
                     </li>
                     {% endfor %}
             </ul>

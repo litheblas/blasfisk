@@ -29,16 +29,20 @@ def generate_avatar_filename(instance, filename):
 
 class PersonManager(models.Manager):
     def members(self):
-        pass # TODO: Filtrera ut alla _medlemmar_, aktiva som gamlingar
+        return self.model.objects.filter(assignment__in=Assignment.objects.memberships()).distinct()
     
     def active(self):
-        # Hämtar personer som är relaterade till aktiva assignments. distinct() tar bort eventuella dubletter.
-        return self.model.objects.filter(assignment=Assignment.objects.active()).distinct()
+        """Hämtar personer som är relaterade till aktiva assignments. distinct() tar bort eventuella dubletter."""
+        return self.model.objects.filter(assignment__in=Assignment.objects.active()).distinct()
     
     def oldies(self):
-        # Hämtar personer som är relaterade till utgångna assignments och tar bort aktiva. distinct() tar bort eventuella dubletter.
-        return self.model.objects.filter(assignment=Assignment.objects.oldies()).exclude(assignment=Assignment.objects.active()).distinct()
-
+        """Hämtar personer som är relaterade till utgångna assignments (för att hitta personerna som _varit_ medlemmar)
+        och exkluderar sedan personer som har relationer till aktiva dito. distinct() tar bort eventuella dubletter."""
+        return self.model.objects.filter(assignment__in=Assignment.objects.oldies()).exclude(assignment__in=Assignment.objects.active()).distinct()
+    
+    def others(self):
+        return self.model.objects.exclude(assignment__in=Assignment.objects.memberships()).distinct()
+        
 class Person(models.Model):
     """Lagrar personer (som i människor) och är den datatyp som nästan allt i Blåsbasen kopplas till."""
     first_name = models.CharField(max_length=256, verbose_name=u'förnamn')
@@ -371,6 +375,9 @@ class Post(models.Model):
         return self.name
 
 class AssignmentManager(models.Manager):
+    def memberships(self):
+        return self.model.objects.filter(post__membership=True)
+    
     def active(self):
         return self.model.objects.filter(Q(post__membership=True),
                                          Q(start_date__lte=datetime.date.today()),
