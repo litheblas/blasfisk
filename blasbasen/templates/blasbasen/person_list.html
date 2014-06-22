@@ -21,6 +21,7 @@
             <div class="tab-content">
                 {% for f in filters %}
                 <div class="tab-pane {% if request.GET.tab = f.id or not request.GET.tab and f.default %}active{% endif %}" id="{{ f.id }}">
+                    {% if f.content %}
                     <table class="table table-hover">
                         <tr>
                             {% if perms.blasbasen.change_person %}
@@ -30,24 +31,28 @@
                             <th>Blåsnamn<a href="?sort=nickname&tab={{ f.id }}&{{ search_params.urlencode }}" class="pull-right"><span class="fa fa-sort-alpha-asc"></span></a></th>
                             <th>Efternamn<a href="?sort=last_name&tab={{ f.id }}&{{ search_params.urlencode }}" class="pull-right"><span class="fa fa-sort-alpha-asc"></span></a></th>
                             <th>Sektion</th>
-                            <th>Startår</th>
-                            <th>Slutår</th>
+                            <th>Antagen</th>
+                            <th>Gamling</th>
                         </tr>
 
                         {% for person in f.content %}
                         <tr>
                             {% if perms.blasbasen.change_person %}
-                            <td><a href="{{ person.id }}/change/"><span class="fa fa-lg fa-edit"></span></a></td>
+                            <td><a href="{{ person.pk }}/change/"><span class="fa fa-lg fa-edit"></span></a></td>
                             {% endif %}
-                            <td><a href="{{ person.id }}/">{{ person.first_name }}</a></td>
-                            <td><a href="{{ person.id }}/">{{ person.nickname }}</a></td>
-                            <td><a href="{{ person.id }}/">{{ person.last_name }}</a></td>
+                            <td><a href="{{ person.pk }}/">{{ person.first_name }}</a></td>
+                            <td><a href="{{ person.pk }}/">{{ person.nickname }}</a></td>
+                            <td><a href="{{ person.pk }}/">{{ person.last_name }}</a></td>
                             <td>#TODO</td>
                             <td>{{ person.start_date.year }}</td>
                             <td>{{ person.end_date.year }}</td>
                         </tr>
                         {% endfor %}
                     </table>
+                    {% else %}
+                    <p>Inga träffar.</p>
+                    {% endif %}
+                    
                 </div>
                 {% endfor %}
             </div>
@@ -79,20 +84,16 @@
                     </div>
                     <div id="advancedsearch_" class="panel-collapse collapse">
 
-                        
+                        <div class="panel-body">
 
-                            <div class="panel-body">
-                                
-                                
-                            </div>
-                            
-                        
+                        </div>
+
                     </div>
                     <div id="advancedsearch" class="list-group panel-collapse collapse{% if request.GET.search = 'a' %} in{% endif %}">
                         <form role="form" method="get" action=".">
                             <input type="hidden" name="search" value="a">
                             <div class="list-group-item">
-                                
+
                                 <div class="form-group">
                                     <label for="name">Namn</label>
                                     <input type="text" class="form-control" id="name" name="name" value="{{ request.GET.name }}" placeholder="Namn">
@@ -131,7 +132,7 @@
                                     <label for="sections">Sektioner</label>
                                     <select multiple class="form-control" id="sections" name="section">
                                         {% for s in sections %}
-                                        <option value="{{ s.id }}">{{ s }}</option>
+                                        <option value="{{ s.pk }}">{{ s }}</option>
                                         {% endfor %}
                                     </select>
                                     <p class="help-block">
@@ -142,7 +143,7 @@
                                     <label for="posts">Poster</label>
                                     <select multiple class="form-control" id="posts" name="post">
                                         {% for p in posts %}
-                                        <option value="{{ p.id }}">{{ p }}</option>
+                                        <option value="{{ p.pk }}">{{ p }}</option>
                                         {% endfor %}
                                     </select>
                                     <p class="help-block">
@@ -163,14 +164,15 @@
                                         Personer utan inloggningskonto </label>
                                 </div>
                             </div>
-                        </form>
+                        
                         <div class="panel-footer">
-                                <button type="submit" class="btn btn-primary btn-sm form-control">
-                                    <span class="fa fa-search"></span> Sök
-                                </button>
-                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm form-control">
+                                <span class="fa fa-search"></span> Sök
+                            </button>
+                        </div>
+                        </form>
                     </div>
-                    
+
                 </div>
             </div>
             <h3>Åtgärder</h3>

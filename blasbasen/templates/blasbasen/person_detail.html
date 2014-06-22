@@ -51,7 +51,7 @@
     <div class="container">
     <div class="col-sm-3">
         <img src="{{ person.primary_avatar.url }}" class="img-rounded img-responsive">
-        <a href="/admin/blasbasen/person/{{ person.id }}/" data-toggle="modal" data-target="#edit-user">Ändra</a>
+        <a href="/admin/blasbasen/person/{{ person.pk }}/" data-toggle="modal" data-target="#edit-user">Ändra</a>
     </div>
     <div class="col-sm-9">
         <ul class="nav nav-justified nav-pills" id="user-tabs">
@@ -59,8 +59,9 @@
             <li><a href="#info" data-toggle="tab">Info</a></li>
             <li><a href="#membership" data-toggle="tab">Medlemsskap</a></li>
             <li><a href="#attendance" data-toggle="tab">Närvaro</a></li>
-            <li><a href="#statistics" data-toggle="tab">Statistik</a></li>
+            <li><a href="#statistics" data-toggle="tab">Barstatistik</a></li>
             <li><a href="#mailing" data-toggle="tab">Mailinglistor</a></li>
+            <li><a href="#pictures" data-toggle="tab">Bilder</a></li>
         </ul>
 
         <div class="tab-content">
@@ -187,7 +188,9 @@
                     </tr>
                 </table>
             </div>
-            <div class="tab-pane" id="mailing">4</div>
+            <div class="tab-pane" id="statistics">Barstatistik</div>
+            <div class="tab-pane" id="mailing">Mailinglistor</div>
+            <div class="tab-pane" id="pictures">Bilder från galleriet</div>
         </div>
     </div>
     </div>
