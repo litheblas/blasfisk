@@ -37,6 +37,7 @@ class GroupMemberInline(admin.TabularInline):
 class UserInline(admin.StackedInline):
     model = User
     max_num = 1
+    extra = 0
 
 class BlasUserInline(admin.StackedInline):
     
@@ -46,6 +47,8 @@ class BlasUserAdmin(admin.StackedInline, UserAdmin):
     # TODO: Bättre
     model = User
     fk_name = 'person'
+    max_num = 1
+    extra = 0
 
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
