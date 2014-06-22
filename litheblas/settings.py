@@ -225,8 +225,8 @@ CMS_LANGUAGES = {
 }
 
 CMS_TEMPLATES = (
-    ('pages/page.html', _('Page')),
-    ('pages/special_page.html', _('Special Page')),
+    ('pages/page.html', _('Page')), # Först i listan, blir standard
+    ('pages/custom_page.html', _('Custom Page')),
     ('pages/feature.html', _('Page with Feature')),
     ('pages/home.html', _('LiTHe Hem')),
 )
@@ -243,7 +243,7 @@ CMS_PLACEHOLDER_CONF = {
             {
                 'plugin_type': 'TextPlugin',
                 'values':{
-                    'body': u'<p>Denna sida är tom. :(</p>'
+                    'body': u'<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
                 },
             },
         ]
