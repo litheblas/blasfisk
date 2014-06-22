@@ -11,12 +11,15 @@ from django.contrib.auth.models import (BaseUserManager,
                                         AbstractBaseUser,
                                         Permission,
                                         _user_get_all_permissions)
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
+
 from localflavor.se.forms import SEOrganisationNumberField
 from imagekit.models import ProcessedImageField, ImageSpecField
 
 from globals import GENDERS, COUNTRIES
 from blasbasen.backends import make_permission_set
-
+from blasbasen import validators
 
 def generate_avatar_filename(instance, filename):
     extension = os.path.splitext(filename)[1].lower()
@@ -42,8 +45,8 @@ class Person(models.Model):
     nickname = models.CharField(max_length=256, blank=True, verbose_name=u'blåsnamn')
     last_name = models.CharField(max_length=256, verbose_name=u'efternamn', help_text=u'Ange gärna tidigare efternamn inom parentes, t.ex. Vidner (Eriksson)')
     gender = models.CharField(max_length=1, choices=GENDERS, blank=True, verbose_name=u'kön')
-    born = models.DateField(blank=True, null=True, verbose_name=u'födelsedatum')
-    deceased = models.DateField(blank=True, null=True, verbose_name=u'dödsdatum')
+    born = models.DateField(blank=True, null=True, verbose_name=u'födelsedatum', validators=[validators.date_before_today])
+    deceased = models.DateField(blank=True, null=True, verbose_name=u'dödsdatum', validators=[validators.date_before_today])
     personal_id_number = models.CharField(max_length=4, blank=True, verbose_name=u'personnummer', help_text=u'Sista 4 siffrorna i personnumret')  # Last 4 characters in Swedish personal id number
     liu_id = models.CharField(max_length=8, blank=True, verbose_name=u'LiU-ID')
     
@@ -71,6 +74,13 @@ class Person(models.Model):
         verbose_name = u'person'
         verbose_name_plural = u'personer'
     
+    def clean(self):
+        cleaned_data = super(Person, self).clean()
+        
+        # Validera endast om både födelse- och dödsdatum angetts.
+        if self.born and self.deceased:
+            validators.datetime_before_datetime(self.born, self.deceased, _(u'Decease date must be after birth date.'))
+        return cleaned_data
     def get_age(self):
         if not self.born:
             return None
