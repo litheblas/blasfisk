@@ -1,0 +1,37 @@
+{% load cms_tags %}
+
+<div id="carousel{{ instance.pk }}" class="carousel carousel-fade slide" data-ride="carousel">
+    {% if instance.indicators and instance.entries.count > 1 %}
+        <ol class="carousel-indicators">
+            {% for entry in instance.entries.all %}
+                <li data-target="#carousel{{ instance.pk }}" data-slide-to="{{ forloop.counter0 }}"
+                        {% if forloop.first %} class="active"{% endif %}></li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    <div class="carousel-inner">
+        {% for entry in instance.entries.all %}
+            <div class="item{% if forloop.first %} active{% endif %}">
+                <img src="{{ entry.image.url }}" alt="">
+
+                <div class="carousel-caption">
+                    <h3>{{ entry.caption_heading }}</h3>
+
+                    <p>
+                        {{ entry.caption }}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if instance.controls and instance.entries.count > 1 %}
+        <a class="left carousel-control" href="#carousel{{ instance.pk }}" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel{{ instance.pk }}" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    {% endif %}
+</div>

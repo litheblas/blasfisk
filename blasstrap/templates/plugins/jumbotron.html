@@ -1,0 +1,13 @@
+{% load cms_tags %}
+<div class="jumbotron{% if instance.extra_css_classes %} {{ instance.extra_css_classes }}{% endif %}">
+    {% if instance.container %}
+        <div class="container">
+    {% endif %}
+    {% for plugin in instance.child_plugin_instances %}
+        {% render_plugin plugin %}
+    {% endfor %}
+    {% render_placeholder instance.content %}
+    {% if instance.container %}
+        </div>
+    {% endif %}
+</div>
