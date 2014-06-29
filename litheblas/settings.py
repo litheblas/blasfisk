@@ -97,6 +97,7 @@ INSTALLED_APPS = (
     'imagekit',
     
     # LiTHe Blås
+    'blasstrap',
     #'mailing',
     'blasbasen',
     #'events',
@@ -169,16 +170,8 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join('/opt/litheblas.org/static')
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'litheblas', 'static'),
-)
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'litheblas', 'media')
 MEDIA_URL = '/media/'
-
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'litheblas', 'templates'),
-)
 
 #CMS-specifikt
 TEMPLATE_LOADERS = (

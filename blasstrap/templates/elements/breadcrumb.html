@@ -1,0 +1,9 @@
+{% for ance in ancestors %}
+    <li>
+        {% if not forloop.last %}
+            <a href="{{ ance.get_absolute_url }}">{% autoescape off %}{{ ance.get_menu_title }}{% endautoescape %}</a>
+        {% else %}
+            <span class="active">{% autoescape off %}{{ ance.get_menu_title }}{% endautoescape %}</span>
+        {% endif %}
+    </li>
+{% endfor %}

@@ -1,0 +1,175 @@
+{% load cms_tags staticfiles sekizai_tags menu_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LiTHe Blås{% block title %}{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+
+    {% render_block "css" %}
+    <link rel="stylesheet" href="{% static 'css/blasstrap.css' %}">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="http://cdn.jsdelivr.net/html5shiv/latest/html5shiv.min.js"></script>
+        <script src="http://cdn.jsdelivr.net/respond/latest/respond.min.js"></script>
+        <![endif]-->
+
+
+</head>
+<body>
+{% cms_toolbar %}
+<header>
+    <div class="navbar navbar-default navbar-fixed-top navbar-main">
+        <div class="container">
+            <div class="navbar-header">
+
+                <a href="/" class="navbar-brand">
+                    <img src="/static/img/logo-bla.svg" class="logo img-responsive">
+                    <small>Linköpings Tekniska Högskolas Blåscorps sedan 1973</small>
+                    <small class="mini">Linköpings Tekniska Högskolas Blåscorps</small>
+                </a>
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse" id="navbar-main">
+                <ul class="nav navbar-nav navbar-right">
+                    {% show_menu 0 2 100 100 'elements/menu.html' %}
+                    <li>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Testmeny <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-header-link"><a href="">Sektioner</a></li>
+                            <li><a href="">Trumpetsektionen</a></li>
+                            <li><a href="">Trumpetsektionen</a></li>
+                            <li><a href="">Trumpetsektionen</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+</header>
+<!--<ol class="breadcrumb">
+                {% show_breadcrumb 0 'elements/breadcrumb.html' %}
+            </ol>-->
+{% block content %}
+{% endblock content %}
+<footer>
+    <div class="page-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-7 col-sm-4 contact-links"><p><strong>LiTHe Blås</strong><br>Kårallen, Linköpings
+                    universitet<br>581 83 Linköping</p>
+
+                    <p><a href="mailto:lithe.blas@music.liu.se" target="_blank">lithe.blas@music.liu.se</a><br>Bankgiro
+                        189397-3</p>
+                    <a href="http://open.spotify.com/artist/3gwlyGQlIZzzVTgUWXghY6" target="_blank"><span
+                            class="fa fa-spotify fa-lg"></span></a>&nbsp;&nbsp;&nbsp;
+                    <a href="https://www.youtube.com/results?search_query=lithe+bl%C3%A5s" target="_blank"><span
+                            class="fa fa-youtube fa-lg"></span></a>&nbsp;&nbsp;&nbsp;
+                    <a href="http://facebook.com/litheblas" target="_blank"><span
+                            class="fa fa-facebook fa-lg"></span></a>&nbsp;&nbsp;&nbsp;
+                    <a href="http://instagram.com/litheblas" target="_blank"><span class="fa fa-instagram fa-lg"></span></a>&nbsp;&nbsp;&nbsp;
+                    <a href="https://plus.google.com/+LitheblasOrg" target="_blank"><span
+                            class="fa fa-google-plus fa-lg"></span></a></div>
+                <div class="col-xs-5 col-sm-8 pull-down"><img src="/static/img/overkropp.svg"
+                                                              class="pull-right img-responsive"></div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="navbar navbar-default">
+                    <div class="container">
+                        <div class="navbar">
+                            <ul class="nav navbar-nav">
+                                {% if user.is_anonymous %}
+                                <li>
+                                    <a href="" data-toggle="modal" data-target="#login"><span class="fa fa-lg fa-fw fa-sign-in"></span> Logga in</a>
+                                </li>
+                                {% else %}
+                                <li class="dropdown dropup">
+                                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-lg fa-fw fa-user"></span>
+        {{ user.full_name }}</a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="/sv/internt/blasbasen/person/{{ user.pk }}/">Profil</a>
+                                        </li>
+                                        <li>
+                                            <a href="/admin/password_change/">Byt lösenord</a>
+                                        </li>
+                                        {% if user.is_admin %}
+                                        <li>
+                                            <a href="/admin/">Admin</a>
+                                        </li>
+                                        {% endif %}
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="{% url 'django.contrib.auth.views.logout' %}"><span class="fa fa-fw fa-sign-out"></span> Logga ut</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>-->
+</footer>
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Inloggning för medlemmar</h4>
+            </div>
+            <form role="form" class="form-horizontal" method="post" action="/login/?next={{ request.path }}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="username" class="control-label col-sm-3">Användarnamn</label>
+
+                        <div class="col-sm-9">
+                            <input id="username" name="username" class="form-control" type="text"
+                                   placeholder="Användarnamn">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="login_pass" class="control-label col-sm-3">Lösenord</label>
+
+                        <div class="col-sm-9">
+                            <input id="password" name="password" class="form-control" type="password"
+                                   placeholder="Lösenord">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Avbryt
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        Logga in
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/latest/js/bootstrap.min.js"></script>
+
+{% render_block "js" %}
+</body>
+</html>
+
