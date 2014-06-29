@@ -1,16 +1,18 @@
 {% load cms_tags %}
 {% if instance.container %}
-<div class="container">
+    <div class="container">
 {% endif %}
 <div class="{{ instance.wrapper_css_classes }}">
     {% for entry in instance.entries.all %}
         <div class="{{ instance.entry_css_classes }}">
             <img src="{{ entry.image.url }}">
-            <h3>{{ entry.heading }}</h3>
-            {{ entry.caption }}
+            {% autoescape off %}
+                <h3>{{ entry.heading }}</h3>
+                {{ entry.caption }}
+            {% endautoescape %}
         </div>
     {% endfor %}
 </div>
 {% if instance.container %}
-</div>
+    </div>
 {% endif %}
