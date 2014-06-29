@@ -61,7 +61,7 @@ class PusherEntry(models.Model):
     pusher = models.ForeignKey(Pusher, related_name='entries')
     image = models.ImageField(upload_to=generate_pusher_image_filename)
     heading = models.CharField(max_length=256, blank=True)
-    caption = models.TextField(default='<p></p>', help_text='Använd med förstånd, HTML-taggar tillåts. Se till att koden är korrekt och att du använder <p>.')
+    caption = models.TextField(blank=True, default='<p></p>', help_text='Använd med förstånd, HTML-taggar tillåts. Se till att koden är korrekt och att du använder <p>.')
     priority = models.IntegerField()
 
     class Meta:
