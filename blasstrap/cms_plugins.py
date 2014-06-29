@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.admin import StackedInline
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
-from blasstrap.models import Carousel, CarouselEntry, Jumbotron
+from blasstrap.models import Carousel, CarouselEntry, Jumbotron, Pusher, PusherEntry
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -33,8 +33,24 @@ class CarouselPlugin(CMSPluginBase):
     inlines = [CarouselEntryInline]
 
 
+class PusherEntryInline(StackedInline):
+    model = PusherEntry
+    extra = 3
+
+
+class PusherPlugin(CMSPluginBase):
+    name = _(u'Pusher')
+    module = _(u'Bootstrap')
+
+    model = Pusher
+    allow_children = False
+    render_template = "plugins/pusher.html"
+
+    inlines = [PusherEntryInline]
+
 plugin_pool.register_plugin(JumbotronPlugin)
 plugin_pool.register_plugin(CarouselPlugin)
+plugin_pool.register_plugin(PusherPlugin)
 
 settings.CMS_PLACEHOLDER_CONF['jumbotron-content'] = {
     'name': _(u'Jumbotron content'),
