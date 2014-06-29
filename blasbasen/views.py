@@ -84,6 +84,7 @@ class PersonList(ListView):
         
         return context
 
+
 class PersonDetail(DetailView):
     model = Person
     
@@ -91,9 +92,8 @@ class PersonDetail(DetailView):
         # Call the base implementation first to get a context
         context = super(PersonDetail, self).get_context_data(**kwargs)
 
-        a = context['person'].assignment_set.select_related('post').all().order_by('-start_date')
-        context['memberships'] = a.filter(post__engagement=False).filter(post__membership=True)
-        context['engagements'] = a.filter(post__engagement=True)
+        context['memberships'] = context['person'].assignments.memberships(all=True)
+        context['engagements'] = context['person'].assignments.engagements(all=True)
         return context
 
 class PersonAdd(CreateView):
