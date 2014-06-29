@@ -172,7 +172,7 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join('/opt/litheblas.org/static')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'litheblas', 'media')
+MEDIA_ROOT = os.path.join('/opt/litheblas.org/media')
 MEDIA_URL = '/media/'
 
 #CMS-specifikt
