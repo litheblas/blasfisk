@@ -263,8 +263,11 @@ CMS_PLACEHOLDER_CONF = {
 }
 
 CKEDITOR_SETTINGS = {
-    'language': 'en',
+    'language': 'sv',
     'toolbar': 'CMS',
     'skin': 'moono',
-    #'allowedContent': 'false', #Stänger av filtrering av taggar.
+    
+    # Ta bort ett gäng plugins och knappar
+    'removePlugins': 'pastefromword,magicline,colordialog', # Akta dig, inga mellanslag mellan namnen...
+    'removeButtons': 'TextColor,BGColor,Indent,Outdent', # Akta dig, inga mellanslag mellan namnen...
 }
