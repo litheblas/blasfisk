@@ -99,7 +99,12 @@ INSTALLED_APPS = (
     'blasbasen',
     #'events',
     #'watcher',
+
 )
+
+SOUTH_MIGRATION_MODULES = {
+    'easy_thumbnails': 'easy_thumbnails.south_migrations',
+}
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -217,7 +222,6 @@ CMS_LANGUAGES = {
 CMS_TEMPLATES = (
     ('pages/page.html', _('Page')), # Först i listan, blir standard
     ('pages/custom_page.html', _('Custom Page')),
-    ('pages/feature.html', _('Page with Feature')),
     ('pages/home.html', _('LiTHe Hem')),
 )
 
