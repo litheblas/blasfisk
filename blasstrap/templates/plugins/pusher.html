@@ -7,7 +7,7 @@
         <div class="{{ instance.entry_css_classes }}">
             <img src="{{ entry.image.url }}">
             <h3>{{ entry.heading }}</h3>
-            {% render_placeholder entry.content %}
+            {{ entry.caption }}
         </div>
     {% endfor %}
 </div>

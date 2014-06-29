@@ -16,11 +16,13 @@
                 <img src="{{ entry.image.url }}" alt="">
 
                 <div class="carousel-caption">
-                    <h3>{{ entry.caption_heading }}</h3>
+                    {% autoescape off %}
+                    <h3>{{ entry.heading }}</h3>
 
                     <p>
                         {{ entry.caption }}
                     </p>
+                    {% endautoescape %}
                 </div>
             </div>
         {% endfor %}

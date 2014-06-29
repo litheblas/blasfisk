@@ -37,7 +37,7 @@ class Carousel(CMSPlugin):
 class CarouselEntry(models.Model):
     carousel = models.ForeignKey(Carousel, related_name='entries')
     image = models.ImageField(upload_to=generate_carousel_image_filename)
-    caption_heading = models.CharField(max_length=256, blank=True)
+    heading = models.CharField(max_length=256, blank=True)
     caption = models.TextField(blank=True)
     priority = models.IntegerField()
 
@@ -61,7 +61,7 @@ class PusherEntry(models.Model):
     pusher = models.ForeignKey(Pusher, related_name='entries')
     image = models.ImageField(upload_to=generate_pusher_image_filename)
     heading = models.CharField(max_length=256, blank=True)
-    content = PlaceholderField('pusher-content')
+    caption = models.TextField(default='<p></p>', help_text='Använd med förstånd, HTML-taggar tillåts. Se till att koden är korrekt och att du använder <p>.')
     priority = models.IntegerField()
 
     class Meta:
