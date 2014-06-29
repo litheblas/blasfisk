@@ -56,17 +56,6 @@ class Pusher(CMSPlugin):
     entry_css_classes = models.CharField(max_length=256, blank=True, default='col-sm-4 item')
     container = models.BooleanField(default=False)
 
-
-class PusherEntry(models.Model):
-    pusher = models.ForeignKey(Pusher, related_name='entries')
-    image = models.ImageField(upload_to=generate_pusher_image_filename)
-    heading = models.CharField(max_length=256, blank=True)
-    caption = models.TextField(blank=True, default='<p></p>', help_text='Använd med förstånd, HTML-taggar tillåts. Se till att koden är korrekt och att du använder <p>.')
-    priority = models.IntegerField()
-
-    class Meta:
-        ordering = ['priority']
-
     def copy_relations(self, copied_instance):
         # Delete all entries to not duplicate them for every save
         self.entries.all().delete()
@@ -76,3 +65,15 @@ class PusherEntry(models.Model):
             associated_item.pk = None
             associated_item.pusher = self
             associated_item.save()
+
+
+class PusherEntry(models.Model):
+    pusher = models.ForeignKey(Pusher, related_name='entries')
+    image = models.ImageField(upload_to=generate_pusher_image_filename)
+    heading = models.CharField(max_length=256, blank=True)
+    caption = models.TextField(blank=True, default='<p></p>',
+                               help_text='Använd med förstånd, HTML-taggar tillåts. Se till att koden är korrekt och att du använder <p>.')
+    priority = models.IntegerField()
+
+    class Meta:
+        ordering = ['priority']
