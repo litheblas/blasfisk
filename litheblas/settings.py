@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 Django settings for litheblas project.
 
@@ -18,8 +17,6 @@ from socket import getfqdn
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
-gettext = lambda s: s
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -224,7 +221,7 @@ CMS_TEMPLATES = (
     ('pages/home.html', _('LiTHe Hem')),
 )
 
-CMS_TEMPLATE_INHERITANCE = False #Annars ärver en massa sidor hem-mallen, vilken egentligen bara ska finnas på startsidan
+CMS_TEMPLATE_INHERITANCE = False # Annars ärver en massa sidor hem-mallen, vilken egentligen bara ska finnas på startsidan
 
 CMS_PERMISSION = False
 
