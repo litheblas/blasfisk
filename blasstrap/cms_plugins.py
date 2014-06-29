@@ -66,3 +66,17 @@ settings.CMS_PLACEHOLDER_CONF['jumbotron-content'] = {
         },
     ]
 }
+
+settings.CMS_PLACEHOLDER_CONF['pusher-content'] = {
+    'name': _(u'Jumbotron content'),
+    'default_plugins': [
+        {
+            'plugin_type': 'TextPlugin',
+            'values': {
+                'body': u"""
+                    <p>&nbsp;&nbsp;&nbsp;</p>
+                """
+            },
+        },
+    ]
+}
