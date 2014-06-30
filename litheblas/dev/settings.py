@@ -24,6 +24,10 @@ CACHES = {
     }
 }
 
-CMS_CACHE_DURATIONS = {'content': 0,
-                        'menus': 0,
-                        'permissions': 0}
+CMS_CACHE_DURATIONS = {
+    'content': 0,
+    'menus': 0,
+    'permissions': 0
+}
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'litheblas', 'media')

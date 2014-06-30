@@ -28,9 +28,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 DEBUG = False
 TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = ['localhost',
-                 '127.0.0.1',
-                 'dev.skorpan.lysator.liu.se']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'dev.skorpan.lysator.liu.se',
+    'litheblas.org',
+    'www.litheblas.org'
+]
 
 #Till vilka adresser ska debug-epost skickas?
 ADMINS = (

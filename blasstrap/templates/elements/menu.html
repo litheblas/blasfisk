@@ -19,7 +19,7 @@
                 <li class="divider"></li>
             {% endif %}
         {% else %}
-            <a href="{{ child.get_absolute_url }}">{% autoescape off %}{{ child.get_menu_title }}{% endautoescape %}</a>
+            <a href="{{ child.get_absolute_url }}">{{ child.get_menu_title|safe }}</a>
             </li>
         {% endif %}
 

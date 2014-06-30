@@ -6155,8 +6155,8 @@ h6 > small {
   .navbar-main .navbar-brand small {
     font-size: small;
     /*white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;*/
+                overflow: hidden;
+                text-overflow: ellipsis;*/
   }
 }
 @media (max-width: 400px) {
@@ -6257,6 +6257,7 @@ h6 > small {
 }
 .pusher > .item {
   text-align: center;
+  margin-bottom: 40px;
 }
 .pusher > .item > img {
   width: 300px;

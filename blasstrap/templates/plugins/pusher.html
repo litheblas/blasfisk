@@ -6,10 +6,9 @@
     {% for entry in instance.entries.all %}
         <div class="{{ instance.entry_css_classes }}">
             <img src="{{ entry.image.url }}">
-            {% autoescape off %}
-                <h3>{{ entry.heading }}</h3>
-                {{ entry.caption }}
-            {% endautoescape %}
+
+            <h3>{{ entry.heading|safe }}</h3>
+            {{ entry.caption|safe }}
         </div>
     {% endfor %}
 </div>
