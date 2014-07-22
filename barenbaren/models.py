@@ -5,7 +5,7 @@ from django.db import models
 #    pass
 
 class Balance(models.Model):
-    person = models.OneToOneField('blasbasen.Person')
+    person = models.OneToOneField('blasbase.Person')
     balance = models.DecimalField(max_digits=9, decimal_places=2)
     
     def __unicode__(self):

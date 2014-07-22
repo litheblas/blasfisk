@@ -4,8 +4,8 @@ from django.contrib import admin
 
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
-from blasbasen.models import Avatar, User, Person, Section, Post, Assignment, SpecialDiet, Card
-from blasbasen.forms import BlasUserChangeForm, BlasUserCreationForm
+from blasbase.models import Avatar, User, Person, Section, Post, Assignment, SpecialDiet, Card
+from blasbase.forms import BlasUserChangeForm, BlasUserCreationForm
 #from mailing.models import Membership as MailingMembership
 #from watcher.models import Watcher
 from django.utils.translation import ugettext_lazy as _

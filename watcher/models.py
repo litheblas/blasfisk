@@ -7,8 +7,8 @@ class Watcher(models.Model):
     description = models.CharField(max_length=256, unique=True, help_text='Använd det här fältet för att kortfattat beskriva vilka som inkluderas av filtret. Ex.: "Aktiva trumpetare"')
     
     #Leta i
-    sections = models.ManyToManyField('blasbasen.Section', blank=True, null=True, verbose_name='sektioner', help_text=u"En sektion som skall övervakas. Alla medlemmar i alla poster i sektionen inkluderas.")
-    posts = models.ManyToManyField('blasbasen.Post', blank=True, null=True, verbose_name='poster', help_text=u"En specifik post som skall övervakas. Om posten ingår i någon sektion som angetts behöver (och skall) du inte ange den här.")
+    sections = models.ManyToManyField('blasbase.Section', blank=True, null=True, verbose_name='sektioner', help_text=u"En sektion som skall övervakas. Alla medlemmar i alla poster i sektionen inkluderas.")
+    posts = models.ManyToManyField('blasbase.Post', blank=True, null=True, verbose_name='poster', help_text=u"En specifik post som skall övervakas. Om posten ingår i någon sektion som angetts behöver (och skall) du inte ange den här.")
     current = models.BooleanField(default=True, verbose_name='endast aktiva', help_text=u"Inkludera endast aktiva.")
     
     #Lägg till i

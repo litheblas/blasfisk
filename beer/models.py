@@ -1,7 +1,7 @@
 from django.db import models
 
 class Balance(models.Model):
-    person = models.OneToOneField('blasbasen.Person')
+    person = models.OneToOneField('blasbase.Person')
     credits = models.IntegerField()
     
     def __unicode__(self):
@@ -9,7 +9,7 @@ class Balance(models.Model):
 
 class Consumption(models.Model):
     """Lagrar förbrukning av klipp, för statistikens skull"""
-    person = models.ForeignKey('blasbasen.Person')
+    person = models.ForeignKey('blasbase.Person')
     amount = models.IntegerField()
     when = models.DateTimeField(auto_now_add=True)
     

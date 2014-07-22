@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class BlasbasenApp(CMSApp):
     name = _(u'Blåsbasen') #Läsbart namn
-    urls = ['blasbasen.urls']
-    app_name = 'blasbasen' #Viktigt! Behövs för att kunna slå upp URL:er baklänges
+    urls = ['blasbase.urls']
+    app_name = 'blasbase' #Viktigt! Behövs för att kunna slå upp URL:er baklänges
     
 apphook_pool.register(BlasbasenApp)

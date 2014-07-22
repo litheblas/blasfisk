@@ -15,8 +15,8 @@ from localflavor.se.forms import SEOrganisationNumberField
 from imagekit.models import ProcessedImageField, ImageSpecField
 
 from globals import GENDERS, COUNTRIES, generate_filename
-from blasbasen.backends import make_permission_set
-from blasbasen import validators
+from blasbase.backends import make_permission_set
+from blasbase import validators
 
 
 def generate_avatar_filename(instance, filename):
@@ -24,7 +24,6 @@ def generate_avatar_filename(instance, filename):
 
 
 class PersonManager(models.Manager):
-
     def members(self):
         return self.get_queryset().filter(assignments__in=Assignment.objects.memberships()).distinct()
 
@@ -159,6 +158,7 @@ class Person(models.Model):
     primary_avatar = property(get_primary_avatar)
     secondary_avatars = property(get_secondary_avatars)
 
+
 class Avatar(models.Model):
     picture = ProcessedImageField(upload_to=generate_avatar_filename, verbose_name=u'bild')
     # thumbnail_small = ImageSpecField()
@@ -245,10 +245,13 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    """En avskalad användarmodell vars enda uppgift i stort sett är att lagra användarnamn och lösenord. Resten lagras i datatypen Person."""
+    """
+    En avskalad användarmodell vars enda uppgift i stort sett är att lagra användarnamn och lösenord. Resten lagras i
+    datatypen Person.
+    """
     username = models.CharField(max_length=256, unique=True, db_index=True, verbose_name=u'användarnamn')
     is_active = models.BooleanField(default=True, verbose_name=u'aktivt konto',
-                                    help_text=u"Detta är INTE ett fält för att markera att någon blivit gamling")  # Ska inte användas för att markera gamlingsskap osv.! Det görs mycket bättre på automatisk väg via posts
+                                    help_text=u"Detta är INTE ett fält för att markera att någon blivit gamling")
     is_admin = models.BooleanField(default=False, verbose_name=u'administratörskonto (?)',
                                    help_text=u'#TODO: Osäker på vad detta fält faktiskt används för. Kolla upp.')
     is_staff = models.BooleanField(default=False, verbose_name=u'maktkonto',
@@ -305,6 +308,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     short_name = property(get_short_name)
     #email = property(get_email)
 
+
 class Section(models.Model):
     """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc.."""
     name = models.CharField(max_length=256, verbose_name=u'namn')
@@ -323,7 +327,6 @@ class Section(models.Model):
     @property
     def people(self):
         return Person.objects.filter(posts__in=self.posts.all()).distinct()
-
 
 
 class Post(models.Model):
@@ -386,7 +389,6 @@ class Post(models.Model):
         if self.section:
             return u'{0} / {1}'.format(self.section.name, self.name)
         return self.name
-
 
 
 class AssignmentManager(models.Manager):

@@ -274,7 +274,7 @@
     },
     {
         "pk": 1,
-        "model": "blasbasen.avatar",
+        "model": "blasbase.avatar",
         "fields": {
             "picture": "avatars/74e1f940-b6a3-11e3-a6df-542696dae887.jpg",
             "primary": false,
@@ -283,7 +283,7 @@
     },
     {
         "pk": 2,
-        "model": "blasbasen.avatar",
+        "model": "blasbase.avatar",
         "fields": {
             "picture": "avatars/2c2ee29e-bb29-11e3-a5bb-542696dae887.jpg",
             "primary": false,
@@ -292,7 +292,7 @@
     },
     {
         "pk": 3,
-        "model": "blasbasen.avatar",
+        "model": "blasbase.avatar",
         "fields": {
             "picture": "avatars/2c32e5cc-bb29-11e3-bfeb-542696dae887.jpg",
             "primary": false,
@@ -301,7 +301,7 @@
     },
     {
         "pk": 4,
-        "model": "blasbasen.avatar",
+        "model": "blasbase.avatar",
         "fields": {
             "picture": "avatars/bild_2_2.JPG",
             "primary": true,
@@ -310,7 +310,7 @@
     },
     {
         "pk": 1,
-        "model": "blasbasen.user",
+        "model": "blasbase.user",
         "fields": {
             "username": "ovid",
             "person": 1,
@@ -326,7 +326,7 @@
     },
     {
         "pk": 1,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Trumpet",
@@ -335,7 +335,7 @@
     },
     {
         "pk": 2,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Basun",
@@ -344,7 +344,7 @@
     },
     {
         "pk": 3,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Styrelsen",
@@ -353,7 +353,7 @@
     },
     {
         "pk": 4,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Funktion\u00e4rer",
@@ -362,7 +362,7 @@
     },
     {
         "pk": 5,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Kompet",
@@ -371,7 +371,7 @@
     },
     {
         "pk": 6,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Bl\u00e5syran",
@@ -380,7 +380,7 @@
     },
     {
         "pk": 8,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "LiTHe Gr\u00e5s",
@@ -389,7 +389,7 @@
     },
     {
         "pk": 9,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Fl\u00f6jt",
@@ -398,7 +398,7 @@
     },
     {
         "pk": 10,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Klarinett",
@@ -407,7 +407,7 @@
     },
     {
         "pk": 11,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Saxsekten",
@@ -416,7 +416,7 @@
     },
     {
         "pk": 12,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Horn",
@@ -425,7 +425,7 @@
     },
     {
         "pk": 13,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "\u00d6vriga",
@@ -434,7 +434,7 @@
     },
     {
         "pk": 14,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Baren Baren",
@@ -443,7 +443,7 @@
     },
     {
         "pk": 15,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "AB Svinresor",
@@ -452,7 +452,7 @@
     },
     {
         "pk": 16,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Luciafestkommitt\u00e9",
@@ -461,7 +461,7 @@
     },
     {
         "pk": 17,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Valberedningen",
@@ -470,7 +470,7 @@
     },
     {
         "pk": 18,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "Andra f\u00f6reningar",
@@ -479,7 +479,7 @@
     },
     {
         "pk": 1,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Trumpet",
@@ -492,7 +492,7 @@
     },
     {
         "pk": 2,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Kornett",
@@ -505,7 +505,7 @@
     },
     {
         "pk": 3,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Basun",
@@ -518,7 +518,7 @@
     },
     {
         "pk": 5,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Rydstomte",
@@ -531,7 +531,7 @@
     },
     {
         "pk": 6,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Dictator",
@@ -544,7 +544,7 @@
     },
     {
         "pk": 7,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Skrivkunig",
@@ -557,7 +557,7 @@
     },
     {
         "pk": 8,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Dompt\u00f6r",
@@ -570,7 +570,7 @@
     },
     {
         "pk": 9,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Intendent",
@@ -583,7 +583,7 @@
     },
     {
         "pk": 10,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Kronharpa",
@@ -596,7 +596,7 @@
     },
     {
         "pk": 11,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Notpiccolo",
@@ -609,7 +609,7 @@
     },
     {
         "pk": 12,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Yrstyre",
@@ -622,7 +622,7 @@
     },
     {
         "pk": 13,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Styryra",
@@ -635,7 +635,7 @@
     },
     {
         "pk": 14,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Spelraggare",
@@ -648,7 +648,7 @@
     },
     {
         "pk": 15,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Webbslav",
@@ -661,7 +661,7 @@
     },
     {
         "pk": 16,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Elbas",
@@ -674,7 +674,7 @@
     },
     {
         "pk": 17,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Generalbas",
@@ -687,7 +687,7 @@
     },
     {
         "pk": 18,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Rosenstj\u00e4rt",
@@ -700,7 +700,7 @@
     },
     {
         "pk": 20,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Bl\u00e5srumstomte",
@@ -713,7 +713,7 @@
     },
     {
         "pk": 21,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Medlem",
@@ -726,7 +726,7 @@
     },
     {
         "pk": 22,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Huvudstadga",
@@ -739,7 +739,7 @@
     },
     {
         "pk": 23,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Fl\u00f6jt",
@@ -752,7 +752,7 @@
     },
     {
         "pk": 24,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Piccolofl\u00f6jt",
@@ -765,7 +765,7 @@
     },
     {
         "pk": 25,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Klarinett",
@@ -778,7 +778,7 @@
     },
     {
         "pk": 26,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Altsaxofon",
@@ -791,7 +791,7 @@
     },
     {
         "pk": 27,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Tenorsaxofon",
@@ -804,7 +804,7 @@
     },
     {
         "pk": 28,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Barytonsaxofon",
@@ -817,7 +817,7 @@
     },
     {
         "pk": 29,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Sopransaxofon",
@@ -830,7 +830,7 @@
     },
     {
         "pk": 30,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Althorn",
@@ -843,7 +843,7 @@
     },
     {
         "pk": 31,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "Om du inte vet vad du ska v\u00e4lja \u00e4r det antagligen detta.",
             "name": "Valthorn",
@@ -856,7 +856,7 @@
     },
     {
         "pk": 32,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Melofon",
@@ -869,7 +869,7 @@
     },
     {
         "pk": 33,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Hedersmedlem",
@@ -882,7 +882,7 @@
     },
     {
         "pk": 34,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Fanb\u00e4rare",
@@ -895,7 +895,7 @@
     },
     {
         "pk": 35,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Fotograf",
@@ -908,7 +908,7 @@
     },
     {
         "pk": 36,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Koreograf",
@@ -921,7 +921,7 @@
     },
     {
         "pk": 37,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Materialf\u00f6rvaltare",
@@ -934,7 +934,7 @@
     },
     {
         "pk": 38,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Skitpratare",
@@ -947,7 +947,7 @@
     },
     {
         "pk": 39,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Barytonhorn",
@@ -960,7 +960,7 @@
     },
     {
         "pk": 40,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Eufonium",
@@ -973,7 +973,7 @@
     },
     {
         "pk": 41,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Ventilbasun",
@@ -986,7 +986,7 @@
     },
     {
         "pk": 45,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Barchef",
@@ -999,7 +999,7 @@
     },
     {
         "pk": 46,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Ordf\u00f6rande",
@@ -1012,7 +1012,7 @@
     },
     {
         "pk": 47,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Gyckelchef",
@@ -1025,7 +1025,7 @@
     },
     {
         "pk": 48,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Sektionschef",
@@ -1038,7 +1038,7 @@
     },
     {
         "pk": 49,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Sektionschef",
@@ -1051,7 +1051,7 @@
     },
     {
         "pk": 50,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Sektionschef",
@@ -1064,7 +1064,7 @@
     },
     {
         "pk": 51,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Sektionschef",
@@ -1077,7 +1077,7 @@
     },
     {
         "pk": 52,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Sektionschef",
@@ -1090,7 +1090,7 @@
     },
     {
         "pk": 53,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Sektionschef",
@@ -1103,7 +1103,7 @@
     },
     {
         "pk": 54,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Sektionschef",
@@ -1116,7 +1116,7 @@
     },
     {
         "pk": 55,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Reiseleiter",
@@ -1129,7 +1129,7 @@
     },
     {
         "pk": 56,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "General",
@@ -1142,7 +1142,7 @@
     },
     {
         "pk": 57,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "\u00d6resharpa",
@@ -1155,7 +1155,7 @@
     },
     {
         "pk": 58,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Balltv\u00e4ttare",
@@ -1168,7 +1168,7 @@
     },
     {
         "pk": 59,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Ledamot",
@@ -1181,7 +1181,7 @@
     },
     {
         "pk": 60,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Suppleant",
@@ -1194,7 +1194,7 @@
     },
     {
         "pk": 61,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Revisor",
@@ -1207,7 +1207,7 @@
     },
     {
         "pk": 62,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "SOF",
@@ -1220,7 +1220,7 @@
     },
     {
         "pk": 63,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "LiSS",
@@ -1233,7 +1233,7 @@
     },
     {
         "pk": 64,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Holgerspexet",
@@ -1246,7 +1246,7 @@
     },
     {
         "pk": 65,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "PQ",
@@ -1259,7 +1259,7 @@
     },
     {
         "pk": 66,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "Riks-SMASK",
@@ -1272,7 +1272,7 @@
     },
     {
         "pk": 67,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "K\u00e5rsdraget",
@@ -1285,7 +1285,7 @@
     },
     {
         "pk": 68,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "RAG",
@@ -1298,7 +1298,7 @@
     },
     {
         "pk": 5,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 2,
             "post": 16,
@@ -1309,7 +1309,7 @@
     },
     {
         "pk": 6,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 1,
             "post": 1,
@@ -1320,7 +1320,7 @@
     },
     {
         "pk": 7,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 1,
             "post": 1,
@@ -1331,7 +1331,7 @@
     },
     {
         "pk": 8,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 1,
             "post": 1,
@@ -1342,7 +1342,7 @@
     },
     {
         "pk": 9,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 1,
             "post": 8,
@@ -1353,7 +1353,7 @@
     },
     {
         "pk": 10,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 2,
             "post": 17,
@@ -1364,7 +1364,7 @@
     },
     {
         "pk": 11,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 3,
             "post": 18,
@@ -1375,7 +1375,7 @@
     },
     {
         "pk": 12,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 3,
             "post": 18,
@@ -1386,7 +1386,7 @@
     },
     {
         "pk": 14,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 3,
             "post": 14,
@@ -1397,7 +1397,7 @@
     },
     {
         "pk": 15,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 3,
             "post": 20,
@@ -1408,7 +1408,7 @@
     },
     {
         "pk": 16,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 4,
             "post": 3,
@@ -1419,7 +1419,7 @@
     },
     {
         "pk": 18,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 5,
             "post": 23,
@@ -1430,7 +1430,7 @@
     },
     {
         "pk": 19,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 5,
             "post": 23,
@@ -1441,7 +1441,7 @@
     },
     {
         "pk": 21,
-        "model": "blasbasen.assignment",
+        "model": "blasbase.assignment",
         "fields": {
             "person": 6,
             "post": 62,
@@ -1452,56 +1452,56 @@
     },
     {
         "pk": 1,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Nykterist"
         }
     },
     {
         "pk": 2,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Vegetarian"
         }
     },
     {
         "pk": 3,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Vegan"
         }
     },
     {
         "pk": 4,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Glutenallergiker"
         }
     },
     {
         "pk": 5,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Laktosintolerant"
         }
     },
     {
         "pk": 6,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "N\u00f6tallergiker"
         }
     },
     {
         "pk": 7,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Skaldjursallergiker"
         }
     },
     {
         "pk": 1,
-        "model": "blasbasen.card",
+        "model": "blasbase.card",
         "fields": {
             "card_data": "975226854583905",
             "person": 1,

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from blasbasen.models import Person, User
+from blasbase.models import Person, User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 # Från http://www.caktusgroup.com/blog/2013/08/07/migrating-custom-user-model-django/

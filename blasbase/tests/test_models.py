@@ -5,7 +5,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from django.utils import timezone
 
-from blasbasen.models import *
+from blasbase.models import *
 
 
 class PersonMethodsTestCase(TestCase):

@@ -5,7 +5,7 @@ import datetime
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
-from blasbasen import validators
+from blasbase import validators
 
 class ValidatorTestCase(TestCase):
     def test_datetime_before_datetime_with_relative_future_datetime(self):

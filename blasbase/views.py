@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import Http404
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView
-from blasbasen.models import Person, Section, Post
+from blasbase.models import Person, Section, Post
 from globals import COUNTRIES
 
 

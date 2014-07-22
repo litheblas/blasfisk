@@ -33,31 +33,31 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
-        u'blasbasen.assignment': {
+        u'blasbase.assignment': {
             'Meta': {'object_name': 'Assignment'},
             'end_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'person': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blasbasen.Person']"}),
-            'post': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blasbasen.Post']"}),
+            'person': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blasbase.Person']"}),
+            'post': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blasbase.Post']"}),
             'start_date': ('django.db.models.fields.DateField', [], {}),
             'trial': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
         },
-        u'blasbasen.avatar': {
+        u'blasbase.avatar': {
             'Meta': {'ordering': "['primary', 'id']", 'object_name': 'Avatar'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'person': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blasbasen.Person']"}),
+            'person': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blasbase.Person']"}),
             'picture': ('imagekit.models.fields.ProcessedImageField', [], {'max_length': '100'}),
             'primary': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
         },
-        u'blasbasen.card': {
+        u'blasbase.card': {
             'Meta': {'object_name': 'Card'},
             'card_data': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'person': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blasbasen.Person']"})
+            'person': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blasbase.Person']"})
         },
-        u'blasbasen.customer': {
+        u'blasbase.customer': {
             'Meta': {'ordering': "['name', 'contact']", 'object_name': 'Customer'},
             'address': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
             'city': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
@@ -69,7 +69,7 @@ class Migration(SchemaMigration):
             'phone_number': ('django.db.models.fields.CharField', [], {'max_length': '64', 'blank': 'True'}),
             'postcode': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'})
         },
-        u'blasbasen.person': {
+        u'blasbase.person': {
             'Meta': {'ordering': "['first_name', 'last_name', 'nickname']", 'object_name': 'Person'},
             'about': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'address': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
@@ -88,11 +88,11 @@ class Migration(SchemaMigration):
             'personal_id_number': ('django.db.models.fields.CharField', [], {'max_length': '4', 'blank': 'True'}),
             'phone': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
             'postcode': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
-            'posts': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['blasbasen.Post']", 'through': u"orm['blasbasen.Assignment']", 'symmetrical': 'False'}),
-            'special_diets': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['blasbasen.SpecialDiet']", 'null': 'True', 'blank': 'True'}),
+            'posts': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['blasbase.Post']", 'through': u"orm['blasbase.Assignment']", 'symmetrical': 'False'}),
+            'special_diets': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['blasbase.SpecialDiet']", 'null': 'True', 'blank': 'True'}),
             'special_diets_extra': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'})
         },
-        u'blasbasen.post': {
+        u'blasbase.post': {
             'Meta': {'ordering': "['section', 'name']", 'unique_together': "(('section', 'name'),)", 'object_name': 'Post'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'engagement': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -100,22 +100,22 @@ class Migration(SchemaMigration):
             'membership': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['auth.Permission']", 'null': 'True', 'blank': 'True'}),
-            'section': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blasbasen.Section']", 'null': 'True', 'blank': 'True'}),
+            'section': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blasbase.Section']", 'null': 'True', 'blank': 'True'}),
             'show_in_timeline': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
         },
-        u'blasbasen.section': {
+        u'blasbase.section': {
             'Meta': {'ordering': "['name']", 'object_name': 'Section'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['auth.Permission']", 'null': 'True', 'blank': 'True'})
         },
-        u'blasbasen.specialdiet': {
+        u'blasbase.specialdiet': {
             'Meta': {'ordering': "['name']", 'object_name': 'SpecialDiet'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'})
         },
-        u'blasbasen.user': {
+        u'blasbase.user': {
             'Meta': {'ordering': "['person', 'username']", 'object_name': 'User'},
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Group']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -125,7 +125,7 @@ class Migration(SchemaMigration):
             'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'person': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'user'", 'unique': 'True', 'to': u"orm['blasbasen.Person']"}),
+            'person': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'user'", 'unique': 'True', 'to': u"orm['blasbase.Person']"}),
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Permission']"}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '256', 'db_index': 'True'})
         },
@@ -138,4 +138,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['blasbasen']
+    complete_apps = ['blasbase']

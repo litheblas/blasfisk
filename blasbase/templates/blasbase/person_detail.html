@@ -1,0 +1,220 @@
+{% extends CMS_TEMPLATE %}
+{% load cms_tags %}
+
+{% block content %}
+    <div class="page-header page-title">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10">
+                    <h1>{{ person.full_name }}
+                        <small>
+                            {% if person.start_date %}{{ person.start_date.year }}{% endif %}–{% if person.end_date %}
+                            {{ person.end_date.year }}{% endif %}
+                        </small>
+                    </h1>
+                </div>
+                <div class="col-sm-2">
+                    <div class="pull-right">
+                        <button class="btn btn-default btn-xs"><span class="fa fa-edit"></span> Ändra</button>
+                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#confirm-deletion"><span
+                                class="fa fa-trash-o"></span> Ta bort
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="edit-user" tabindex="-1" role="dialog" aria-labelledby="edit-user" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Bekräfta borttagning</h4>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
+                    <button type="button" class="btn btn-danger">Ta bort person</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirm-deletion" tabindex="-1" role="dialog" aria-labelledby="confirm-deletion"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Bekräfta borttagning</h4>
+                </div>
+                <div class="modal-body">
+                    Du håller på att ta bort en person ur Blåsbasen. Detta är en permanent åtgärd och <strong>bör i
+                    normala fall aldrig göras.</strong> Med detta sagt – är du helt säker?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
+                    <button type="button" class="btn btn-danger">Ta bort person</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-md-3">
+                <img src="{{ person.primary_avatar.url }}" class="img-rounded img-responsive">
+                <a href="/admin/blasbasen/person/{{ person.pk }}/" data-toggle="modal"
+                   data-target="#edit-user">Ändra</a>
+            </div>
+            <div class="col-sm-8 col-md-9">
+                <ul class="nav nav-justified nav-pills" id="user-tabs">
+                    <li class="active"><a href="#contact" data-toggle="tab">Kontakt</a></li>
+                    <li><a href="#info" data-toggle="tab">Info</a></li>
+                    <li><a href="#membership" data-toggle="tab">Medlemsskap</a></li>
+                    <li><a href="#attendance" data-toggle="tab">Närvaro</a></li>
+                    <li><a href="#statistics" data-toggle="tab">Barstatistik</a></li>
+                    <li><a href="#mailing" data-toggle="tab">Mailinglistor</a></li>
+                    <li><a href="#pictures" data-toggle="tab">Bilder</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="contact">
+                        <h3>Kontaktuppgifter</h3>
+                        <dl class="dl-horizontal">
+                            {% if person.phone %}
+                                <dt>Telefon</dt>
+                                <dd><a href="tel:{{ person.phone }}">{{ person.phone }}</a></dd>
+                            {% endif %}
+
+                            {% if person.email %}
+                                <dt>E-post</dt>
+                                <dd><a href="mailto:{{ person.email }}">{{ person.email }}</a></dd>
+                            {% endif %}
+
+                            {% if person.address or person.postcode or person.city %}
+                                <dt>Adress</dt>
+                                <dd>
+                                    <address>{{ person.address }}<br>{{ person.post_code }} {{ person.city }}</address>
+                                </dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                    <div class="tab-pane" id="info">
+                        <h3>Personliga uppgifter</h3>
+                        <dl class="dl-horizontal">
+                            {% if person.gender %}
+                                <dt>Kön</dt>
+                                <dd>{% if person.gender == 'm' %}Man{% else %}Kvinna{% endif %}</dd>
+                            {% endif %}
+
+                            {% if person.born %}
+                                <dt>Född</dt>
+                                <dd>{{ person.born }}{% if not person.deceased %} ({{ person.age.years }}
+                                    år){% endif %}</dd>
+                            {% endif %}
+
+                            {% if person.deceased %}
+                                <dt>Avliden</dt>
+                                <dd>{{ person.deceased }} ({{ person.age.years }} år)</dd>
+                            {% endif %}
+                        </dl>
+                        <h3>Presentation</h3>
+
+                        <p>{{ person.about }}</p>
+                    </div>
+                    <div class="tab-pane" id="membership">
+                        {% if memberships|length > 0 %}
+                            <h3>Medlemsskap</h3>
+                            <table class="table">
+                                <tr>
+                                    <th>Sektion</th>
+                                    <th>Post</th>
+                                    <th>Start</th>
+                                    <th>Slut</th>
+                                </tr>
+                                {% for i in memberships %}
+                                    <tr>
+                                        <td>{% if i.post.section %}{{ i.post.section }}{% endif %}</td>
+                                        <td>{{ i.post.name }}{% if i.trial %}
+                                            <span class="label label-info">Prov</span>{% endif %}</td>
+                                        <td>{{ i.start_date }}</td>
+                                        <td>{% if i.end_date %}{{ i.end_date }}{% endif %}</td>
+                                    </tr>
+                                {% endfor %}
+
+                            </table>
+                        {% endif %}
+
+                        {% if engagements|length > 0 %}
+                            <h3>Uppdrag</h3>
+                            <table class="table">
+                                <tr>
+                                    <th>Sektion</th>
+                                    <th>Post</th>
+                                    <th>Start</th>
+                                    <th>Slut</th>
+                                </tr>
+                                {% for i in engagements %}
+                                    <tr>
+                                        <td>{% if i.post.section %}{{ i.post.section }}{% endif %}</td>
+                                        <td>{{ i.post.name }}{% if i.trial %}
+                                            <span class="label label-info">Prov</span>{% endif %}</td>
+                                        <td>{{ i.start_date }}</td>
+                                        <td>{% if i.end_date %}{{ i.end_date }}{% endif %}</td>
+                                    </tr>
+                                {% endfor %}
+
+                            </table>
+                        {% endif %}
+
+                    </div>
+
+                    <div class="tab-pane" id="attendance">
+                        <table class="table">
+                            <tr>
+                                <th></th>
+                                <th>Sen ankomst</th>
+                                <th>Anmäld frånvaro</th>
+                                <th>Oanmäld frånvaro</th>
+                                <th>Total frånvaro</th>
+                            </tr>
+                            <tr>
+                                <th>3 mån</th>
+                                <td>3 (2 %)</td>
+                                <td class="warning">3 (2 %)</td>
+                                <td class="danger">4 (5 %)</td>
+                                <td>7 (7 %)</td>
+                            </tr>
+                            <tr>
+                                <th>6 mån</th>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <th>12 mån</th>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <th>Totalt</th>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="statistics">Barstatistik</div>
+                    <div class="tab-pane" id="mailing">Mailinglistor</div>
+                    <div class="tab-pane" id="pictures">Bilder från galleriet</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

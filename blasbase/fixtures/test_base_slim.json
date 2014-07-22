@@ -1,7 +1,7 @@
 [
     {
         "pk": 1,
-        "model": "blasbasen.person",
+        "model": "blasbase.person",
         "fields": {
             "first_name": "x",
             "last_name": "y",
@@ -10,7 +10,7 @@
     },
     {
         "pk": 1,
-        "model": "blasbasen.avatar",
+        "model": "blasbase.avatar",
         "fields": {
             "picture": "dummy/path/1.jpg",
             "primary": true,
@@ -19,7 +19,7 @@
     },
     {
         "pk": 2,
-        "model": "blasbasen.avatar",
+        "model": "blasbase.avatar",
         "fields": {
             "picture": "dummy/path/2.jpg",
             "primary": false,
@@ -28,7 +28,7 @@
     },
     {
         "pk": 3,
-        "model": "blasbasen.avatar",
+        "model": "blasbase.avatar",
         "fields": {
             "picture": "dummy/path/3.jpg",
             "primary": false,
@@ -37,7 +37,7 @@
     },
     {
         "pk": 4,
-        "model": "blasbasen.avatar",
+        "model": "blasbase.avatar",
         "fields": {
             "picture": "dummy/path/4.jpg",
             "primary": false,
@@ -46,7 +46,7 @@
     },
     {
         "pk": 1,
-        "model": "blasbasen.user",
+        "model": "blasbase.user",
         "fields": {
             "username": "ovid",
             "person": 1,
@@ -62,7 +62,7 @@
     },
     {
         "pk": 1,
-        "model": "blasbasen.section",
+        "model": "blasbase.section",
         "fields": {
             "permissions": [],
             "name": "section",
@@ -71,7 +71,7 @@
     },
     {
         "pk": 1,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "nothing",
@@ -84,7 +84,7 @@
     },
     {
         "pk": 2,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "membership",
@@ -97,7 +97,7 @@
     },
     {
         "pk": 3,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "engagement",
@@ -110,7 +110,7 @@
     },
     {
         "pk": 4,
-        "model": "blasbasen.post",
+        "model": "blasbase.post",
         "fields": {
             "description": "",
             "name": "both",
@@ -123,49 +123,49 @@
     },
     {
         "pk": 1,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Nykterist"
         }
     },
     {
         "pk": 2,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Vegetarian"
         }
     },
     {
         "pk": 3,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Vegan"
         }
     },
     {
         "pk": 4,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Glutenallergiker"
         }
     },
     {
         "pk": 5,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Laktosintolerant"
         }
     },
     {
         "pk": 6,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "N\u00f6tallergiker"
         }
     },
     {
         "pk": 7,
-        "model": "blasbasen.specialdiet",
+        "model": "blasbase.specialdiet",
         "fields": {
             "name": "Skaldjursallergiker"
         }

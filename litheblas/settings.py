@@ -96,11 +96,13 @@ INSTALLED_APPS = (
     
     # Andra appar
     'imagekit',
+    'django_filters',
+    'crispy_forms',
     
     # LiTHe Blås
     'blasstrap',
     #'mailing',
-    'blasbasen',
+    'blasbase',
     #'events',
     #'watcher',
 
@@ -151,10 +153,10 @@ WSGI_APPLICATION = 'litheblas.wsgi.application'
 
 
 AUTHENTICATION_BACKENDS = (
-    'blasbasen.backends.BlasBackend',
+    'blasbase.backends.BlasBackend',
 )
 
-AUTH_USER_MODEL = 'blasbasen.User'
+AUTH_USER_MODEL = 'blasbase.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
