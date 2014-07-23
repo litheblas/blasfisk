@@ -1,0 +1,223 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-07-23 09:00+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: blasbase/admin.py:56
+msgid "Permissions"
+msgstr ""
+
+#: blasbase/admin.py:58
+msgid "Important dates"
+msgstr ""
+
+#: blasbase/cms_app.py:7
+msgid "Blåsbasen"
+msgstr ""
+
+#: blasbase/models.py:28
+msgid "address"
+msgstr ""
+
+#: blasbase/models.py:29
+msgid "post code"
+msgstr ""
+
+#: blasbase/models.py:30
+msgid "city"
+msgstr ""
+
+#: blasbase/models.py:31
+msgid "country"
+msgstr ""
+
+#: blasbase/models.py:58
+msgid "first name"
+msgstr ""
+
+#: blasbase/models.py:59
+msgid "nickname"
+msgstr ""
+
+#: blasbase/models.py:60
+msgid "last name"
+msgstr ""
+
+#: blasbase/models.py:62
+msgid "gender"
+msgstr ""
+
+#: blasbase/models.py:63
+msgid "born"
+msgstr ""
+
+#: blasbase/models.py:65
+msgid "deceased"
+msgstr ""
+
+#: blasbase/models.py:67
+msgid "personal identification number"
+msgstr ""
+
+#: blasbase/models.py:69
+msgid "LiU-ID"
+msgstr ""
+
+#: blasbase/models.py:71
+msgid "about"
+msgstr ""
+
+#: blasbase/models.py:73
+msgid "special diets"
+msgstr ""
+
+#: blasbase/models.py:74
+msgid "special diets comments"
+msgstr ""
+
+#: blasbase/models.py:76
+msgid "posts"
+msgstr ""
+
+#: blasbase/models.py:78
+msgid "phone"
+msgstr ""
+
+#: blasbase/models.py:79
+msgid "e-mail"
+msgstr ""
+
+#: blasbase/models.py:81
+msgid "last updated"
+msgstr ""
+
+#: blasbase/models.py:88 blasbase/models.py:169
+msgid "person"
+msgstr ""
+
+#: blasbase/models.py:89
+msgid "people"
+msgstr ""
+
+#: blasbase/models.py:99
+msgid "Decease date must be after birth date."
+msgstr ""
+
+#: blasbase/models.py:168
+msgid "picture"
+msgstr ""
+
+#: blasbase/models.py:170
+msgid "primary"
+msgstr ""
+
+#: blasbase/validators.py:17 blasbase/validators.py:21
+msgid "Must not be in the future."
+msgstr ""
+
+#: blasbase/views.py:55
+msgid "Members"
+msgstr ""
+
+#: blasbase/views.py:59
+msgid "Active"
+msgstr ""
+
+#: blasbase/views.py:62
+msgid "Oldies"
+msgstr ""
+
+#: blasbase/views.py:65
+msgid "Others"
+msgstr ""
+
+#: blasbase/views.py:68
+msgid "Everybody"
+msgstr ""
+
+#: blasstrap/cms_plugins.py:11
+msgid "Jumbotron"
+msgstr ""
+
+#: blasstrap/cms_plugins.py:12 blasstrap/cms_plugins.py:27
+#: blasstrap/cms_plugins.py:43
+msgid "Bootstrap"
+msgstr ""
+
+#: blasstrap/cms_plugins.py:26
+msgid "Carousel"
+msgstr ""
+
+#: blasstrap/cms_plugins.py:42
+msgid "Pusher"
+msgstr ""
+
+#: blasstrap/cms_plugins.py:56 blasstrap/cms_plugins.py:71
+msgid "Jumbotron content"
+msgstr ""
+
+#: cards/models.py:9
+msgid "enabled"
+msgstr ""
+
+#: cards/models.py:10
+msgid "Avmarkera om du tillfälligt vill spärra ditt kort"
+msgstr ""
+
+#: cards/models.py:12
+msgid "description"
+msgstr ""
+
+#: cards/models.py:13
+msgid "Anges förslagsvis om du har fler än ett kort"
+msgstr ""
+
+#: cards/models.py:23 cards/models.py:27
+msgid "card data"
+msgstr ""
+
+#: litheblas/settings.py:194 litheblas/settings.py:209
+msgid "Swedish"
+msgstr ""
+
+#: litheblas/settings.py:195 litheblas/settings.py:215
+msgid "English"
+msgstr ""
+
+#: litheblas/settings.py:196 litheblas/settings.py:221
+msgid "German"
+msgstr ""
+
+#: litheblas/settings.py:229
+msgid "Page"
+msgstr ""
+
+#: litheblas/settings.py:230
+msgid "Custom Page"
+msgstr ""
+
+#: litheblas/settings.py:231
+msgid "LiTHe Hem"
+msgstr ""
+
+#: litheblas/settings.py:241
+msgid "Page content"
+msgstr ""
+
+#: litheblas/settings.py:252
+msgid "Subtitle"
+msgstr ""

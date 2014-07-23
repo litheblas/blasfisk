@@ -7,20 +7,62 @@ from django.db.models import Q
 from django.contrib.auth.models import (BaseUserManager,
                                         PermissionsMixin,
                                         AbstractBaseUser,
-                                        Permission,
-                                        _user_get_all_permissions)
+                                        Permission)
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import python_2_unicode_compatible
 
-from localflavor.se.forms import SEOrganisationNumberField
-from imagekit.models import ProcessedImageField, ImageSpecField
+from imagekit.models import ProcessedImageField
 
-from globals import GENDERS, COUNTRIES, generate_filename
+from globals import GENDERS, COUNTRIES, CONTACT_TYPES, generate_filename
 from blasbase.backends import make_permission_set
 from blasbase import validators
 
 
 def generate_avatar_filename(instance, filename):
     return generate_filename(instance, filename, 'avatars')
+
+
+class PhoneNumber(models.Model):
+    type = models.CharField(max_length=16, choices=CONTACT_TYPES, default='private', verbose_name=_('type'))
+    country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name=_('country'))
+    phone_number = models.CharField(max_length=64, verbose_name=_('phone number'))
+
+    class Meta:
+        abstract = True
+
+
+class PersonPhoneNumber(PhoneNumber):
+    person = models.ForeignKey('blasbase.Person', related_name='phone_numbers', verbose_name=_('person'))
+
+
+class CustomerPhoneNumber(PhoneNumber):
+    customer = models.ForeignKey('blasbase.Customer', related_name='phone_numbers', verbose_name=_('customer'))
+
+
+class EmailAddress(models.Model):
+    type = models.CharField(max_length=16, choices=CONTACT_TYPES, default='private', verbose_name=_('type'))
+    email_address = models.CharField(max_length=256, verbose_name=_('email address'))
+
+    class Meta:
+        abstract = True
+
+
+class PersonEmailAddress(EmailAddress):
+    person = models.ForeignKey('blasbase.Person', related_name='email_addresses', verbose_name=_('person'))
+
+
+class CustomerEmailAddress(EmailAddress):
+    customer = models.ForeignKey('blasbase.Customer', related_name='email_addresses', verbose_name=_('customer'))
+
+
+class AddressMixin(models.Model):
+    address = models.CharField(max_length=256, blank=True, verbose_name=_('address'))
+    post_code = models.CharField(max_length=256, blank=True, verbose_name=_('post code'))  # Byt namn till post_code
+    city = models.CharField(max_length=256, blank=True, verbose_name=_('city'))
+    country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name=_('country'))
+
+    class Meta:
+        abstract = True
 
 
 class PersonManager(models.Manager):
@@ -41,50 +83,40 @@ class PersonManager(models.Manager):
         return self.get_queryset().exclude(assignments__in=Assignment.objects.memberships()).distinct()
 
 
-class Person(models.Model):
+@python_2_unicode_compatible
+class Person(AddressMixin, models.Model):
     """Lagrar personer (som i människor) och är den datatyp som nästan allt i Blåsbasen kopplas till."""
-    first_name = models.CharField(max_length=256, verbose_name=u'förnamn')
-    nickname = models.CharField(max_length=256, blank=True, verbose_name=u'blåsnamn')
-    last_name = models.CharField(max_length=256, verbose_name=u'efternamn',
+    first_name = models.CharField(max_length=256, verbose_name=_('first name'))
+    nickname = models.CharField(max_length=256, blank=True, verbose_name=_('nickname'))
+    last_name = models.CharField(max_length=256, verbose_name=_('last name'),
                                  help_text=u'Ange gärna tidigare efternamn inom parentes, t.ex. Vidner (Eriksson)')
-    gender = models.CharField(max_length=1, choices=GENDERS, blank=True, verbose_name=u'kön')
-    born = models.DateField(blank=True, null=True, verbose_name=u'födelsedatum',
+    gender = models.CharField(max_length=1, choices=GENDERS, blank=True, verbose_name=_('gender'))
+    born = models.DateField(blank=True, null=True, verbose_name=_('born'),
                             validators=[validators.date_before_today])
-    deceased = models.DateField(blank=True, null=True, verbose_name=u'dödsdatum',
+    deceased = models.DateField(blank=True, null=True, verbose_name=_('deceased'),
                                 validators=[validators.date_before_today])
-    personal_id_number = models.CharField(max_length=4, blank=True, verbose_name=u'personnummer',
+    personal_id_number = models.CharField(max_length=4, blank=True, verbose_name=_('personal identification number'),
                                           help_text=u'Sista 4 siffrorna i personnumret')  # Last 4 characters in Swedish personal id number
-    liu_id = models.CharField(max_length=8, blank=True, verbose_name=u'LiU-ID')
+    liu_id = models.CharField(max_length=8, blank=True, verbose_name=_('LiU-ID'))
 
-    about = models.TextField(blank=True, verbose_name=u'om', help_text=u'Godtycklig text.')
+    about = models.TextField(blank=True, verbose_name=_('about'))
 
-    special_diets = models.ManyToManyField('SpecialDiet', related_name='people', blank=True, null=True, verbose_name=u'speciella kostvanor')
-    special_diets_extra = models.CharField(max_length=256, blank=True,
-                                           verbose_name=u'kommentarer till speciella kostvanor')
+    special_diets = models.ManyToManyField('SpecialDiet', related_name='people', blank=True, null=True, verbose_name=_('special diets'))
+    special_diets_extra = models.CharField(max_length=256, blank=True, verbose_name=_('special diets comments'))
 
-    posts = models.ManyToManyField('Post', through='Assignment', verbose_name=u'poster')
+    posts = models.ManyToManyField('Post', through='Assignment', verbose_name=_('posts'))
 
-    # Kontaktinformation
-    address = models.CharField(max_length=256, blank=True, verbose_name=u'adress')
-    postcode = models.CharField(max_length=256, blank=True, verbose_name=u'postnummer')  # Byt namn till post_code
-    city = models.CharField(max_length=256, blank=True, verbose_name=u'stad')
-    country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name=u'land')
-
-    phone = models.CharField(max_length=256, blank=True, verbose_name=u'telefonnummer',
-                             help_text=u'Ange landskod om annat land än Sverige.')
-    email = models.EmailField(max_length=256, blank=True, verbose_name=u'e-postadress')
-
-    last_updated = models.DateTimeField(auto_now=True)
+    last_updated = models.DateTimeField(auto_now=True, verbose_name=_('last updated'))
 
     # Låt oss fortsätta kalla den objects istället för typ people, så hålls det konsekvent mellan alla modeller
     objects = PersonManager()
 
     class Meta:
         ordering = ['first_name', 'last_name', 'nickname']
-        verbose_name = u'person'
-        verbose_name_plural = u'personer'
+        verbose_name = _('person')
+        verbose_name_plural = _('people')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.get_full_name()
 
     def clean(self):
@@ -130,7 +162,8 @@ class Person(models.Model):
 
         return u'{0} {1}'.format(self.first_name, self.last_name[0])  # Leif H
 
-    def get_start_date(self):
+    @property
+    def start_date(self):
         """Hämtar alla assignments som innebär medlemsskap och som inte är provmedlemsskap,
         sorterar stigande på startdatum, tar det första objektet och ger detta objekts startdatum"""
         try:
@@ -140,7 +173,8 @@ class Person(models.Model):
             # returnerar vi None istället.
             return None
 
-    def get_end_date(self):
+    @property
+    def end_date(self):
         a = self.assignments.memberships().order_by('end_date')
 
         # Om man inte har några sådana assignments eller om någon är pågående returnerar vi None
@@ -153,24 +187,20 @@ class Person(models.Model):
     age = property(get_age)
     full_name = property(get_full_name)
     short_name = property(get_short_name)
-    start_date = property(get_start_date)
-    end_date = property(get_end_date)
     primary_avatar = property(get_primary_avatar)
     secondary_avatars = property(get_secondary_avatars)
 
 
+@python_2_unicode_compatible
 class Avatar(models.Model):
-    picture = ProcessedImageField(upload_to=generate_avatar_filename, verbose_name=u'bild')
-    # thumbnail_small = ImageSpecField()
-    person = models.ForeignKey('Person', related_name='avatars', verbose_name=u'person')
-    primary = models.BooleanField(default=True, verbose_name=u'standard')
+    picture = ProcessedImageField(upload_to=generate_avatar_filename, verbose_name=_('picture'))
+    person = models.ForeignKey('Person', related_name='avatars', verbose_name=_('person'))
+    primary = models.BooleanField(default=True, verbose_name=_('primary'))
 
     class Meta:
         ordering = ['primary', 'id']
-        verbose_name = u'profilbild'
-        verbose_name_plural = u'profilbilder'
 
-    def __unicode__(self):
+    def __str__(self):
         return u'{0}: {1}'.format(self.person.short_name, self.id)
 
     def save(self, *args, **kwargs):
@@ -193,11 +223,11 @@ class Avatar(models.Model):
                 a.save()
 
     def get_url(self):
-        '''Hämtar (publik) URL till bilden'''
+        """Hämtar (publik) URL till bilden"""
         return self.picture.url
 
     def get_path(self):
-        '''Hämtar sökväg (i filsystemet) till bilden'''
+        """Hämtar sökväg (i filsystemet) till bilden"""
         return self.picture._get_path()
 
     url = property(get_url)
@@ -244,20 +274,21 @@ class UserManager(BaseUserManager):
         return user
 
 
+@python_2_unicode_compatible
 class User(AbstractBaseUser, PermissionsMixin):
     """
     En avskalad användarmodell vars enda uppgift i stort sett är att lagra användarnamn och lösenord. Resten lagras i
     datatypen Person.
     """
-    username = models.CharField(max_length=256, unique=True, db_index=True, verbose_name=u'användarnamn')
-    is_active = models.BooleanField(default=True, verbose_name=u'aktivt konto',
+    username = models.CharField(max_length=256, unique=True, db_index=True, verbose_name=_('username'))
+    is_active = models.BooleanField(default=True, verbose_name=_('is active'),
                                     help_text=u"Detta är INTE ett fält för att markera att någon blivit gamling")
-    is_admin = models.BooleanField(default=False, verbose_name=u'administratörskonto (?)',
-                                   help_text=u'#TODO: Osäker på vad detta fält faktiskt används för. Kolla upp.')
-    is_staff = models.BooleanField(default=False, verbose_name=u'maktkonto',
+    #is_admin = models.BooleanField(default=False, verbose_name=_('is admin'),
+    #                               help_text=u'#TODO: Osäker på vad detta fält faktiskt används för. Kolla upp.')
+    is_staff = models.BooleanField(default=False, verbose_name=_('is staff'),
                                    help_text=u'Bestämmer om användaren kan logga in i admingränssnittet')
 
-    person = models.OneToOneField(Person, related_name='user', verbose_name=u'person')
+    person = models.OneToOneField(Person, related_name='user', verbose_name=_('person'))
 
     objects = UserManager()
 
@@ -265,8 +296,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         ordering = ['person', 'username']
-        verbose_name = u'användarkonto'
-        verbose_name_plural = u'användarkonton'
+
+    def __str__(self):
+        return self.get_full_name()
 
     def get_assignment_permissions(self, obj=None):
         """Hämtar rättigheter från den kopplade personens poster och sektioner"""
@@ -300,28 +332,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     def email(self):
         return self.person.email
 
-    def __unicode__(self):
-        return self.get_full_name()
-
     # Langar lite egenskaper som många appar förväntar sig finnas i User-modellen.
     full_name = property(get_full_name)
     short_name = property(get_short_name)
     #email = property(get_email)
 
 
+@python_2_unicode_compatible
 class Section(models.Model):
     """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc.."""
-    name = models.CharField(max_length=256, verbose_name=u'namn')
-    description = models.TextField(blank=True, verbose_name=u'beskrivning')
+    name = models.CharField(max_length=256, verbose_name=_('name'))
+    description = models.TextField(blank=True, verbose_name=_('description'))
 
-    permissions = models.ManyToManyField(Permission, related_name='sections', blank=True, null=True, verbose_name=u'rättigheter')
+    permissions = models.ManyToManyField(Permission, related_name='sections', blank=True, null=True, verbose_name=_('permissions'))
 
     class Meta:
         ordering = ['name']
-        verbose_name = u'sektion'
-        verbose_name_plural = u'sektioner'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     @property
@@ -329,23 +357,24 @@ class Section(models.Model):
         return Person.objects.filter(posts__in=self.posts.all()).distinct()
 
 
+@python_2_unicode_compatible
 class Post(models.Model):
     """Exempelvis elbas, dictator, gamling, hedersmedlem, vän till blåset, sektionschef etc.. 
     Bäst att spara gamling som en egen slags medlemstyp utan sektion eftersom systemet 
     själv kan hålla reda på vilka sektioner man tillhört."""
 
-    name = models.CharField(max_length=256, verbose_name=u'namn')
-    section = models.ForeignKey('Section', related_name='posts', blank=True, null=True, verbose_name=u'sektion')
+    name = models.CharField(max_length=256, verbose_name=_('name'))
+    section = models.ForeignKey('Section', related_name='posts', blank=True, null=True, verbose_name=_('section'))
 
-    permissions = models.ManyToManyField(Permission, related_name='posts', blank=True, null=True, verbose_name=u'rättigheter')
+    permissions = models.ManyToManyField(Permission, related_name='posts', blank=True, null=True, verbose_name=_('permissions'))
 
     # Metadata
-    description = models.TextField(blank=True, verbose_name=u'beskrivning')
-    membership = models.BooleanField(default=False, verbose_name=u'innebär medlemsskap',
+    description = models.TextField(blank=True, verbose_name=_('description'))
+    membership = models.BooleanField(default=False, verbose_name=_('membership'),
                                      help_text=u'Räknas man som medlem i föreningen enkom av att vara med i denna post, dvs. kan man <em>antas</em> på denna post? Det här vill vi antagligen bara använda för instrument.')  # TODO: Byt namn till implies_membership
-    engagement = models.BooleanField(default=False, verbose_name=u'uppdrag',
+    engagement = models.BooleanField(default=False, verbose_name=_('engagement'),
                                      help_text=u'Är denna post ett uppdrag utöver det vanliga medlemsskapet?')
-    show_in_timeline = models.BooleanField(default=True, verbose_name=u'visa på tidslinje',
+    show_in_timeline = models.BooleanField(default=True, verbose_name=_('show in timeline'),
                                            help_text=u'Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)')
 
     # En egenskap för om posten är arkiverad också kanske? Typ generalbas. /Olle
@@ -356,8 +385,11 @@ class Post(models.Model):
     class Meta:
         unique_together = (('section', 'name',),)
         ordering = ['section', 'name']
-        verbose_name = u'post'
-        verbose_name_plural = u'poster'
+
+    def __str__(self):
+        if self.section:
+            return u'{0} / {1}'.format(self.section.name, self.name)
+        return self.name
 
     def get_people(self, current=True):
 
@@ -384,11 +416,6 @@ class Post(models.Model):
         perms.update(self.get_section_permissions())
         perms.update(make_permission_set(self.permissions.all()))
         return perms
-
-    def __unicode__(self):
-        if self.section:
-            return u'{0} / {1}'.format(self.section.name, self.name)
-        return self.name
 
 
 class AssignmentManager(models.Manager):
@@ -421,30 +448,25 @@ class AssignmentManager(models.Manager):
         return self.memberships().filter(pk__in=self.ended())
 
 
+@python_2_unicode_compatible
 class Assignment(models.Model):
     """Mellantabell som innehåller info om varje användares medlemsskap/uppdrag på olika poster."""
-    person = models.ForeignKey(Person, related_name='assignments', verbose_name=u'person')
-    post = models.ForeignKey(Post, verbose_name=u'post')
+    person = models.ForeignKey(Person, related_name='assignments', verbose_name=_('person'))
+    post = models.ForeignKey(Post, verbose_name=_('post'))
 
-    start_date = models.DateField(verbose_name=u'startdatum')
-    end_date = models.DateField(blank=True, null=True, verbose_name=u'slutdatum')
+    start_date = models.DateField(verbose_name=_('start date'))
+    end_date = models.DateField(blank=True, null=True, verbose_name=_('end date'))
 
-    trial = models.BooleanField(default=False, verbose_name=u'provantagning')
+    trial = models.BooleanField(default=False, verbose_name=_('trial'))
 
     objects = AssignmentManager()
 
     class Meta:
         ordering = ['start_date']
-        verbose_name = u'medlemsskap/uppdrag'
-        verbose_name_plural = verbose_name
 
-    def __unicode__(self):
+    def __str__(self):
         return u'{0}: {1}'.format(self.person.get_short_name(), self.post)
 
-        # implies_membership = property(get_if_implies_membership)
-        # engagement = property(get_if_engagement)
-        #on_timeline = property(get_if_on_timeline)
-        #ongoing = property(get_if_ongoing)
 
     @property
     def membership(self):
@@ -473,56 +495,27 @@ class Assignment(models.Model):
         pass
 
 
+@python_2_unicode_compatible
 class SpecialDiet(models.Model):
-    name = models.CharField(max_length=256, verbose_name=u'beskrivning',
-                            help_text=u'Anges i formen "Allergisk mot...", "Nykterist" etc.')
+    name = models.CharField(max_length=256, verbose_name=_('name'), help_text=_(u'Anges i formen "Allergisk mot...", "Nykterist" etc.'))
 
     class Meta:
         ordering = ['name']
-        verbose_name = u'speciell kostvana'
-        verbose_name_plural = u'speciella kostvanor'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
-class Customer(models.Model):
-    name = models.CharField(max_length=256, verbose_name=u'namn')
-    organisation_number = SEOrganisationNumberField(
-        min_length=0)  # TODO: Fixa verbose_name. Kolla om det verkligen går att lämna blankt #Accepterar även personnummer
-    comments = models.TextField(blank=True, verbose_name=u'kommentar')
+@python_2_unicode_compatible
+class Customer(AddressMixin, models.Model):
+    name = models.CharField(max_length=256, verbose_name=_('name'))
+    organisation_number = models.CharField(max_length=12, verbose_name=_('organisation number'))  # TODO: Fixa verbose_name. Kolla om det verkligen går att lämna blankt
+    comments = models.TextField(blank=True, verbose_name=_('comments'))
 
-    contact = models.CharField(max_length=256, blank=True, verbose_name=u'kontaktperson')
-    phone_number = models.CharField(max_length=64, blank=True, verbose_name=u'telefonnummer')
-
-    # Address information
-    address = models.CharField(max_length=256, blank=True, verbose_name=u'adress')
-    postcode = models.CharField(max_length=256, blank=True, verbose_name=u'postnummer')
-    city = models.CharField(max_length=256, blank=True, verbose_name=u'stad')
-    country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name=u'land')
+    contact = models.CharField(max_length=256, blank=True, verbose_name=_('contact person'))
 
     class Meta:
         ordering = ['name', 'contact']
-        verbose_name = u'kund'
-        verbose_name_plural = u'kunder'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
-
-
-class Card(models.Model):
-    enabled = models.BooleanField(default=True, verbose_name=u'aktiverat',
-                                  help_text=u"Avmarkera om du tillfälligt vill spärra ditt kort")
-    card_data = models.CharField(max_length=256, verbose_name=u'kortdata',
-                                 help_text=u"Be någon kolla i loggen efter ditt kortnummer")  # TODO: Kolla exakt vad av kortets data som läses av. Vad av detta skall lagras?
-    person = models.ForeignKey(Person, related_name='cards',
-                               verbose_name=u'person')  # Kort _måste_ associeras med en person. Låt det vara så så slipper vi "temporära lösningar" och vilsna kort som ingen vet vem de tillhör.
-    description = models.CharField(max_length=256, verbose_name=u'beskrivning', blank=True,
-                                   help_text=u"Anges förslagsvis om du har fler än ett kort")
-
-    class Meta:
-        verbose_name = u'kort'
-        verbose_name_plural = u'kort'
-
-    def __unicode__(self):
-        return u'{0} ({1})'.format(self.card_data, self.person.get_short_name())

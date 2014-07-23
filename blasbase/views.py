@@ -6,6 +6,8 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 from blasbase.models import Person, Section, Post
 from globals import COUNTRIES
+from django.utils.translation import ugettext_lazy as _
+
 
 
 class SectionList(ListView):
@@ -50,20 +52,20 @@ class PersonList(ListView):
         # Det är så jag gjort befintliga filter, så kör man bara en .filter(pk__in=Person.objects.hokuspokus()).
         context['filters'] = []
         context['filters'].append({'id': 'members',
-                                   'name': u'Blåsare',
+                                   'name': _('Members'),
                                    'default': True,  # Avgör vilken flik som är förvald. Får bara finnas på ett filter.
                                    'content': context['people'].filter(pk__in=Person.objects.members())})
         context['filters'].append({'id': 'active',
-                                   'name': u'Aktiva',
+                                   'name': _('Active'),
                                    'content': context['people'].filter(pk__in=Person.objects.active())})
         context['filters'].append({'id': 'oldies',
-                                   'name': u'Gamlingar',
+                                   'name': _('Oldies'),
                                    'content': context['people'].filter(pk__in=Person.objects.oldies())})
         context['filters'].append({'id': 'others',
-                                   'name': u'Löst folk',
+                                   'name': _('Others'),
                                    'content': context['people'].filter(pk__in=Person.objects.others())})
         context['filters'].append({'id': 'all',
-                                   'name': u'Alla',
+                                   'name': _('Everybody'),
                                    'content': context['people']})
 
         context['sections'] = Section.objects.all().order_by('name')
@@ -77,10 +79,10 @@ class PersonList(ListView):
             get_params = self.request.GET.copy()
 
             if 'sort' in get_params:
-                get_params.__delitem__(u'sort')
+                get_params.__delitem__('sort')
 
             if 'tab' in get_params:
-                get_params.__delitem__(u'tab')
+                get_params.__delitem__('tab')
 
             context['search_params'] = get_params
 
