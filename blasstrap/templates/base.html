@@ -26,9 +26,8 @@
     <div class="navbar navbar-default navbar-fixed-top navbar-main">
         <div class="container">
             <div class="navbar-header">
-
                 <a href="/" class="navbar-brand">
-                    <img src="/static/img/logo-bla.svg" class="logo img-responsive">
+                    <img src="{% static 'img/logo-bla.svg' %}" class="logo img-responsive">
                     <small>Linköpings Tekniska Högskolas Blåscorps sedan 1973</small>
                     <small class="mini">Linköpings Tekniska Högskolas Blåscorps</small>
                 </a>
@@ -66,7 +65,7 @@
                     <a href="http://instagram.com/litheblas" target="_blank"><span class="fa fa-instagram fa-lg"></span></a>&nbsp;&nbsp;&nbsp;
                     <a href="https://plus.google.com/+LitheblasOrg" target="_blank"><span
                             class="fa fa-google-plus fa-lg"></span></a></div>
-                <div class="col-xs-5 col-sm-8 pull-down"><img src="/static/img/overkropp.svg"
+                <div class="col-xs-5 col-sm-8 pull-down"><img src="{% static 'img/overkropp.svg' %}"
                                                               class="pull-right img-responsive"></div>
 
 
@@ -124,7 +123,6 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="username" class="control-label col-sm-3">Användarnamn</label>
-
                         <div class="col-sm-9">
                             <input id="username" name="username" class="form-control" type="text"
                                    placeholder="Användarnamn">
@@ -132,7 +130,6 @@
                     </div>
                     <div class="form-group">
                         <label for="login_pass" class="control-label col-sm-3">Lösenord</label>
-
                         <div class="col-sm-9">
                             <input id="password" name="password" class="form-control" type="password"
                                    placeholder="Lösenord">
