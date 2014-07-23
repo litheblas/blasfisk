@@ -21,3 +21,9 @@ GENDERS = (
     ('f', 'Kvinna'),
     ('m', 'Man')
 )
+
+CONTACT_TYPES = (
+    ('private', 'Private'),
+    ('work', 'Work'),
+    ('other', 'Other'),
+)
