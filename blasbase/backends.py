@@ -3,10 +3,12 @@ from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.models import Permission
 from django.contrib.auth import get_user_model
 
+
 def make_permission_set(source):
     """Skapar ett set av Permissions i det format Django förväntar sig.
     Fritt efter django.contrib.auth.backends.ModelBackend.get_all_permissions """
     return set(["%s.%s" % (permission.content_type.app_label, permission.codename) for permission in source])
+
 
 class BlasBackend(ModelBackend):
     """Blåsbasens auth-backend. Subklassar Djangos egna men byter ut en metod samt lägger till en för att hantera rättigheter från sektioner och poster. 
