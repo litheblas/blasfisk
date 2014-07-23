@@ -2,8 +2,12 @@
 
 {% block content %}
 
-    <div class="page-header"><h1>Inloggning för medlemmar</h1></div>
-
+    <div class="page-title">
+        <div class="container">
+            <h1>Inloggning för medlemmar</h1>
+        </div>
+    </div>
+<div class="container">
     {% for error in form.non_field_errors %}
         <div class="alert alert-danger">
             <span class="fa fa-lg fa-fw fa-minus-circle"></span> {{ error }}
@@ -34,5 +38,5 @@
             </div>
         </div>
     </form>
-
+</div>
 {% endblock %}
