@@ -1,4 +1,4 @@
-db.sqlite3
+db.sqlite3*
 litheblas/media/*
 litheblas/secret.py
 
