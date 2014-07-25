@@ -467,7 +467,6 @@ class Assignment(models.Model):
     def __str__(self):
         return u'{0}: {1}'.format(self.person.get_short_name(), self.post)
 
-
     @property
     def membership(self):
         return self.post.membership

@@ -10,38 +10,46 @@ from blasbase.forms import BlasUserChangeForm, BlasUserCreationForm
 #from watcher.models import Watcher
 from django.utils.translation import ugettext_lazy as _
 
+
 class AssignmentInline(admin.TabularInline):
     model = Assignment
     extra = 1
 
+
 class AvatarInline(admin.TabularInline):
     model = Avatar
     extra = 1
-    
+
+
 #class MailingListInline(admin.TabularInline):
 #    model = MailingMembership
 
 class CardInline(admin.TabularInline):
     model = Card
+
     extra = 1
+
 
 class PostInline(admin.TabularInline):
     model = Post
     extra = 1
-    
+
+
 class GroupMemberInline(admin.TabularInline):
     model = User.groups.through
     readonly_fields = ['user']
     extra = 0
-    
+
+
 class UserInline(admin.StackedInline):
     model = User
     max_num = 1
     extra = 0
 
+
 class BlasUserInline(admin.StackedInline):
-    
     form = BlasUserChangeForm
+
 
 class BlasUserAdmin(admin.StackedInline, UserAdmin):
     # TODO: Bättre
@@ -82,14 +90,17 @@ class BlasUserAdmin(admin.StackedInline, UserAdmin):
 #class WatcherInline(admin.TabularInline):
 #    model = Watcher
 
+
 class GroupAdmin(admin.ModelAdmin):
     #inlines = [WatcherInline,GroupMemberInline]
     inlines = [GroupMemberInline]
 
     exclude = ('groups',)
 
+
 class SectionAdmin(admin.ModelAdmin):
     inlines = [PostInline]
+
 
 class PersonAdmin(admin.ModelAdmin):
     #inlines = [AvatarInline, AssignmentInline, CardInline, MailingListInline, UserInline]
