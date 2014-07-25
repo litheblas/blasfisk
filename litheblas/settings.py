@@ -103,6 +103,7 @@ INSTALLED_APPS = (
     'blasstrap',
     #'mailing',
     'blasbase',
+    'cards',
     #'events',
     #'watcher',
 
