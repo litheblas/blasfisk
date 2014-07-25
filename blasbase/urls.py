@@ -14,5 +14,4 @@ urlpatterns = patterns(
     
     #url(r'section/$', 'blasbase.views.section_list'),
     #url(r'section/(?P<section>)/$', 'blasbase.views.section_detail'),
-    
 )
