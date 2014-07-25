@@ -256,7 +256,7 @@ class UserManager(BaseUserManager):
             raise ValueError(u'Users must have a password')
 
         # TODO: Fixa nåt snyggare
-        person = Person(first_name='first name', last_name='last name')
+        person = Person(first_name=u'Niklas', last_name=u'Namnlös')
         person.save()
 
         user = self.model(
@@ -273,11 +273,10 @@ class UserManager(BaseUserManager):
         # Use the normal method for creating users
         user = self.create_user(
             username,
-            password,
+            password
         )
 
         # Add superuser properties
-        user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
 
@@ -528,7 +527,7 @@ class SpecialDiet(models.Model):
 @python_2_unicode_compatible
 class Customer(AddressMixin, models.Model):
     name = models.CharField(max_length=256, verbose_name=_('name'))
-    organisation_number = models.CharField(max_length=12, verbose_name=_('organisation number'))  # TODO: Fixa verbose_name. Kolla om det verkligen går att lämna blankt
+    organisation_number = models.CharField(max_length=12, blank=True, verbose_name=_('organisation number'))
     comments = models.TextField(blank=True, verbose_name=_('comments'))
 
     contact = models.CharField(max_length=256, blank=True, verbose_name=_('contact person'))
