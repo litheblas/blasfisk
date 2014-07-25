@@ -3,6 +3,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 from django.db import models
+from django.db.models.query import QuerySet
 from django.db.models import Q
 from django.contrib.auth.models import (BaseUserManager,
                                         PermissionsMixin,
@@ -65,22 +66,32 @@ class AddressMixin(models.Model):
         abstract = True
 
 
-class PersonManager(models.Manager):
+class PersonQuerySetMixin(object):
     def members(self):
-        return self.get_queryset().filter(assignments__in=Assignment.objects.memberships()).distinct()
+        return self.filter(assignments__in=Assignment.objects.memberships()).distinct()
 
     def active(self):
         """Hämtar personer som är relaterade till aktiva assignments. distinct() tar bort eventuella dubletter."""
-        return self.get_queryset().filter(assignments__in=Assignment.objects.active()).distinct()
+        return self.filter(assignments__in=Assignment.objects.active()).distinct()
 
     def oldies(self):
         """Hämtar personer som är relaterade till utgångna assignments (för att hitta personerna som _varit_ medlemmar)
         och exkluderar sedan personer som har relationer till aktiva dito. distinct() tar bort eventuella dubletter."""
-        return self.get_queryset().filter(assignments__in=Assignment.objects.oldies()).exclude(
+        return self.filter(assignments__in=Assignment.objects.oldies()).exclude(
             assignments__in=Assignment.objects.active()).distinct()
 
     def others(self):
-        return self.get_queryset().exclude(assignments__in=Assignment.objects.memberships()).distinct()
+        return self.exclude(assignments__in=Assignment.objects.memberships()).distinct()
+
+
+class PersonQuerySet(QuerySet, PersonQuerySetMixin):
+    pass
+
+
+class PersonManager(models.Manager, PersonQuerySetMixin):
+    # TODO: Remove when changing to Django 1.7
+    def get_queryset(self):
+        return PersonQuerySet(self.model, using=self._db)
 
 
 @python_2_unicode_compatible
@@ -418,25 +429,25 @@ class Post(models.Model):
         return perms
 
 
-class AssignmentManager(models.Manager):
+class AssignmentQuerySetMixin(object):
     #use_for_related_fields = True
 
     def ongoing(self):
-        return self.get_queryset().filter(Q(start_date__lte=datetime.date.today()),
-                                          Q(end_date=None) | Q(end_date__gt=datetime.date.today()))
+        return self.filter(Q(start_date__lte=datetime.date.today()),
+                           Q(end_date=None) | Q(end_date__gt=datetime.date.today()))
 
     def ended(self):
-        return self.get_queryset().filter(Q(start_date__lte=datetime.date.today()),
-                                          Q(end_date__lte=datetime.date.today()))
+        return self.filter(Q(start_date__lte=datetime.date.today()),
+                           Q(end_date__lte=datetime.date.today()))
 
     def memberships(self, all=False):
-        qs = self.get_queryset().filter(post__membership=True).order_by('start_date')
+        qs = self.filter(post__membership=True).order_by('start_date')
         if not all:
             qs = qs.exclude(trial=True)
         return qs
 
     def engagements(self, all=False):
-        qs = self.get_queryset().filter(post__engagement=True).order_by('start_date')
+        qs = self.filter(post__engagement=True).order_by('start_date')
         if not all:
             qs = qs.exclude(trial=True)
         return qs
@@ -446,6 +457,15 @@ class AssignmentManager(models.Manager):
 
     def oldies(self):
         return self.memberships().filter(pk__in=self.ended())
+
+
+class AssignmentQuerySet(QuerySet, AssignmentQuerySetMixin):
+    pass
+
+
+class AssignmentManager(models.Manager):
+    def get_queryset(self):
+        return AssignmentQuerySet(self.model, using=self._db)
 
 
 @python_2_unicode_compatible
