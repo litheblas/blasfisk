@@ -1,0 +1,21 @@
+{% extends CMS_TEMPLATE %}
+{% load cms_tags %}
+
+{% block content %}
+<div class="page-header">
+    <h1>På gång</h1>
+</div>
+{% if event_list %}
+    {% for event in event_list %}
+        <b>{{event.start.date}}</b>
+    <br>
+        {{event.name}}
+<br>
+        {{event.description}}
+<br><br>
+    {% endfor %}
+
+{% else %}
+Tomt var det här!
+{% endif %}
+{% endblock content %}

@@ -104,7 +104,7 @@ INSTALLED_APPS = (
     #'mailing',
     'blasbase',
     'cards',
-    #'events',
+    'events',
     #'watcher',
 
 )
