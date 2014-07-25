@@ -462,7 +462,7 @@ class AssignmentQuerySet(QuerySet, AssignmentQuerySetMixin):
     pass
 
 
-class AssignmentManager(models.Manager):
+class AssignmentManager(models.Manager, AssignmentQuerySetMixin):
     def get_queryset(self):
         return AssignmentQuerySet(self.model, using=self._db)
 
