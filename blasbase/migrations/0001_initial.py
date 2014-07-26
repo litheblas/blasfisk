@@ -8,26 +8,6 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'PersonPhoneNumber'
-        db.create_table(u'blasbase_personphonenumber', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('type', self.gf('django.db.models.fields.CharField')(default='private', max_length=16)),
-            ('country', self.gf('django.db.models.fields.CharField')(default='SE', max_length=2, blank=True)),
-            ('phone_number', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('person', self.gf('django.db.models.fields.related.ForeignKey')(related_name='phone_numbers', to=orm['blasbase.Person'])),
-        ))
-        db.send_create_signal(u'blasbase', ['PersonPhoneNumber'])
-
-        # Adding model 'CustomerPhoneNumber'
-        db.create_table(u'blasbase_customerphonenumber', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('type', self.gf('django.db.models.fields.CharField')(default='private', max_length=16)),
-            ('country', self.gf('django.db.models.fields.CharField')(default='SE', max_length=2, blank=True)),
-            ('phone_number', self.gf('django.db.models.fields.CharField')(max_length=64)),
-            ('customer', self.gf('django.db.models.fields.related.ForeignKey')(related_name='phone_numbers', to=orm['blasbase.Customer'])),
-        ))
-        db.send_create_signal(u'blasbase', ['CustomerPhoneNumber'])
-
         # Adding model 'PersonEmailAddress'
         db.create_table(u'blasbase_personemailaddress', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -37,14 +17,15 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'blasbase', ['PersonEmailAddress'])
 
-        # Adding model 'CustomerEmailAddress'
-        db.create_table(u'blasbase_customeremailaddress', (
+        # Adding model 'PersonPhoneNumber'
+        db.create_table(u'blasbase_personphonenumber', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('type', self.gf('django.db.models.fields.CharField')(default='private', max_length=16)),
-            ('email_address', self.gf('django.db.models.fields.CharField')(max_length=256)),
-            ('customer', self.gf('django.db.models.fields.related.ForeignKey')(related_name='email_addresses', to=orm['blasbase.Customer'])),
+            ('country', self.gf('django.db.models.fields.CharField')(default='SE', max_length=2, blank=True)),
+            ('phone_number', self.gf('django.db.models.fields.CharField')(max_length=64)),
+            ('person', self.gf('django.db.models.fields.related.ForeignKey')(related_name='phone_numbers', to=orm['blasbase.Person'])),
         ))
-        db.send_create_signal(u'blasbase', ['CustomerEmailAddress'])
+        db.send_create_signal(u'blasbase', ['PersonPhoneNumber'])
 
         # Adding model 'Person'
         db.create_table(u'blasbase_person', (
@@ -202,6 +183,25 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'blasbase', ['SpecialDiet'])
 
+        # Adding model 'CustomerPhoneNumber'
+        db.create_table(u'blasbase_customerphonenumber', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('type', self.gf('django.db.models.fields.CharField')(default='private', max_length=16)),
+            ('country', self.gf('django.db.models.fields.CharField')(default='SE', max_length=2, blank=True)),
+            ('phone_number', self.gf('django.db.models.fields.CharField')(max_length=64)),
+            ('customer', self.gf('django.db.models.fields.related.ForeignKey')(related_name='phone_numbers', to=orm['blasbase.Customer'])),
+        ))
+        db.send_create_signal(u'blasbase', ['CustomerPhoneNumber'])
+
+        # Adding model 'CustomerEmailAddress'
+        db.create_table(u'blasbase_customeremailaddress', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('type', self.gf('django.db.models.fields.CharField')(default='private', max_length=16)),
+            ('email_address', self.gf('django.db.models.fields.CharField')(max_length=256)),
+            ('customer', self.gf('django.db.models.fields.related.ForeignKey')(related_name='email_addresses', to=orm['blasbase.Customer'])),
+        ))
+        db.send_create_signal(u'blasbase', ['CustomerEmailAddress'])
+
         # Adding model 'Customer'
         db.create_table(u'blasbase_customer', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -221,17 +221,14 @@ class Migration(SchemaMigration):
         # Removing unique constraint on 'Post', fields ['section', 'name']
         db.delete_unique(u'blasbase_post', ['section_id', 'name'])
 
-        # Deleting model 'PersonPhoneNumber'
-        db.delete_table(u'blasbase_personphonenumber')
-
-        # Deleting model 'CustomerPhoneNumber'
-        db.delete_table(u'blasbase_customerphonenumber')
+        # Removing unique constraint on 'Function', fields ['parent', 'name']
+        db.delete_unique(u'blasbase_function', ['parent_id', 'name'])
 
         # Deleting model 'PersonEmailAddress'
         db.delete_table(u'blasbase_personemailaddress')
 
-        # Deleting model 'CustomerEmailAddress'
-        db.delete_table(u'blasbase_customeremailaddress')
+        # Deleting model 'PersonPhoneNumber'
+        db.delete_table(u'blasbase_personphonenumber')
 
         # Deleting model 'Person'
         db.delete_table(u'blasbase_person')
@@ -274,6 +271,12 @@ class Migration(SchemaMigration):
 
         # Deleting model 'SpecialDiet'
         db.delete_table(u'blasbase_specialdiet')
+
+        # Deleting model 'CustomerPhoneNumber'
+        db.delete_table(u'blasbase_customerphonenumber')
+
+        # Deleting model 'CustomerEmailAddress'
+        db.delete_table(u'blasbase_customeremailaddress')
 
         # Deleting model 'Customer'
         db.delete_table(u'blasbase_customer')

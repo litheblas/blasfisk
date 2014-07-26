@@ -35,28 +35,12 @@ class PhoneNumber(models.Model):
         abstract = True
 
 
-class PersonPhoneNumber(PhoneNumber):
-    person = models.ForeignKey('blasbase.Person', related_name='phone_numbers', verbose_name=_('person'))
-
-
-class CustomerPhoneNumber(PhoneNumber):
-    customer = models.ForeignKey('blasbase.Customer', related_name='phone_numbers', verbose_name=_('customer'))
-
-
 class EmailAddress(models.Model):
     type = models.CharField(max_length=16, choices=CONTACT_TYPES, default='private', verbose_name=_('type'))
     email_address = models.CharField(max_length=256, verbose_name=_('email address'))
 
     class Meta:
         abstract = True
-
-
-class PersonEmailAddress(EmailAddress):
-    person = models.ForeignKey('blasbase.Person', related_name='email_addresses', verbose_name=_('person'))
-
-
-class CustomerEmailAddress(EmailAddress):
-    customer = models.ForeignKey('blasbase.Customer', related_name='email_addresses', verbose_name=_('customer'))
 
 
 class AddressMixin(models.Model):
@@ -67,6 +51,14 @@ class AddressMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class PersonEmailAddress(EmailAddress):
+    person = models.ForeignKey('blasbase.Person', related_name='email_addresses', verbose_name=_('person'))
+
+
+class PersonPhoneNumber(PhoneNumber):
+    person = models.ForeignKey('blasbase.Person', related_name='phone_numbers', verbose_name=_('person'))
 
 
 class PersonQuerySetMixin(object):
@@ -526,6 +518,14 @@ class SpecialDiet(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CustomerPhoneNumber(PhoneNumber):
+    customer = models.ForeignKey('blasbase.Customer', related_name='phone_numbers', verbose_name=_('customer'))
+
+
+class CustomerEmailAddress(EmailAddress):
+    customer = models.ForeignKey('blasbase.Customer', related_name='email_addresses', verbose_name=_('customer'))
 
 
 @python_2_unicode_compatible
