@@ -3,9 +3,9 @@ from django.db import models
 from django.contrib.auth.models import Group
 from django.utils.encoding import python_2_unicode_compatible
 
-answers = (
+ANSWERS = (
     ('No', 'Nej'),
-    ('Maybe', 'Kanske'), # TODO: Ska vi ha ett sånt här alternativ?
+    ('Maybe', 'Kanske'),
     ('Yes', 'Ja'),
 )
 
@@ -24,7 +24,8 @@ class Attendance(models.Model):
     event = models.ForeignKey('Event')
     person = models.ForeignKey('blasbase.Person')
     
-    answer = models.CharField(max_length=8, choices=answers, blank=True) # Blank = inget svar
+    answer = models.CharField(max_length=8, choices=ANSWERS, blank=True)  # Blank = inget svar
+
 
 @python_2_unicode_compatible
 class Event(models.Model):
