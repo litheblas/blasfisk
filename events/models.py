@@ -28,8 +28,8 @@ class Attendance(models.Model):
     
     answer = models.CharField(max_length=8, choices=ANSWERS, blank=True)  # Blank = inget svar
 
-
-
+    def __str__(self):
+        return '{0}: {1}'.format(self.event, self.person)
 
 
 # Funktioner för att filtrera events
@@ -56,6 +56,7 @@ class EventManager(models.Manager, EventQuerySetMixin):
     def get_queryset(self):
         return EventQuerySet(model=self.model, using=self._db)
 
+
 @python_2_unicode_compatible
 class Event(models.Model):
     name = models.CharField(max_length=256)
@@ -76,7 +77,6 @@ class Event(models.Model):
         return self.name
     
     
-@python_2_unicode_compatible
 class TargetedInfo(models.Model):
     event = models.ForeignKey(Event)
     group = models.ForeignKey(Group)
