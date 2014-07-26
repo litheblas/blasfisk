@@ -3,9 +3,6 @@ from django.utils.translation import ugettext_lazy as _
 from locations.models import Location
 
 
-# Register your models here.
-
-
 class LocationAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['name']}),
@@ -24,4 +21,5 @@ class LocationAdmin(admin.ModelAdmin):
     list_filter = ['city']
     search_fields = ['name', 'address']
 
+# Register your models here.
 admin.site.register(Location, LocationAdmin)
