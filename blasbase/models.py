@@ -2,13 +2,16 @@
 import datetime
 from dateutil.relativedelta import relativedelta
 
+from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 from django.db import models
 from django.db.models.query import QuerySet
 from django.db.models import Q
-from django.contrib.auth.models import (BaseUserManager,
-                                        PermissionsMixin,
-                                        AbstractBaseUser,
-                                        Permission)
+from django.contrib.auth.models import (
+    BaseUserManager,
+    PermissionsMixin,
+    AbstractBaseUser,
+    Permission
+)
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -33,14 +36,6 @@ class PhoneNumber(models.Model):
         abstract = True
 
 
-class PersonPhoneNumber(PhoneNumber):
-    person = models.ForeignKey('blasbase.Person', related_name='phone_numbers', verbose_name=_('person'))
-
-
-class CustomerPhoneNumber(PhoneNumber):
-    customer = models.ForeignKey('blasbase.Customer', related_name='phone_numbers', verbose_name=_('customer'))
-
-
 class EmailAddress(models.Model):
     type = models.CharField(max_length=16, choices=CONTACT_TYPES, default='private', verbose_name=_('type'))
     email_address = models.CharField(max_length=256, verbose_name=_('email address'))
@@ -49,17 +44,12 @@ class EmailAddress(models.Model):
         abstract = True
 
 
-class PersonAddress(AddressMixin):
-    type = models.CharField(max_length=16, choices=CONTACT_TYPES, default='private', verbose_name=_('type'))
-    person = models.ForeignKey('blasbase.Person', related_name='addresses', verbose_name=_('person'))
-
-
 class PersonEmailAddress(EmailAddress):
     person = models.ForeignKey('blasbase.Person', related_name='email_addresses', verbose_name=_('person'))
 
 
-class CustomerEmailAddress(EmailAddress):
-    customer = models.ForeignKey('blasbase.Customer', related_name='email_addresses', verbose_name=_('customer'))
+class PersonPhoneNumber(PhoneNumber):
+    person = models.ForeignKey('blasbase.Person', related_name='phone_numbers', verbose_name=_('person'))
 
 
 class PersonQuerySetMixin(object):
@@ -87,7 +77,7 @@ class PersonQuerySet(QuerySet, PersonQuerySetMixin):
 class PersonManager(models.Manager, PersonQuerySetMixin):
     # TODO: Remove when changing to Django 1.7
     def get_queryset(self):
-        return PersonQuerySet(self.model, using=self._db)
+        return PersonQuerySet(model=self.model, using=self._db)
 
 
 @python_2_unicode_compatible
@@ -111,11 +101,10 @@ class Person(models.Model):
     special_diets = models.ManyToManyField('SpecialDiet', related_name='people', blank=True, null=True, verbose_name=_('special diets'))
     special_diets_extra = models.CharField(max_length=256, blank=True, verbose_name=_('special diets comments'))
 
-    posts = models.ManyToManyField('Post', through='Assignment', verbose_name=_('posts'))
+    functions = models.ManyToManyField('Function', through='Assignment', verbose_name=_('functions'))
 
     last_updated = models.DateTimeField(auto_now=True, verbose_name=_('last updated'))
 
-    # Låt oss fortsätta kalla den objects istället för typ people, så hålls det konsekvent mellan alla modeller
     objects = PersonManager()
 
     class Meta:
@@ -289,8 +278,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=256, unique=True, db_index=True, verbose_name=_('username'))
     is_active = models.BooleanField(default=True, verbose_name=_('is active'),
                                     help_text=u"Detta är INTE ett fält för att markera att någon blivit gamling")
-    #is_admin = models.BooleanField(default=False, verbose_name=_('is admin'),
-    #                               help_text=u'#TODO: Osäker på vad detta fält faktiskt används för. Kolla upp.')
     is_staff = models.BooleanField(default=False, verbose_name=_('is staff'),
                                    help_text=u'Bestämmer om användaren kan logga in i admingränssnittet')
 
@@ -311,7 +298,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         perms = set()
         # set(["%s.%s" % (p.content_type.app_label, p.codename) for p in user_obj.user_permissions.select_related()])
         for assignment in self.person.get_assignments():
-            perms.update(assignment.post.get_all_permissions())
+            perms.update(assignment.function.get_all_permissions())
         return perms
 
     # Ersätter Djangos egna get_all_permissions för att få med rättigheter från poster/sektioner 
@@ -344,114 +331,118 @@ class User(AbstractBaseUser, PermissionsMixin):
     #email = property(get_email)
 
 
-@python_2_unicode_compatible
-class Section(models.Model):
-    """Exempelvis trumpet, styrelsen, kompet, funktionärer, gamlingar/hedersmedlemmar, kommittéer etc.."""
-    name = models.CharField(max_length=256, verbose_name=_('name'))
-    description = models.TextField(blank=True, verbose_name=_('description'))
+class FunctionManagerMixin(TreeManager):
+    def descendants(self, include_self=False):
+        return self.all().get_queryset_descendants(self, include_self=include_self).distinct()
 
-    permissions = models.ManyToManyField(Permission, related_name='sections', blank=True, null=True, verbose_name=_('permissions'))
+    def ancestors(self, include_self=False):
+        # http://stackoverflow.com/q/6471354
 
-    class Meta:
-        ordering = ['name']
+        #if isinstance(self, EmptyQuerySet):
+        #    return self
+        queryset = self.none()
+        for obj in self.all():
+            queryset = queryset | obj.get_ancestors(include_self=include_self)
 
-    def __str__(self):
-        return self.name
+        return queryset.distinct()
 
-    @property
     def people(self):
-        return Person.objects.filter(posts__in=self.posts.all()).distinct()
+        """
+        Returns people from self and all descendants.
+        """
+        return Person.objects.filter(functions=self.descendants(include_self=True)).distinct()
+
+    def permissions(self):
+        """
+        Returns permissions from self and all ancestors.
+        """
+        return Permission.objects.filter(functions=self.ancestors(include_self=True)).distinct()
+
+
+class FunctionQuerySet(QuerySet, FunctionManagerMixin):
+    pass
+
+
+class FunctionManager(FunctionManagerMixin):
+    def get_queryset(self):
+        return FunctionQuerySet(model=self.model, using=self._db).order_by(self.tree_id_attr, self.left_attr)
 
 
 @python_2_unicode_compatible
-class Post(models.Model):
-    """Exempelvis elbas, dictator, gamling, hedersmedlem, vän till blåset, sektionschef etc.. 
-    Bäst att spara gamling som en egen slags medlemstyp utan sektion eftersom systemet 
-    själv kan hålla reda på vilka sektioner man tillhört."""
-
+class Function(MPTTModel):
     name = models.CharField(max_length=256, verbose_name=_('name'))
-    section = models.ForeignKey('Section', related_name='posts', blank=True, null=True, verbose_name=_('section'))
-
-    permissions = models.ManyToManyField(Permission, related_name='posts', blank=True, null=True, verbose_name=_('permissions'))
-
-    # Metadata
     description = models.TextField(blank=True, verbose_name=_('description'))
-    membership = models.BooleanField(default=False, verbose_name=_('membership'),
-                                     help_text=u'Räknas man som medlem i föreningen enkom av att vara med i denna post, dvs. kan man <em>antas</em> på denna post? Det här vill vi antagligen bara använda för instrument.')  # TODO: Byt namn till implies_membership
-    engagement = models.BooleanField(default=False, verbose_name=_('engagement'),
-                                     help_text=u'Är denna post ett uppdrag utöver det vanliga medlemsskapet?')
-    show_in_timeline = models.BooleanField(default=True, verbose_name=_('show in timeline'),
-                                           help_text=u'Ska ett medlemskap på denna post visas i tidslinjen? (Tidslinjen som inte finns ännu)')
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', verbose_name=_('parent'))
 
-    # En egenskap för om posten är arkiverad också kanske? Typ generalbas. /Olle
-    # Nej förresten, det riskerar bara en massa redundant och/eller felaktig information. 
-    # En post som ingen haft på många år hör ju per definition till historien, så det behöver inte anges explicit.
-    # Dessutom skulle det inte uppdateras. /Olle
+    permissions = models.ManyToManyField(Permission, related_name='functions', null=True, blank=True, verbose_name=_('permissions'))
+
+    membership = models.BooleanField(default=False, verbose_name=_('membership'))
+    engagement = models.BooleanField(default=False, verbose_name=_('engagement'))
+
+    _default_manager = FunctionManager()
 
     class Meta:
-        unique_together = (('section', 'name',),)
-        ordering = ['section', 'name']
+        unique_together = ('parent', 'name')
+
+    class MPTTMeta:
+        order_insertion_by = ('name',)
 
     def __str__(self):
-        if self.section:
-            return u'{0} / {1}'.format(self.section.name, self.name)
-        return self.name
+        return u'{0}'.format(self.name)
 
-    def get_people(self, current=True):
+    def people(self):
+        return self.get_descendants(include_self=True).people()
 
-        people = []
-        if current:
-            # Att vi väljer att exkludera åtaganden med slutdatum innan idag ser till att åtaganden utan slutdatum också kommer med.
-            assignments = self.assignments.exclude(end_date__lt=datetime.date.today()).filter(
-                start_date__lte=datetime.date.today())
-        elif not current:
-            # Välj ut åtaganden med startdatum tidigare än eller lika med idag.
-            assignments = self.assignments.filter(start_date__lte=datetime.date.today())
-
-        # select_related för att minska antalet databasfrågor en aning.
-        for assig in assignments.select_related('person'):
-            people.append(assig.person)
-        return people
-
-    def get_section_permissions(self):
-        return make_permission_set(self.section.permissions.all())
-        # return set(["%s.%s" % (p.content_type.app_label, p.codename) for p in self.section.permissions.all()])
-
-    def get_all_permissions(self):
-        perms = set()
-        perms.update(self.get_section_permissions())
-        perms.update(make_permission_set(self.permissions.all()))
-        return perms
+    def get_permissions(self):
+        return self.get_ancestors(include_self=True).permissions()
 
 
 class AssignmentQuerySetMixin(object):
     #use_for_related_fields = True
 
-    def ongoing(self):
-        return self.filter(Q(start_date__lte=datetime.date.today()),
-                           Q(end_date=None) | Q(end_date__gt=datetime.date.today()))
+    def defined(self):
+        """
+        Returns assignments with at least start or end date.
+        """
+        return self.exclude(start__isnull=True, end__isnull=True)
 
-    def ended(self):
-        return self.filter(Q(start_date__lte=datetime.date.today()),
-                           Q(end_date__lte=datetime.date.today()))
+    def ongoing(self, date=datetime.date.today()):
+        """
+        Returns defined assignments with...
+
+        Start date undefined or before date
+        AND
+        End date undefined or after date
+
+        :param date: datetime.date object, default today
+        """
+        return self.defined().filter(
+            Q(start__isnull=True) | Q(start__lte=date),
+            Q(end__isnull=True) | Q(end__gte=date)
+        )
+
+    def ended(self, date=datetime.date.today()):
+        return self.defined().filter(
+            Q(end__lt=date)
+        )
 
     def memberships(self, all=False):
-        qs = self.filter(post__membership=True).order_by('start_date')
+        qs = self.filter(function__membership=True).order_by('start')
         if not all:
             qs = qs.exclude(trial=True)
         return qs
 
     def engagements(self, all=False):
-        qs = self.filter(post__engagement=True).order_by('start_date')
+        qs = self.filter(function__engagement=True).order_by('start')
         if not all:
             qs = qs.exclude(trial=True)
         return qs
 
     def active(self):
-        return self.memberships().filter(pk__in=self.ongoing())
+        return self.memberships().ongoing()
 
     def oldies(self):
-        return self.memberships().filter(pk__in=self.ended())
+        return self.memberships().ended()
 
 
 class AssignmentQuerySet(QuerySet, AssignmentQuerySetMixin):
@@ -460,46 +451,46 @@ class AssignmentQuerySet(QuerySet, AssignmentQuerySetMixin):
 
 class AssignmentManager(models.Manager, AssignmentQuerySetMixin):
     def get_queryset(self):
-        return AssignmentQuerySet(self.model, using=self._db)
+        return AssignmentQuerySet(model=self.model, using=self._db)
 
 
 @python_2_unicode_compatible
 class Assignment(models.Model):
     """Mellantabell som innehåller info om varje användares medlemsskap/uppdrag på olika poster."""
     person = models.ForeignKey(Person, related_name='assignments', verbose_name=_('person'))
-    post = models.ForeignKey(Post, verbose_name=_('post'))
+    function = TreeForeignKey(Function, verbose_name=_('function'))
 
-    start_date = models.DateField(verbose_name=_('start date'))
-    end_date = models.DateField(blank=True, null=True, verbose_name=_('end date'))
+    start = models.DateField(blank=True, null=True, verbose_name=_('start'), help_text=_('First date of assignment.'))
+    end = models.DateField(blank=True, null=True, verbose_name=_('end'), help_text=_('Last date of assignment.'))
 
     trial = models.BooleanField(default=False, verbose_name=_('trial'))
 
     objects = AssignmentManager()
 
     class Meta:
-        ordering = ['start_date']
+        ordering = ['start']
 
     def __str__(self):
-        return u'{0}: {1}'.format(self.person.get_short_name(), self.post)
+        return u'{0}: {1}'.format(self.person.get_short_name(), self.function)
 
     @property
     def membership(self):
-        return self.post.membership
+        return self.function.membership
 
     @property
     def engagement(self):
-        return self.post.engagement
+        return self.function.engagement
 
     @property
     def on_timeline(self):
-        return self.post.show_in_timeline
+        return self.function.show_in_timeline
 
     @property
     def ongoing(self):
         return self.objects.ongoing().filter(pk__in=self.pk).exists()
 
     def convert_to_regular_membership(self, date=datetime.date.today()):
-        a = Assignment(person=self.person, post=self.post, start_date=date, trial=False)
+        a = Assignment(person=self.person, function=self.function, start_date=date, trial=False)
         a.save()
 
         self.end_date = date
@@ -518,6 +509,14 @@ class SpecialDiet(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CustomerPhoneNumber(PhoneNumber):
+    customer = models.ForeignKey('blasbase.Customer', related_name='phone_numbers', verbose_name=_('customer'))
+
+
+class CustomerEmailAddress(EmailAddress):
+    customer = models.ForeignKey('blasbase.Customer', related_name='email_addresses', verbose_name=_('customer'))
 
 
 @python_2_unicode_compatible

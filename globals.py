@@ -3,11 +3,13 @@ from pycountry import countries
 import os.path
 import uuid
 
+
 def get_countries():
     c = []
     for country in countries:
         c.append((country.alpha2, country.name))
     return c
+
 
 def generate_filename(instance, filename, location):
     extension = os.path.splitext(filename)[1].lower()

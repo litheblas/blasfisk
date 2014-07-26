@@ -4,26 +4,31 @@ from django.contrib.auth.models import Group
 from django.db.models.query import QuerySet
 from datetime import datetime
 
-
-answers = (
+ANSWERS = (
     ('No', 'Nej'),
-    ('Maybe', 'Kanske'), # TODO: Ska vi ha ett sånt här alternativ?
+    ('Maybe', 'Kanske'),
     ('Yes', 'Ja'),
 )
 
 
+@python_2_unicode_compatible
 class EventType(models.Model):
     name = models.CharField(max_length=256)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
+@python_2_unicode_compatible
 class Attendance(models.Model):
     #Skapas när användaren bjuds in till eller själv går med i ett evenemang
     event = models.ForeignKey('Event')
     person = models.ForeignKey('blasbase.Person')
-    answer = models.CharField(max_length=8, choices=answers, blank=True) # Blank = inget svar
+    
+    answer = models.CharField(max_length=8, choices=ANSWERS, blank=True)  # Blank = inget svar
+
+
+
 
 
 # Funktioner för att filtrera events
@@ -50,7 +55,7 @@ class EventManager(models.Manager, EventQuerySetMixin):
     def get_queryset(self):
         return EventQuerySet(model=self.model, using=self._db)
 
-
+@python_2_unicode_compatible
 class Event(models.Model):
     name = models.CharField(max_length=256)
     description = models.TextField(blank=True)
@@ -63,11 +68,14 @@ class Event(models.Model):
 
     customer = models.ForeignKey('blasbase.Customer')
     price = models.DecimalField(max_digits=10, decimal_places=2)
+
     objects = EventManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
+    
+@python_2_unicode_compatible
 class TargetedInfo(models.Model):
     event = models.ForeignKey(Event)
     group = models.ForeignKey(Group)

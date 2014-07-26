@@ -23,7 +23,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 TEMPLATE_DEBUG = False
@@ -152,11 +151,9 @@ ROOT_URLCONF = 'litheblas.urls'
 
 WSGI_APPLICATION = 'litheblas.wsgi.application'
 
-
-
-
 AUTHENTICATION_BACKENDS = (
-    'blasbase.backends.BlasBackend',
+    'blasbase.backends.BlasbaseBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 AUTH_USER_MODEL = 'blasbase.User'

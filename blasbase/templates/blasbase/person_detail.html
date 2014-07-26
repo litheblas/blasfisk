@@ -8,8 +8,8 @@
                 <div class="col-sm-10">
                     <h1>{{ person.full_name }}
                         <small>
-                            {% if person.start_date %}{{ person.start_date.year }}{% endif %}–{% if person.end_date %}
-                            {{ person.end_date.year }}{% endif %}
+                            {% if person.start %}{{ person.start.year }}{% endif %}–{% if person.end %}
+                            {{ person.end.year }}{% endif %}
                         </small>
                     </h1>
                 </div>
@@ -139,8 +139,8 @@
                                         <td>{% if i.post.section %}{{ i.post.section }}{% endif %}</td>
                                         <td>{{ i.post.name }}{% if i.trial %}
                                             <span class="label label-info">Prov</span>{% endif %}</td>
-                                        <td>{{ i.start_date }}</td>
-                                        <td>{% if i.end_date %}{{ i.end_date }}{% endif %}</td>
+                                        <td>{{ i.start }}</td>
+                                        <td>{% if i.end %}{{ i.end }}{% endif %}</td>
                                     </tr>
                                 {% endfor %}
 
@@ -161,8 +161,8 @@
                                         <td>{% if i.post.section %}{{ i.post.section }}{% endif %}</td>
                                         <td>{{ i.post.name }}{% if i.trial %}
                                             <span class="label label-info">Prov</span>{% endif %}</td>
-                                        <td>{{ i.start_date }}</td>
-                                        <td>{% if i.end_date %}{{ i.end_date }}{% endif %}</td>
+                                        <td>{{ i.start }}</td>
+                                        <td>{% if i.end %}{{ i.end }}{% endif %}</td>
                                     </tr>
                                 {% endfor %}
 
