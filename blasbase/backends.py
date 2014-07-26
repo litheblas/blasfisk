@@ -10,6 +10,16 @@ def make_permission_set(source):
     return set(["%s.%s" % (permission.content_type.app_label, permission.codename) for permission in source])
 
 
+class BlasbaseBackend(object):
+    def authenticate(self, *args, **kwargs):
+        return None
+
+    def has_perm(self, user_obj, perm, obj=None):
+        if not user_obj.is_active:
+            return False
+        return perm in make_permission_set(user_obj.person.permissions(obj))
+
+
 class BlasBackend(ModelBackend):
     """Blåsbasens auth-backend. Subklassar Djangos egna men byter ut en metod samt lägger till en för att hantera rättigheter från sektioner och poster. 
     Jag har modifierat en del så det kan vara bra att hålla en öga på dessa metoder vid byte av Django-version. //Olle """
@@ -25,12 +35,13 @@ class BlasBackend(ModelBackend):
                 user_obj._assignment_perm_cache = get_user_model().get_assignment_permissions(user_obj)
         return user_obj._assignment_perm_cache
     
-    def get_all_permissions(self, user_obj, obj=None):
-        """Fritt efter django.contrib.auth.backends.ModelBackend.get_all_permissions men anropar dessutom get_assignment_permissions()"""
-        if user_obj.is_anonymous() or obj is not None:
-            return set()
-        if not hasattr(user_obj, '_perm_cache'):
-            user_obj._perm_cache = make_permission_set(user_obj.user_permissions.select_related()) # Användarrättigheter
-            user_obj._perm_cache.update(self.get_group_permissions(user_obj)) # Grupprättigheter
-            user_obj._perm_cache.update(self.get_assignment_permissions(user_obj)) # Sektions-/posträttigheter
-        return user_obj._perm_cache
+    # def get_all_permissions(self, user_obj, obj=None):
+    #     """Fritt efter django.contrib.auth.backends.ModelBackend.get_all_permissions men anropar dessutom get_assignment_permissions()"""
+    #     if user_obj.is_anonymous() or obj is not None:
+    #         return set()
+    #     if not hasattr(user_obj, '_perm_cache'):
+    #         user_obj._perm_cache = make_permission_set(user_obj.user_permissions.select_related()) # Användarrättigheter
+    #         user_obj._perm_cache.update(self.get_group_permissions(user_obj)) # Grupprättigheter
+    #         user_obj._perm_cache.update(self.get_assignment_permissions(user_obj)) # Sektions-/posträttigheter
+    #     return user_obj._perm_cache
+

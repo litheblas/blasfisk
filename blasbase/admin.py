@@ -4,7 +4,7 @@ from django.contrib import admin
 
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
-from blasbase.models import Avatar, User, Person, Section, Post, Assignment, SpecialDiet
+from blasbase.models import Avatar, User, Person, Assignment, SpecialDiet, Function
 from cards.models import MagnetCard
 from blasbase.forms import BlasUserChangeForm, BlasUserCreationForm
 #from mailing.models import Membership as MailingMembership
@@ -31,8 +31,8 @@ class MagnetCardInline(admin.TabularInline):
     extra = 1
 
 
-class PostInline(admin.TabularInline):
-    model = Post
+class FunctionInline(admin.TabularInline):
+    model = Function
     extra = 1
 
 
@@ -98,11 +98,6 @@ class GroupAdmin(admin.ModelAdmin):
 
     exclude = ('groups',)
 
-
-class SectionAdmin(admin.ModelAdmin):
-    inlines = [PostInline]
-
-
 class PersonAdmin(admin.ModelAdmin):
     #inlines = [AvatarInline, AssignmentInline, CardInline, MailingListInline, UserInline]
 
@@ -125,7 +120,6 @@ class PersonAdmin(admin.ModelAdmin):
 admin.site.unregister(Group)
 admin.site.register(Group, GroupAdmin)
 admin.site.register(Person, PersonAdmin)
-admin.site.register(Post)
-admin.site.register(Section, SectionAdmin)
 #admin.site.register(Assignment)
 admin.site.register(SpecialDiet)
+admin.site.register(Function)

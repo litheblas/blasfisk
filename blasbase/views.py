@@ -4,15 +4,9 @@ from django.shortcuts import render
 from django.http import Http404
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView
-from blasbase.models import Person, Section, Post
+from blasbase.models import Person
 from globals import COUNTRIES
 from django.utils.translation import ugettext_lazy as _
-
-
-
-class SectionList(ListView):
-    model = Section
-    context_object_name = 'sections'
 
 
 class PersonList(ListView):
@@ -68,8 +62,8 @@ class PersonList(ListView):
                                    'name': _('Everybody'),
                                    'content': context['people']})
 
-        context['sections'] = Section.objects.all().order_by('name')
-        context['posts'] = Post.objects.all().order_by('name').order_by('section')
+        #context['sections'] = Section.objects.all().order_by('name')
+        #context['posts'] = Post.objects.all().order_by('name').order_by('section')
         context['countries'] = COUNTRIES
 
         if self.request.GET:
