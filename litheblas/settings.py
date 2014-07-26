@@ -105,6 +105,7 @@ INSTALLED_APPS = (
     'blasbase',
     'cards',
     'events',
+    'locations',
     #'watcher',
     'contact',
 

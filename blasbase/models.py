@@ -17,6 +17,7 @@ from imagekit.models import ProcessedImageField
 from globals import GENDERS, COUNTRIES, CONTACT_TYPES, generate_filename
 from blasbase.backends import make_permission_set
 from blasbase import validators
+from locations.models import AddressMixin
 
 
 def generate_avatar_filename(instance, filename):
@@ -54,16 +55,6 @@ class PersonEmailAddress(EmailAddress):
 
 class CustomerEmailAddress(EmailAddress):
     customer = models.ForeignKey('blasbase.Customer', related_name='email_addresses', verbose_name=_('customer'))
-
-
-class AddressMixin(models.Model):
-    address = models.CharField(max_length=256, blank=True, verbose_name=_('address'))
-    post_code = models.CharField(max_length=256, blank=True, verbose_name=_('post code'))  # Byt namn till post_code
-    city = models.CharField(max_length=256, blank=True, verbose_name=_('city'))
-    country = models.CharField(max_length=2, choices=COUNTRIES, default='SE', blank=True, verbose_name=_('country'))
-
-    class Meta:
-        abstract = True
 
 
 class PersonQuerySetMixin(object):
