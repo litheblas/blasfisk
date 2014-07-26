@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import Group
 from django.db.models.query import QuerySet
+from django.utils.encoding import python_2_unicode_compatible
 from datetime import datetime
 
 ANSWERS = (
