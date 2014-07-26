@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 from django.utils.translation import ugettext_lazy as _
-from litheblas.secret import SECRET_KEY, DATABASE_PASSWORD
+from litheblas.secret import *
 from socket import getfqdn
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -106,6 +106,7 @@ INSTALLED_APPS = (
     'cards',
     'events',
     #'watcher',
+    'contact',
 
 )
 
@@ -272,3 +273,5 @@ CKEDITOR_SETTINGS = {
     'removePlugins': 'pastefromword,magicline,colordialog', # Akta dig, inga mellanslag mellan namnen...
     'removeButtons': 'TextColor,BGColor,Indent,Outdent', # Akta dig, inga mellanslag mellan namnen...
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
