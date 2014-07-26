@@ -49,6 +49,11 @@ class EmailAddress(models.Model):
         abstract = True
 
 
+class PersonAddress(AddressMixin):
+    type = models.CharField(max_length=16, choices=CONTACT_TYPES, default='private', verbose_name=_('type'))
+    person = models.ForeignKey('blasbase.Person', related_name='addresses', verbose_name=_('person'))
+
+
 class PersonEmailAddress(EmailAddress):
     person = models.ForeignKey('blasbase.Person', related_name='email_addresses', verbose_name=_('person'))
 
@@ -86,7 +91,7 @@ class PersonManager(models.Manager, PersonQuerySetMixin):
 
 
 @python_2_unicode_compatible
-class Person(AddressMixin, models.Model):
+class Person(models.Model):
     """Lagrar personer (som i människor) och är den datatyp som nästan allt i Blåsbasen kopplas till."""
     first_name = models.CharField(max_length=256, verbose_name=_('first name'))
     nickname = models.CharField(max_length=256, blank=True, verbose_name=_('nickname'))

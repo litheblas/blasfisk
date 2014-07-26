@@ -4,7 +4,7 @@ from django.contrib import admin
 
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
-from blasbase.models import Avatar, User, Person, Section, Post, Assignment, SpecialDiet
+from blasbase.models import Avatar, User, Person, Section, Post, Assignment, SpecialDiet, PersonAddress
 from cards.models import MagnetCard
 from blasbase.forms import BlasUserChangeForm, BlasUserCreationForm
 #from mailing.models import Membership as MailingMembership
@@ -50,6 +50,11 @@ class UserInline(admin.StackedInline):
 
 class BlasUserInline(admin.StackedInline):
     form = BlasUserChangeForm
+
+
+class PersonAddressInline(admin.StackedInline):
+    model = PersonAddress
+    extra = 1
 
 
 class BlasUserAdmin(admin.StackedInline, UserAdmin):
@@ -106,7 +111,7 @@ class SectionAdmin(admin.ModelAdmin):
 class PersonAdmin(admin.ModelAdmin):
     #inlines = [AvatarInline, AssignmentInline, CardInline, MailingListInline, UserInline]
 
-    inlines = [AvatarInline, AssignmentInline, MagnetCardInline, BlasUserAdmin]
+    inlines = [PersonAddressInline, AvatarInline, AssignmentInline, MagnetCardInline, BlasUserAdmin]
     
     list_display = ('first_name', 'nickname', 'last_name')
 #     fieldsets = (
