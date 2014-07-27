@@ -3,6 +3,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from blasbase.models import Person, SpecialDiet, PersonAddress,PersonPhoneNumber
 from datetime import datetime
+from cards.models import MagnetCard
 import pycountry
 import MySQLdb
 
@@ -22,7 +23,7 @@ class Command(BaseCommand):
                       charset='utf8' ) # name of the data base
         print u"Hämtar data från mysql"
         cur = db.cursor()
-        cur.execute("SELECT fnamn,smek,enamn,kon,fodd,pnr_sista,studentid,fritext,allergi,gluten,veg,nykter,gatuadr,postnr,ort,land,hemnr,mobilnr,jobbnr FROM person")
+        cur.execute("SELECT fnamn,smek,enamn,kon,fodd,pnr_sista,studentid,fritext,allergi,gluten,veg,nykter,gatuadr,postnr,ort,land,hemnr,mobilnr,jobbnr,latlong,persid FROM person")
         for row in cur.fetchall() :
             person = Person()
             person.first_name = row[0]
@@ -127,6 +128,20 @@ class Command(BaseCommand):
                 ptel.person = person;
                 ptel.type = 'work'
                 ptel.save()
+            """ row[19] innehåller latlong men ingenstans att stoppa in den """
+            """ row[20] innehåller persid """
+            cur2 = db.cursor()
+            cur2.execute("SELECT nummer,aktiv FROM kort WHERE persid=%s", (row[20]))
+            oldnumber = ""
+            for row2 in cur2.fetchall() :
+                if row2[0] != oldnumber:
+                    oldnumber = row2[0]
+                    mk = MagnetCard()
+                    mk.person = person
+                    mk.card_data = row2[0]
+                    mk.enabled = row2[1]
+                    mk.description = "Automatically imported from old database"
+                    mk.save()
             person.save()
             """Not yet added """
             """
