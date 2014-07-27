@@ -44,6 +44,11 @@ class EmailAddress(models.Model):
         abstract = True
 
 
+class PersonAddress(AddressMixin):
+    type = models.CharField(max_length=16, choices=CONTACT_TYPES, default='private', verbose_name=_('type'))
+    person = models.ForeignKey('blasbase.Person', related_name='addresses', verbose_name=_('person'))
+
+
 class PersonEmailAddress(EmailAddress):
     person = models.ForeignKey('blasbase.Person', related_name='email_addresses', verbose_name=_('person'))
 
