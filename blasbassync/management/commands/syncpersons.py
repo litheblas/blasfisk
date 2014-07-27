@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.core.management.base import BaseCommand, CommandError
-from blasbase.models import Person, SpecialDiet, PersonAddress
+from blasbase.models import Person, SpecialDiet, PersonAddress,PersonPhoneNumber
 from datetime import datetime
 import MySQLdb
 
@@ -21,7 +21,7 @@ class Command(BaseCommand):
                       charset='utf8' ) # name of the data base
         print u"Hämtar data från mysql"
         cur = db.cursor()
-        cur.execute("SELECT fnamn,smek,enamn,kon,fodd,pnr_sista,studentid,fritext,allergi,gluten,veg,nykter,gatuadr,postnr,ort,land FROM person")
+        cur.execute("SELECT fnamn,smek,enamn,kon,fodd,pnr_sista,studentid,fritext,allergi,gluten,veg,nykter,gatuadr,postnr,ort,land,hemnr,mobilnr,jobbnr FROM person")
         for row in cur.fetchall() :
             person = Person()
             person.first_name = row[0]
@@ -82,7 +82,26 @@ class Command(BaseCommand):
             else:
                 paddress.country = ""   """
             paddress.save()
-
+            """hemnr,mobilnr,jobbnr"""
+            if row[16] != "" and row[16]:
+                ptel = PersonPhoneNumber()
+                ptel.phone_number = row[16]
+                ptel.person = person;
+                ptel.type = 'private'
+                ptel.save()
+            if row[17] != "" and row[17]:
+                ptel = PersonPhoneNumber()
+                ptel.phone_number = row[17]
+                ptel.person = person;
+                ptel.type = 'private'
+                ptel.save()
+            if row[18] != "" and row[18]:
+                ptel = PersonPhoneNumber()
+                ptel.phone_number = row[18]
+                ptel.person = person;
+                ptel.type = 'work'
+                ptel.save()
+            person.save()
             """Not yet added """
             """
                Assignments
@@ -115,7 +134,7 @@ class Command(BaseCommand):
                         senast_kollad - Vi hämtar nog inte den
 
                """
-            person.save()
+
 
 
 
