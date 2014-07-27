@@ -3,6 +3,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from blasbase.models import Person, SpecialDiet, PersonAddress,PersonPhoneNumber
 from datetime import datetime
+import pycountry
 import MySQLdb
 
 class Command(BaseCommand):
@@ -76,13 +77,38 @@ class Command(BaseCommand):
                 paddress.city = row[14]
             else:
                 paddress.city = ""
-            """ Måste koda om till isonycklar
-                if row[15]:
-                paddress.country = row[15]
-            else:
-                paddress.country = ""   """
+            """ Skitfult men jag är lat! """
+
+            if row[15] and row[15] != "":
+                if row[15].lower() == 'belgien':
+                    paddress.country = pycountry.countries.get(name='Belgium').alpha2
+                if row[15].lower() == 'estland':
+                    paddress.country = pycountry.countries.get(name='Estonia').alpha2
+                if row[15].lower() == 'frankrike' or row[15].lower() == 'france':
+                    paddress.country = pycountry.countries.get(name='France').alpha2
+                if row[15].lower() == 'indien':
+                    paddress.country = pycountry.countries.get(name='India').alpha2
+                if row[15].lower() == 'italien':
+                    paddress.country = pycountry.countries.get(name='Italy').alpha2
+                if row[15].lower() == 'japan':
+                    paddress.country = pycountry.countries.get(name='Japan').alpha2
+                if row[15].lower() == 'austria' or row[15].lower() == u'österrike':
+                    paddress.country = pycountry.countries.get(name='Austria').alpha2
+                if row[15] == 'USA':
+                    paddress.country = pycountry.countries.get(name='United States').alpha2
+                if row[15].lower() == 'tyskland':
+                    paddress.country = pycountry.countries.get(name='Germany').alpha2
+                if row[15].lower() == 'tjeckien':
+                    paddress.country = pycountry.countries.get(name='Czech Republic').alpha2
+                if row[15].lower() == 'storbritannien' or row[15].lower() == 'england':
+                    paddress.country = pycountry.countries.get(name='United Kingdom').alpha2
+                if row[15].lower() == 'schweiz':
+                    paddress.country = pycountry.countries.get(name='Switzerland').alpha2
+                if row[15].lower() == 'norge':
+                    paddress.country = pycountry.countries.get(name='Norway').alpha2
+                if row[15].lower() == 'mongoliet':
+                    paddress.country = pycountry.countries.get(name='Mongolia').alpha2
             paddress.save()
-            """hemnr,mobilnr,jobbnr"""
             if row[16] != "" and row[16]:
                 ptel = PersonPhoneNumber()
                 ptel.phone_number = row[16]
@@ -117,11 +143,8 @@ class Command(BaseCommand):
                Information not taken from old database:
 
                     litheblas.person:
-                        hemnr
-                        mobilnr
-                        jobbnr
-                        icqnr
-                        blasmail
+                        icqnr - Ta bort?
+                        blasmail - Username
                         gras_medlem_till
                         arbete
                         icke_blasare
@@ -133,6 +156,34 @@ class Command(BaseCommand):
                         epost_utskick
                         senast_kollad - Vi hämtar nog inte den
 
+
+
+            Unika länder att lägga till:
+            'Austria',
+            'AUSTRIA',
+            'Belgien',
+            'England',
+            'Estland',
+            'France',
+            'Frankrike',
+            'HEMLIGT',
+            'Indien',
+            'Italien',
+            'Japan',
+            'Mongoliet',
+            'Norge',
+            'Schweden',
+            'Schweiz',
+            'Skåne',
+            'Storbritannien',
+            'Sverige',
+            'SVERIGE',
+            'Sweden',
+            'Tjeckien',
+            'Tyskland',
+            'TYSKLAND',
+            'USA',
+            'Österrike'
                """
 
 
