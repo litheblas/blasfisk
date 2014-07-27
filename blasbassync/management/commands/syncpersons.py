@@ -76,15 +76,44 @@ class Command(BaseCommand):
                 paddress.city = row[14]
             else:
                 paddress.city = ""
-            if row[15]:
+            """ Måste koda om till isonycklar
+                if row[15]:
                 paddress.country = row[15]
             else:
-                paddress.country = ""
+                paddress.country = ""   """
             paddress.save()
 
             """Not yet added """
             """
+               Assignments
+               Avatars
+               Magnet Cards
+               Users
+               Rättigheter
+               Grupper
+               Land
                test.posts
+
+
+               Information not taken from old database:
+
+                    litheblas.person:
+                        hemnr
+                        mobilnr
+                        jobbnr
+                        icqnr
+                        blasmail
+                        gras_medlem_till
+                        arbete
+                        icke_blasare
+                        password - Vi hämtar nog inte den
+                        nomail
+                        admin
+                        sedd_av_anv - Vi hämtar nog inte den
+                        latlong
+                        epost_utskick
+                        senast_kollad - Vi hämtar nog inte den
+
                """
             person.save()
 
