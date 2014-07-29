@@ -20,7 +20,7 @@ class Command(BaseCommand):
         print u"Hämtar data för funktioner"
         function_dictionary = self.create_functions(db)
         print u"Hämtar data från persontabellen"
-        self.loop_through_persons(db,instrument_dictionary)
+        self.loop_through_persons(db,instrument_dictionary,function_dictionary)
 
         """
                 Assignments
@@ -55,7 +55,7 @@ class Command(BaseCommand):
                 tempFunc.parent=funktion
             tempFunc.description = row[2]
             tempFunc.save()
-            function_dictionary[row[3]] = tempFunc
+            function_dictionary[int(row[3])] = tempFunc
         return function_dictionary
     def create_instruments(self,sektid,sektion,db,instrument_dictionary):
         cur = db.cursor()
@@ -92,13 +92,10 @@ class Command(BaseCommand):
         return instrument_dictionary
         """
          Information not taken from old database:
-            knamn
             hemsida
             listordning
         """
-
-
-    def loop_through_persons(self,db,instrument_dictionary):
+    def loop_through_persons(self,db,instrument_dictionary,function_dictionary):
         gluten = SpecialDiet.objects.get_or_create(name='Glutenallergi')[0]
         veg = SpecialDiet.objects.get_or_create(name='Vegetarian')[0]
         nykter = SpecialDiet.objects.get_or_create(name='Nykterist')[0]
@@ -169,6 +166,7 @@ class Command(BaseCommand):
                 puser.person = person
                 puser.save()
             self.get_instruments(db,row[20],person,instrument_dictionary)
+            self.get_functions(db,row[20],person,function_dictionary)
             person.save()
             """               Information not taken from old database:
 
@@ -187,13 +185,23 @@ class Command(BaseCommand):
 
 
             """
+    def get_functions(self,db,persid,person,function_dictionary):
+        cur = db.cursor()
+        cur.execute("SELECT pers,funk,startdatum,slutdatum from persfunk where pers=%s",(persid))
+        for row in cur.fetchall():
+            tempA = Assignment(engagement=True)
+            tempA.start = row[2]
+            tempA.end = row[3]
+            tempA.function = function_dictionary[int(row[1])]
+            tempA.person = person
+            tempA.save()
     def get_instruments(self,db,persid,person,instrument_dictionary):
         cur = db.cursor()
         cur.execute("SELECT pers,datum,typ,instr from medlem where pers=%s ORDER BY datum",(persid))
         last = None
         for row in cur.fetchall():
             if row[2] == 'prov':
-                tempA = Assignment()
+                tempA = Assignment(membership=True)
                 tempA.start = row[1]
                 tempA.person = person
                 tempA.trial = True
@@ -201,7 +209,7 @@ class Command(BaseCommand):
                 tempA.save()
                 last=tempA
             elif row[2] == 'antagen':
-                tempA = Assignment()
+                tempA = Assignment(membership=True)
                 tempA.start = row[1]
                 tempA.person = person
                 if last:
@@ -215,21 +223,20 @@ class Command(BaseCommand):
                     last.end = row[1]
                     last.save()
                 else:
-                    tempA = Assignment()
+                    tempA = Assignment(membership=True)
                     tempA.end = row[1]
                     tempA.person = person
                     tempA.function = Function.objects.get(name="Okänt instrument")
                     tempA.save()
-                #Fångar inte upp dom som är gamling men inte registrerade på ett instrument
             elif row[2] == 'heder':
-                tempA=Assignment()
+                tempA=Assignment(membership=True)
                 tempA.start = row[1]
                 tempA.person = person
                 tempA.function = Function.objects.get(name="Hedersmedlem")
                 tempA.save()
+                #tempA.membership = True
+                tempA.save()
                 last = tempA
-
-
     def get_cards(self,db,persid,person):
         cur2 = db.cursor()
         cur2.execute("SELECT nummer,aktiv FROM kort WHERE persid=%s", (persid))
