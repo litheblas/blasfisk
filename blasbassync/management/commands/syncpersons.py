@@ -135,6 +135,7 @@ class Command(BaseCommand):
             oldnumber = ""
             for row2 in cur2.fetchall() :
                 if row2[0] != oldnumber:
+                    #För att undvika dubletter
                     oldnumber = row2[0]
                     mk = MagnetCard()
                     mk.person = person
@@ -145,13 +146,11 @@ class Command(BaseCommand):
             person.save()
             """Not yet added """
             """
-               Assignments
+                Assignments
                Avatars
-               Magnet Cards
                Users
                Rättigheter
                Grupper
-               Land
                test.posts
 
 
@@ -173,32 +172,6 @@ class Command(BaseCommand):
 
 
 
-            Unika länder att lägga till:
-            'Austria',
-            'AUSTRIA',
-            'Belgien',
-            'England',
-            'Estland',
-            'France',
-            'Frankrike',
-            'HEMLIGT',
-            'Indien',
-            'Italien',
-            'Japan',
-            'Mongoliet',
-            'Norge',
-            'Schweden',
-            'Schweiz',
-            'Skåne',
-            'Storbritannien',
-            'Sverige',
-            'SVERIGE',
-            'Sweden',
-            'Tjeckien',
-            'Tyskland',
-            'TYSKLAND',
-            'USA',
-            'Österrike'
                """
 
 

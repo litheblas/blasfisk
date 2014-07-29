@@ -1,6 +1,7 @@
 db.sqlite3*
 litheblas/media/*
 litheblas/secret.py
+*.bat
 
 # Created by http://www.gitignore.io
 
@@ -169,5 +170,4 @@ $RECYCLE.BIN/
 
 # KDE directory preferences
 .directory
-newsync.bat
-*.bat
+
