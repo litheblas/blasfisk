@@ -1,0 +1,63 @@
+Listning av tabeller i gamla blåsbasen:
+
+Litheblas:
+
+aktivitet - Tabell som listar aktiviteter, en rad per aktivitet. Kolumner id, arrangor_id (persid), fritext, plats etc
+akt_pers - Tabell som innehåller svar på om man kommer på aktivteter akt_id, pers_id, svar, kommentar
+akt_pobel - Samma som ovan fast för pöbel? id, akt_id, pobel_id, svar, kommentar,
+akt_pobel_person - Tabell som innehåller personer för tabellen ovan (som inte är med i person)
+arrangemang - Tabell som innehåller events, arr, fritext, datum, slutdatum etc
+arr_pers - Tabell som innehåller vilka personer som är med på vilket arrangemang: id, arr_id, pers_id
+baren_stat - Tabell som innehåller barstatistik, pers, datum, cl
+barskulder - Tom tabell
+blasbaslog - Tabell som innehåller inserts, deletes, updates etc till blåsbasen
+bokning - Innehåller bokningar, resurs_id, startdt, slutdt, person (inte persid), fritext
+bokresurs - Resurs som går att boka, finns just nu bara sollos
+coord - Innehåller namn, lat och long till olika ställen
+coord_arr - Koppling mellan coordinater och arrangemang
+deletelog - Log på saker som är deletat från jukeboxen? tror inte denna används
+et05 - Verkar inte användas
+extramail - Verkar innehålla extra mailadresser t ex dictator@litheblas.org
+extra_sida - Var används detta?   sidnamn, text, title
+flumm - Tror inte den används
+fraga_kat - Frågekategorier till fråga blottartuban
+funk - Olika funktioner ,både styrelseposter, tomtar etc namn, styr, beskrv
+gb - Gästbok, author, tstmp, msg, gb_id
+identitet - Innehåller olika typer av identiteter (msn, icq etc)
+identitetstyp - Innehåller typer till identiteterna ovan, t ex ICQ, skype etc
+image - Tror inte den används
+Instrument - Alla instrument i blåset, instrid, lnamn, knamn, sekt, hemsida
+karta - Tror inte den används
+kartplats - Tror inte den används
+kort - Innehåller kort för tillträde till blåsrummet id, nummer, persid, aktiv
+kres - resid,name innehåller bara test och notarkiv, osäker om den används
+kres_pers - persid, kresid
+logkort - Innehåller log för kortdragningar, senaste rad 2013-08-19, används inte längre?
+logresurs - Vet ej vad detta är. resid, status, ts(timestamp
+mailadress - Alla mailadresser (inloggningar?)
+maillist - Alla maillistor. namn, beskr, slutdatum, sluten
+medlem - Innehåller prov, antagen, gamling för olika instrument. medlemid, pers, datum, typ, instr
+misslyckadeadd - Ingen aning, senast skriven till 2009-05-12
+ms_stat - Vet ej, senast skriven till 2011-06-12
+musik - senast skriven till 2009-05-08, gammal jukebox?
+offyellow2005 - Används inte?
+oldmusik - Senast skriven till 2004-11-10
+oldspellista - Senast skriven till 2004-11-10
+pagang - Event för pågånglistan, skillnad mot arr? plats, dag, tid, fritext,koordinat,kontakt,pris etc
+page - Används denna?
+persfunk - Koppling mellan personer och uppdrag, pers,funk,startdatum,slutdatum (9999-12-31 för pågående)=
+perslist - Koppling mellan personer och maillistor
+person - Faktatebell med en rad per person, persid, fnamn, enamn etc
+persres - Koppling mellan person och resurs, vad används denna till?
+resurs - Används inte
+resursio - Tror inte den används
+saxsekten - Ser ut att vara test
+script - Tror inte den används
+SEBI - Används detta? pers_som_soks, pers_som_soker, hittad
+sektion - Innehåller alla sektioner, sektid,lnamn,knamn,hemsida,listordning
+spellista - Tom, används denna?
+svar - svar till fråga blottartuban
+t2s - text to speech-log, används denna?
+test - test
+uppslag - Uppslagsverket
+user - Används nog inte, innehåller bara länger
