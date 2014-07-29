@@ -4,20 +4,34 @@ from django.core.management.base import BaseCommand, CommandError
 from blasbase.models import Person, SpecialDiet, PersonAddress,PersonPhoneNumber
 from datetime import datetime
 from cards.models import MagnetCard
+from litheblas.secret import OLD_DATABASE_PASSWORD, OLD_DATABASE_USER
 import pycountry
 import MySQLdb
 
 class Command(BaseCommand):
     help = 'Syncronizes persons from mysql'
-
+    def get_cards(self,db,persid,person):
+        cur2 = db.cursor()
+        cur2.execute("SELECT nummer,aktiv FROM kort WHERE persid=%s", (persid))
+        oldnumber = ""
+        for row2 in cur2.fetchall():
+            if row2[0] != oldnumber:
+                #För att undvika dubletter
+                oldnumber = row2[0]
+                mk = MagnetCard()
+                mk.person = person
+                mk.card_data = row2[0]
+                mk.enabled = row2[1]
+                mk.description = "Automatically imported from old database"
+                mk.save()
     def handle(self, *args, **options):
         gluten = SpecialDiet.objects.get_or_create(name='Glutenallergi')[0]
         veg = SpecialDiet.objects.get_or_create(name='Vegetarian')[0]
         nykter = SpecialDiet.objects.get_or_create(name='Nykterist')[0]
         print u"Öppnar mysqldatabasen"
         db = MySQLdb.connect(host="localhost", # your host, usually localhost
-                     user="blasare", # your username
-                      passwd="bajsare", # your password
+                     user=OLD_DATABASE_USER, # your username
+                      passwd=OLD_DATABASE_PASSWORD, # your password
                       db="litheblas",
                       port=3307,
                       charset='utf8' ) # name of the data base
@@ -130,19 +144,7 @@ class Command(BaseCommand):
                 ptel.save()
             """ row[19] innehåller latlong men ingenstans att stoppa in den """
             """ row[20] innehåller persid """
-            cur2 = db.cursor()
-            cur2.execute("SELECT nummer,aktiv FROM kort WHERE persid=%s", (row[20]))
-            oldnumber = ""
-            for row2 in cur2.fetchall() :
-                if row2[0] != oldnumber:
-                    #För att undvika dubletter
-                    oldnumber = row2[0]
-                    mk = MagnetCard()
-                    mk.person = person
-                    mk.card_data = row2[0]
-                    mk.enabled = row2[1]
-                    mk.description = "Automatically imported from old database"
-                    mk.save()
+            self.get_cards(db,row[20],person)
             person.save()
             """Not yet added """
             """
