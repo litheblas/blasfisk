@@ -1,71 +1,131 @@
 {% extends 'base.html' %}
 {% load cms_tags staticfiles sekizai_tags menu_tags %}
 
+
 {% block content %}
+    {% addtoblock 'js' %}<script src="{% static 'js/jquery.imageScroll.js' %}"></script>{% endaddtoblock %}
 
-    <div id="carousel" class="carousel carousel-fade slide" data-ride="carousel">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#carousel" data-slide-to="0" class="active"></li>
-            <li data-target="#carousel" data-slide-to="1"></li>
-            <li data-target="#carousel" data-slide-to="2"></li>
-        </ol>
-
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner">
-            <div class="item active">
-                <img src="/static/img/carousel/IMG_9864.jpg" alt="">
-
-                <div class="carousel-caption">
-                    <h3>Unik underhållning i världsklass...</h3>
-
-                    <p>
-                        För tredje året i rad har Sollos Minnesfond utsett LiTHe Blås till <i>Världens bästa
-                        studentorkester</i>!
-                    </p>
-                </div>
-            </div>
-
-            <div class="item">
-                <img src="/static/img/carousel/IMG_6697.jpg" alt="">
-
-                <div class="carousel-caption">
-                    <h3>...när som helst, var som helst, hur som helst...</h3>
-
-                    <p>
-                        Vi kräver inte mer än ett eluttag, ett plant underlag att spela på och ett utrymme för baletten
-                        att byta om i.
-                    </p>
-                </div>
-            </div>
-            <div class="item">
-                <img src="/static/img/carousel/15.jpg" alt="">
-
-                <div class="carousel-caption">
-                    <h3>...sedan 1973.</h3>
-
-                    <p>
-                        I över 40 år har vi spritt glädje och förundran i och utanför Linköping.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Controls -->
-        <a class="left carousel-control" href="#carousel" data-slide="prev"> <span
-                class="glyphicon glyphicon-chevron-left"></span> </a>
-        <a class="right carousel-control" href="#carousel" data-slide="next"> <span
-                class="glyphicon glyphicon-chevron-right"></span> </a>
-    </div>
-
-    <div class="jumbotron">
+    <div class="parallax-img" data-image="/static/img/carousel/1.jpg"></div>
+    <div class="parallax-content">
         <div class="container">
-            <p>
-                LiTHe Blås är orkestern som hängivet ägnar sig åt studentmusik. Våra färger är blå och off-yellow och vi
-                kommer från Linköpings universitet.
-            </p>
+            <div class="row">
+
+                    <h1>LiTHe Blås</h1>
+                    <p>
+                        ...är orkestern som hängivet ägnar sig åt studentmusik. Våra färger är blå och off-yellow och vi
+                        kommer från Linköpings universitet.
+                        Allt sedan 1973 har vi spritt glädje och förundran i trakterna kring Linköping – och vi tänker
+                        fortsätta länge till.
+                    </p>
+            </div>
         </div>
     </div>
+    <div class="parallax-img" data-image="/static/img/carousel/2.jpg"></div>
+    <div class="parallax-content">
+        <div class="container">
+            <div class="row">
+                <div class="img">
+                    <img src="/static/img/small/4.jpg">
+                </div>
+                <div class="text">
+                    <h1>Fart och fläkt på ditt evenemang.</h1>
+                    <p>
+                        Många över hela Europa har redan upptäckt att LiTHe Blås med baletten Blåsyran kan få alla
+                        lokaler att svänga i takt till tonerna från äkta svensk studentmusik, så varför inte bli ännu en
+                        av Blåsets nöjda kunder? Vi står för fartfylld underhållning på din fest, mässa, invigning eller
+                        aktivitetsdag.
+                    </p>
+                    <a class="btn" href="">Boka!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="parallax-img" data-image="/static/img/carousel/3.jpg"></div>
+    <div class="parallax-content">
+        <div class="container">
+            <div class="row">
+                <div class="text">
+                    <h1>Roliga upptåg och minnen för livet.</h1>
+                    <p>
+                        Blåset är öppet för alla på LiU, oavsett campus eller utbildning. Om du spelar ett instrument
+                        eller tycker det är roligt att dansa, tveka inte att ansöka redan idag. Vi vill ha <em>dig</em>!
+                    </p>
+                    <a class="btn" href="">Ansök!</a>
+                </div>
+                <div class="img">
+                    <img src="/static/img/small/3.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="parallax-img" data-image="/static/img/carousel/4.jpg"></div>
+    <div class="parallax-content">
+        <div class="container">
+            <div class="row">
+                <div class="img">
+                    <img src="/static/img/small/2.jpg">
+                </div>
+                <div class="text">
+                    <h1>En annorlunda upplevelse.</h1>
+                    <p>
+                        Många över hela Europa har redan upptäckt att LiTHe Blås med baletten Blåsyran kan få alla
+                        lokaler att svänga i takt till tonerna från äkta svensk studentmusik, så varför inte bli ännu en
+                        av Blåsets nöjda kunder?
+                    </p>
+                    <a class="btn" href="">Lyssna!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="parallax-img" data-image="/static/img/carousel/5.jpg"></div>
+    <div class="parallax-content">
+        <div class="container">
+            <div class="row">
+                <div class="text">
+                    <h1>Fart och fläkt. <small>Boka!</small></h1>
+                    <p>
+                        Många över hela Europa har redan upptäckt att LiTHe Blås med baletten Blåsyran kan få alla
+                        lokaler att svänga i takt till tonerna från äkta svensk studentmusik, så varför inte bli ännu en
+                        av Blåsets nöjda kunder?
+                    </p>
+                    <a class="btn" href="">Boka Blåset!</a>
+                </div>
+                <div class="img">
+                    <img src="/static/img/small/1.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="parallax-img" data-image="/static/img/carousel/IMG_9864.jpg"></div>
+    <div class="parallax-content">
+        <div class="container">
+            <div class="row">
+                <div class="img">
+                    <img src="/static/img/small/3.jpg">
+                </div>
+                <div class="text">
+                    <h1>Fart och fläkt. <small>Boka!</small></h1>
+                    <p>
+                        Många över hela Europa har redan upptäckt att LiTHe Blås med baletten Blåsyran kan få alla
+                        lokaler att svänga i takt till tonerna från äkta svensk studentmusik, så varför inte bli ännu en
+                        av Blåsets nöjda kunder?
+                    </p>
+                    <a class="btn" href="">Boka Blåset!</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    {% addtoblock 'js' %}
+        <script>$('.parallax-img').imageScroll({
+            mediaWidth: 1440,
+            mediaHeight: 810,
+            coverRatio: 0.66
+        });</script>
+    {% endaddtoblock %}
+    <!--
     <div class="container">
         <div class="row marketing">
             <div class="col-sm-4 item">
@@ -111,6 +171,7 @@
             </div>
         </div>
     </div>
+    -->
     {% placeholder 'content' %}
 
 {% endblock content %}
