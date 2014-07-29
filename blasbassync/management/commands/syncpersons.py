@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from django.core.management.base import BaseCommand, CommandError
-from blasbase.models import Person, SpecialDiet, PersonAddress,PersonPhoneNumber,User,Function
+from blasbase.models import Person, SpecialDiet, PersonAddress,PersonPhoneNumber,User,Function,Assignment
 from datetime import datetime
 from cards.models import MagnetCard
 from litheblas.secret import OLD_DATABASE_PASSWORD, OLD_DATABASE_USER
 import pycountry
 import MySQLdb
+from sys import stdout
 
 
 class Command(BaseCommand):
@@ -15,11 +16,11 @@ class Command(BaseCommand):
         print u"Öppnar mysqldatabasen"
         db = MySQLdb.connect(host="localhost", user=OLD_DATABASE_USER, passwd=OLD_DATABASE_PASSWORD, db="litheblas", port=3307, charset='utf8' )
         print u"Hämtar data för sektioner"
-        self.create_sections(db)
+        instrument_dictionary = self.create_sections(db)
         print u"Hämtar data för funktioner"
-        self.create_functions(db)
+        function_dictionary = self.create_functions(db)
         print u"Hämtar data från persontabellen"
-        self.loop_through_persons(db)
+        self.loop_through_persons(db,instrument_dictionary)
 
         """
                 Assignments
@@ -38,8 +39,13 @@ class Command(BaseCommand):
         styrelse.name = "Styrelse"
         styrelse.parent = funktion
         styrelse.save()
+        hedersmedlem = Function()
+        hedersmedlem.name = "Hedersmedlem"
+        hedersmedlem.save()
+
+        function_dictionary = {}
         cur = db.cursor()
-        cur.execute("SELECT namn, styr, beskr from funk")
+        cur.execute("SELECT namn, styr, beskr,funkid from funk")
         for row in cur.fetchall():
             tempFunc = Function()
             tempFunc.name = row[0]
@@ -49,13 +55,21 @@ class Command(BaseCommand):
                 tempFunc.parent=funktion
             tempFunc.description = row[2]
             tempFunc.save()
-
-    def create_instruments(self,sektid,sektion,db):
+            function_dictionary[row[3]] = tempFunc
+        return function_dictionary
+    def create_instruments(self,sektid,sektion,db,instrument_dictionary):
         cur = db.cursor()
-        cur.execute("SELECT lnamn from instrument where sekt = %s", (sektid))
+        cur.execute("SELECT lnamn,instrid from instrument where sekt = %s", (sektid))
         for row in cur.fetchall():
             tempFunction = Function()
             tempFunction.name = row[0]
+            tempFunction.description = ""
+            tempFunction.parent = sektion
+            tempFunction.save()
+            instrument_dictionary[int(row[1])] = tempFunction
+        if sektid == 10:
+            tempFunction = Function()
+            tempFunction.name = "Okänt instrument"
             tempFunction.description = ""
             tempFunction.parent = sektion
             tempFunction.save()
@@ -64,6 +78,7 @@ class Command(BaseCommand):
         litheblasFunc.name = "Blåssektioner"
         litheblasFunc.description = "Medlem i en Lithe Blås-sektion"
         litheblasFunc.save()
+        instrument_dictionary = {}
         cur = db.cursor()
         cur.execute("SELECT sektid,knamn,lnamn, listordning from sektion")
         for row in cur.fetchall():
@@ -72,7 +87,9 @@ class Command(BaseCommand):
             tempFunction.description = row[2]
             tempFunction.parent = litheblasFunc
             tempFunction.save()
-            self.create_instruments(row[0],tempFunction,db)
+            self.create_instruments(row[0],tempFunction,db,instrument_dictionary)
+
+        return instrument_dictionary
         """
          Information not taken from old database:
             knamn
@@ -81,17 +98,20 @@ class Command(BaseCommand):
         """
 
 
-    def loop_through_persons(self,db):
+    def loop_through_persons(self,db,instrument_dictionary):
         gluten = SpecialDiet.objects.get_or_create(name='Glutenallergi')[0]
         veg = SpecialDiet.objects.get_or_create(name='Vegetarian')[0]
         nykter = SpecialDiet.objects.get_or_create(name='Nykterist')[0]
 
         cur = db.cursor()
         cur.execute("SELECT fnamn,smek,enamn,kon,fodd,pnr_sista,studentid,fritext,allergi,gluten,veg,nykter,gatuadr,postnr,ort,land,hemnr,mobilnr,jobbnr,latlong,persid,blasmail,epost FROM person")
-
+        total = cur.rowcount
         #Improviserad progressbar
+        count = 1
         for row in cur.fetchall() :
-
+            stdout.write("Adding person %d/%d   \r" % (count, total) )
+            stdout.flush()
+            count += 1
             person = Person()
             person.first_name = row[0]
             person.nickname = self.word_or_string(row[1])
@@ -148,7 +168,7 @@ class Command(BaseCommand):
                 puser.is_active = True
                 puser.person = person
                 puser.save()
-
+            self.get_instruments(db,row[20],person,instrument_dictionary)
             person.save()
             """               Information not taken from old database:
 
@@ -167,6 +187,49 @@ class Command(BaseCommand):
 
 
             """
+    def get_instruments(self,db,persid,person,instrument_dictionary):
+        cur = db.cursor()
+        cur.execute("SELECT pers,datum,typ,instr from medlem where pers=%s ORDER BY datum",(persid))
+        last = None
+        for row in cur.fetchall():
+            if row[2] == 'prov':
+                tempA = Assignment()
+                tempA.start = row[1]
+                tempA.person = person
+                tempA.trial = True
+                tempA.function = instrument_dictionary[int(row[3])]
+                tempA.save()
+                last=tempA
+            elif row[2] == 'antagen':
+                tempA = Assignment()
+                tempA.start = row[1]
+                tempA.person = person
+                if last:
+                    last.end = row[1]
+                    last.save()
+                tempA.function = instrument_dictionary[int(row[3])]
+                tempA.save()
+                last=tempA
+            elif row[2] == 'gamling':
+                if last:
+                    last.end = row[1]
+                    last.save()
+                else:
+                    tempA = Assignment()
+                    tempA.end = row[1]
+                    tempA.person = person
+                    tempA.function = Function.objects.get(name="Okänt instrument")
+                    tempA.save()
+                #Fångar inte upp dom som är gamling men inte registrerade på ett instrument
+            elif row[2] == 'heder':
+                tempA=Assignment()
+                tempA.start = row[1]
+                tempA.person = person
+                tempA.function = Function.objects.get(name="Hedersmedlem")
+                tempA.save()
+                last = tempA
+
+
     def get_cards(self,db,persid,person):
         cur2 = db.cursor()
         cur2.execute("SELECT nummer,aktiv FROM kort WHERE persid=%s", (persid))
