@@ -6159,44 +6159,54 @@ fieldset[disabled] .parallax-content a.btn.active {
   color: #1c4386;
   background-color: #ffffff;
 }
-.parallax-content .row .img {
+.parallax-content .img {
   position: relative;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
 }
 @media (max-width: 767px) {
-  .parallax-content .row .img {
+  .parallax-content .img {
     display: none !important;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  .parallax-content .row .img {
+  .parallax-content .img {
     display: none !important;
   }
 }
 @media (min-width: 992px) {
-  .parallax-content .row .img {
+  .parallax-content .img {
     float: left;
     width: 33.33333333%;
   }
 }
-.parallax-content .row .img img {
+.parallax-content .img img {
   display: block;
   max-width: 100%;
   height: auto;
   min-width: 100%;
 }
-.parallax-content .row .text {
+@media (min-width: 992px) {
+  .parallax-content .img.img-right {
+    left: 66.66666667%;
+  }
+}
+.parallax-content .text {
   position: relative;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
 }
 @media (min-width: 992px) {
-  .parallax-content .row .text {
+  .parallax-content .text {
     float: left;
     width: 66.66666667%;
+  }
+}
+@media (min-width: 992px) {
+  .parallax-content .text.text-left {
+    right: 33.33333333%;
   }
 }
 html {
