@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
 from cms.models.pluginmodel import CMSPlugin
 from cms.models.fields import PlaceholderField
+from decimal import Decimal
 
 from globals import generate_filename
 
@@ -12,6 +15,14 @@ def generate_carousel_image_filename(instance, filename):
 
 def generate_pusher_image_filename(instance, filename):
     return generate_filename(instance, filename, 'pusher-imgs')
+
+
+def generate_parallax_image_filename(instance, filename):
+    return generate_filename(instance, filename, 'parallax-imgs')
+
+
+def generate_parallax_inner_image_filename(instance, filename):
+    return generate_filename(instance, filename, 'parallax-mobile-imgs')
 
 
 class Carousel(CMSPlugin):
@@ -77,3 +88,26 @@ class PusherEntry(models.Model):
 
     class Meta:
         ordering = ['priority']
+
+
+class Parallax(CMSPlugin):
+    speed = models.DecimalField(max_digits=3, decimal_places=2, default=Decimal('0.2'))
+    cover_ratio = models.DecimalField(max_digits=3, decimal_places=2, default=Decimal('0.75'))
+    holder_min_height = models.IntegerField(default=200)
+
+    # media_width = models.IntegerField(default=1600)
+    # media_height = models.IntegerField(default=900)
+    # media_width_unparallaxed = models.IntegerField(default=800)
+    # media_height_unparallaxed = models.IntegerField(default=450)
+
+
+class ParallaxImage(CMSPlugin):
+    image = models.ImageField(upload_to=generate_parallax_image_filename)
+    # mobile_image = models.ImageField(upload_to=generate_parallax_mobile_image_filename)
+    extra_height = models.IntegerField(default=0)
+
+
+class ParallaxContent(CMSPlugin):
+    image = models.ImageField(blank=True, null=True, upload_to=generate_parallax_inner_image_filename)
+    image_placement = models.BooleanField(default=False, help_text=_('True is to the right.'))
+    content = PlaceholderField('parallax-content')

@@ -1,0 +1,21 @@
+{% load cms_tags %}
+
+{# Fult som stryk! #}
+<div class="parallax-content">
+    <div class="container">
+        {% if instance.image %}
+            <div class="row">
+        {% endif %}
+        {% if instance.image %}
+            <div class="img{% if instance.image_placement %} img-right{% endif %}">
+                <img src="{{ instance.image.url }}">
+            </div>
+        {% endif %}
+        <div class="text{% if instance.image_placement %} text-left{% endif %}">
+            {% render_placeholder instance.content %}
+        </div>
+        {% if instance.image %}
+            </div>
+        {% endif %}
+    </div>
+</div>
