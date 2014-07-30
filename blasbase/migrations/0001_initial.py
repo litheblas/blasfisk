@@ -8,6 +8,18 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'PersonAddress'
+        db.create_table(u'blasbase_personaddress', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('address', self.gf('django.db.models.fields.CharField')(max_length=256, blank=True)),
+            ('post_code', self.gf('django.db.models.fields.CharField')(max_length=256, blank=True)),
+            ('city', self.gf('django.db.models.fields.CharField')(max_length=256, blank=True)),
+            ('country', self.gf('django.db.models.fields.CharField')(default='SE', max_length=2, blank=True)),
+            ('type', self.gf('django.db.models.fields.CharField')(default='private', max_length=16)),
+            ('person', self.gf('django.db.models.fields.related.ForeignKey')(related_name='addresses', to=orm['blasbase.Person'])),
+        ))
+        db.send_create_signal(u'blasbase', ['PersonAddress'])
+
         # Adding model 'PersonEmailAddress'
         db.create_table(u'blasbase_personemailaddress', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -30,10 +42,6 @@ class Migration(SchemaMigration):
         # Adding model 'Person'
         db.create_table(u'blasbase_person', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('address', self.gf('django.db.models.fields.CharField')(max_length=256, blank=True)),
-            ('post_code', self.gf('django.db.models.fields.CharField')(max_length=256, blank=True)),
-            ('city', self.gf('django.db.models.fields.CharField')(max_length=256, blank=True)),
-            ('country', self.gf('django.db.models.fields.CharField')(default='SE', max_length=2, blank=True)),
             ('first_name', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('nickname', self.gf('django.db.models.fields.CharField')(max_length=256, blank=True)),
             ('last_name', self.gf('django.db.models.fields.CharField')(max_length=256)),
@@ -101,7 +109,7 @@ class Migration(SchemaMigration):
         db.create_table(u'blasbase_function', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=256)),
-            ('description', self.gf('django.db.models.fields.TextField')()),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
             ('parent', self.gf('mptt.fields.TreeForeignKey')(blank=True, related_name='children', null=True, to=orm['blasbase.Function'])),
             ('membership', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('engagement', self.gf('django.db.models.fields.BooleanField')(default=False)),
@@ -124,52 +132,11 @@ class Migration(SchemaMigration):
         ))
         db.create_unique(m2m_table_name, ['function_id', 'permission_id'])
 
-        # Adding model 'Section'
-        db.create_table(u'blasbase_section', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=256)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-        ))
-        db.send_create_signal(u'blasbase', ['Section'])
-
-        # Adding M2M table for field permissions on 'Section'
-        m2m_table_name = db.shorten_name(u'blasbase_section_permissions')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('section', models.ForeignKey(orm[u'blasbase.section'], null=False)),
-            ('permission', models.ForeignKey(orm[u'auth.permission'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['section_id', 'permission_id'])
-
-        # Adding model 'Post'
-        db.create_table(u'blasbase_post', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=256)),
-            ('section', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='posts', null=True, to=orm['blasbase.Section'])),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('membership', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('engagement', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('show_in_timeline', self.gf('django.db.models.fields.BooleanField')(default=True)),
-        ))
-        db.send_create_signal(u'blasbase', ['Post'])
-
-        # Adding unique constraint on 'Post', fields ['section', 'name']
-        db.create_unique(u'blasbase_post', ['section_id', 'name'])
-
-        # Adding M2M table for field permissions on 'Post'
-        m2m_table_name = db.shorten_name(u'blasbase_post_permissions')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('post', models.ForeignKey(orm[u'blasbase.post'], null=False)),
-            ('permission', models.ForeignKey(orm[u'auth.permission'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['post_id', 'permission_id'])
-
         # Adding model 'Assignment'
         db.create_table(u'blasbase_assignment', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('person', self.gf('django.db.models.fields.related.ForeignKey')(related_name='assignments', to=orm['blasbase.Person'])),
-            ('function', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['blasbase.Function'])),
+            ('function', self.gf('mptt.fields.TreeForeignKey')(to=orm['blasbase.Function'])),
             ('start', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
             ('end', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
             ('trial', self.gf('django.db.models.fields.BooleanField')(default=False)),
@@ -218,11 +185,11 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
-        # Removing unique constraint on 'Post', fields ['section', 'name']
-        db.delete_unique(u'blasbase_post', ['section_id', 'name'])
-
         # Removing unique constraint on 'Function', fields ['parent', 'name']
         db.delete_unique(u'blasbase_function', ['parent_id', 'name'])
+
+        # Deleting model 'PersonAddress'
+        db.delete_table(u'blasbase_personaddress')
 
         # Deleting model 'PersonEmailAddress'
         db.delete_table(u'blasbase_personemailaddress')
@@ -253,18 +220,6 @@ class Migration(SchemaMigration):
 
         # Removing M2M table for field permissions on 'Function'
         db.delete_table(db.shorten_name(u'blasbase_function_permissions'))
-
-        # Deleting model 'Section'
-        db.delete_table(u'blasbase_section')
-
-        # Removing M2M table for field permissions on 'Section'
-        db.delete_table(db.shorten_name(u'blasbase_section_permissions'))
-
-        # Deleting model 'Post'
-        db.delete_table(u'blasbase_post')
-
-        # Removing M2M table for field permissions on 'Post'
-        db.delete_table(db.shorten_name(u'blasbase_post_permissions'))
 
         # Deleting model 'Assignment'
         db.delete_table(u'blasbase_assignment')
@@ -299,7 +254,7 @@ class Migration(SchemaMigration):
         u'blasbase.assignment': {
             'Meta': {'ordering': "['start']", 'object_name': 'Assignment'},
             'end': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'function': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['blasbase.Function']"}),
+            'function': ('mptt.fields.TreeForeignKey', [], {'to': u"orm['blasbase.Function']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'person': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'assignments'", 'to': u"orm['blasbase.Person']"}),
             'start': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
@@ -341,7 +296,7 @@ class Migration(SchemaMigration):
         },
         u'blasbase.function': {
             'Meta': {'unique_together': "(('parent', 'name'),)", 'object_name': 'Function'},
-            'description': ('django.db.models.fields.TextField', [], {}),
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'engagement': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             u'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
@@ -349,17 +304,14 @@ class Migration(SchemaMigration):
             'membership': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': u"orm['blasbase.Function']"}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False'}),
+            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'functions'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Permission']"}),
             u'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             u'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
         },
         u'blasbase.person': {
             'Meta': {'ordering': "['first_name', 'last_name', 'nickname']", 'object_name': 'Person'},
             'about': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'address': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
             'born': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'city': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
-            'country': ('django.db.models.fields.CharField', [], {'default': "'SE'", 'max_length': '2', 'blank': 'True'}),
             'deceased': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'functions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['blasbase.Function']", 'through': u"orm['blasbase.Assignment']", 'symmetrical': 'False'}),
@@ -370,9 +322,18 @@ class Migration(SchemaMigration):
             'liu_id': ('django.db.models.fields.CharField', [], {'max_length': '8', 'blank': 'True'}),
             'nickname': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
             'personal_id_number': ('django.db.models.fields.CharField', [], {'max_length': '4', 'blank': 'True'}),
-            'post_code': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
             'special_diets': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'people'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['blasbase.SpecialDiet']"}),
             'special_diets_extra': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'})
+        },
+        u'blasbase.personaddress': {
+            'Meta': {'object_name': 'PersonAddress'},
+            'address': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'city': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'country': ('django.db.models.fields.CharField', [], {'default': "'SE'", 'max_length': '2', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'person': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'addresses'", 'to': u"orm['blasbase.Person']"}),
+            'post_code': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'type': ('django.db.models.fields.CharField', [], {'default': "'private'", 'max_length': '16'})
         },
         u'blasbase.personemailaddress': {
             'Meta': {'object_name': 'PersonEmailAddress'},
@@ -388,24 +349,6 @@ class Migration(SchemaMigration):
             'person': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'phone_numbers'", 'to': u"orm['blasbase.Person']"}),
             'phone_number': ('django.db.models.fields.CharField', [], {'max_length': '64'}),
             'type': ('django.db.models.fields.CharField', [], {'default': "'private'", 'max_length': '16'})
-        },
-        u'blasbase.post': {
-            'Meta': {'ordering': "['section', 'name']", 'unique_together': "(('section', 'name'),)", 'object_name': 'Post'},
-            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'engagement': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'membership': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'posts'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Permission']"}),
-            'section': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'posts'", 'null': 'True', 'to': u"orm['blasbase.Section']"}),
-            'show_in_timeline': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
-        },
-        u'blasbase.section': {
-            'Meta': {'ordering': "['name']", 'object_name': 'Section'},
-            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'sections'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Permission']"})
         },
         u'blasbase.specialdiet': {
             'Meta': {'ordering': "['name']", 'object_name': 'SpecialDiet'},
