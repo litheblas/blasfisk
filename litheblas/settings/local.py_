@@ -4,6 +4,8 @@ This file can be used for your own, local settings. It is not under version cont
 file to be loaded.
 """
 
+from litheblas.settings import *
+
 # 32 bytes from urandom or other crypto safe source
 SECRET_KEY = None
 DATABASE_PASSWORD = None
