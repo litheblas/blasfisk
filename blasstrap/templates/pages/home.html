@@ -3,9 +3,10 @@
 
 
 {% block content %}
-    {% addtoblock 'js' %}<script src="{% static 'js/jquery.imageScroll.js' %}"></script>{% endaddtoblock %}
 
-    <div class="parallax-img" data-image="/static/img/carousel/1.jpg"></div>
+    {% addtoblock 'js' %}<script src="{% static 'js/jquery.imageScroll.js' %}"></script>{% endaddtoblock %}
+    {% addtoblock 'js' %}<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js"></script>{% endaddtoblock %}
+    <div class="parallax-img" data-image="/static/img/carousel/1.jpg" data-width="1440" data-height="810"></div>
     <div class="parallax-content">
         <div class="container">
             <div class="row">
@@ -20,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="parallax-img" data-image="/static/img/carousel/2.jpg"></div>
+    <div class="parallax-img" data-image="/static/img/carousel/2.jpg" data-width="1440" data-height="810"></div>
     <div class="parallax-content">
         <div class="container">
             <div class="row">
@@ -40,7 +41,7 @@
             </div>
         </div>
     </div>
-    <div class="parallax-img" data-image="/static/img/carousel/3.jpg"></div>
+    <div class="parallax-img" data-image="/static/img/carousel/3.jpg" data-width="640" data-height="360"></div>
     <div class="parallax-content">
         <div class="container">
             <div class="row">
@@ -58,7 +59,7 @@
             </div>
         </div>
     </div>
-    <div class="parallax-img" data-image="/static/img/carousel/4.jpg"></div>
+    <div class="parallax-img" data-image="/static/img/carousel/4.jpg" data-width="1440" data-height="810"></div>
     <div class="parallax-content">
         <div class="container">
             <div class="row">
@@ -77,7 +78,7 @@
             </div>
         </div>
     </div>
-    <div class="parallax-img" data-image="/static/img/carousel/5.jpg"></div>
+    <div class="parallax-img" data-image="/static/img/carousel/5.jpg" data-width="1728" data-height="972"></div>
     <div class="parallax-content">
         <div class="container">
             <div class="row">
@@ -96,7 +97,7 @@
             </div>
         </div>
     </div>
-    <div class="parallax-img" data-image="/static/img/carousel/IMG_9864.jpg"></div>
+    <div class="parallax-img" data-image="/static/img/carousel/IMG_9864.jpg" data-width="1440" data-height="450"></div>
     <div class="parallax-content">
         <div class="container">
             <div class="row">
@@ -119,11 +120,20 @@
 
 
     {% addtoblock 'js' %}
-        <script>$('.parallax-img').imageScroll({
-            mediaWidth: 1440,
-            mediaHeight: 810,
-            coverRatio: 0.66
-        });</script>
+        <script>
+            var touch = Modernizr.touch;
+            $('.parallax-img').imageScroll({
+                //imageAttribute: (touch === true) ? 'image-mobile' : 'image',
+                //parallax: true,
+                touch: touch,
+                //speed: 0.2,
+                //holderMinHeight: 200,
+                //mediaWidth: (touch === true) ? 800 : 1600,
+                //mediaHeight: (touch === true) ? 405 : 810,
+                coverRatio: 0.6
+                //extraHeight: 50
+            });
+        </script>
     {% endaddtoblock %}
     <!--
     <div class="container">
@@ -173,5 +183,4 @@
     </div>
     -->
     {% placeholder 'content' %}
-
 {% endblock content %}
