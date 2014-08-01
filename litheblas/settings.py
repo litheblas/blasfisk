@@ -259,18 +259,6 @@ CMS_PLACEHOLDER_CONF = {
             },
         ]
     },
-    'subtitle': {
-        'name': _(u'Subtitle'),
-        'plugins': ['TextPlugin'],
-        'default_plugins':[
-            {
-                'plugin_type': 'TextPlugin',
-                'values':{
-                    'body': u''
-                },
-            },
-        ],
-    },
 }
 
 CKEDITOR_SETTINGS = {
