@@ -97,6 +97,8 @@ INSTALLED_APPS = (
     'imagekit',
     'django_filters',
     'crispy_forms',
+    'djangocms_markdown',
+    'markdown_deux',
     
     # LiTHe Blås
     'blasstrap',
@@ -107,11 +109,19 @@ INSTALLED_APPS = (
     'locations',
     #'watcher',
     'contact',
-
 )
 
 SOUTH_MIGRATION_MODULES = {
     'easy_thumbnails': 'easy_thumbnails.south_migrations',
+}
+
+MARKDOWN_DEUX_STYLES = {
+    'default': {
+        'safe_mode': False,
+        'extras': {
+            # 'smarty-pants': True
+        }
+    }
 }
 
 MIDDLEWARE_CLASSES = (
@@ -226,39 +236,27 @@ CMS_LANGUAGES = {
 }
 
 CMS_TEMPLATES = (
-    ('pages/page.html', _('Page')), # Först i listan, blir standard
+    ('pages/page.html', _('Page')),  # Först i listan, blir standard
     ('pages/custom_page.html', _('Custom Page')),
     ('pages/home.html', _('LiTHe Hem')),
 )
 
-CMS_TEMPLATE_INHERITANCE = False # Annars ärver en massa sidor hem-mallen, vilken egentligen bara ska finnas på startsidan
+CMS_TEMPLATE_INHERITANCE = False  # Annars ärver en massa sidor hem-mallen, vilken egentligen bara ska finnas på startsidan
 
 CMS_PERMISSION = False
 
-#Definierar några placeholders med standardinnehåll, typ vanliga sidor som bara behöver ha en text-plugin.
+# Definierar några placeholders med standardinnehåll, typ vanliga sidor som bara behöver ha en text-plugin.
 CMS_PLACEHOLDER_CONF = {
     'page-content': {
         'name': _(u'Page content'),
-        'default_plugins':[
+        'default_plugins': [
             {
-                'plugin_type': 'TextPlugin',
-                'values':{
-                    'body': u'<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
+                'plugin_type': 'MarkdownPlugin',
+                'values': {
+                    'body': u'Lorem ipsum dolor sit amet...'
                 },
             },
         ]
-    },
-    'subtitle': {
-        'name': _(u'Subtitle'),
-        'plugins': ['TextPlugin'],
-        'default_plugins':[
-            {
-                'plugin_type': 'TextPlugin',
-                'values':{
-                    'body': u''
-                },
-            },
-        ],
     },
 }
 
@@ -268,8 +266,8 @@ CKEDITOR_SETTINGS = {
     'skin': 'moono',
     
     # Ta bort ett gäng plugins och knappar
-    'removePlugins': 'pastefromword,magicline,colordialog', # Akta dig, inga mellanslag mellan namnen...
-    'removeButtons': 'TextColor,BGColor,Indent,Outdent', # Akta dig, inga mellanslag mellan namnen...
+    'removePlugins': 'pastefromword,magicline,colordialog',  # Akta dig, inga mellanslag mellan namnen...
+    'removeButtons': 'TextColor,BGColor,Indent,Outdent',  # Akta dig, inga mellanslag mellan namnen...
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

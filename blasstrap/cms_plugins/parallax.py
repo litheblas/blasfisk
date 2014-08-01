@@ -48,12 +48,9 @@ settings.CMS_PLACEHOLDER_CONF['parallax-content'] = {
     'name': _(u'Parallax content'),
     'default_plugins': [
         {
-            'plugin_type': 'TextPlugin',
+            'plugin_type': 'MarkdownPlugin',
             'values': {
-                'body': u"""
-                    <h1>Parallax. <small>Sexigt.</small></h1><p>Innehållet i en parallax kan bestå av det mesta,
-                    men håll dig till vanliga <code>h1</code> osv. samt <code>p</code> i textväg.</p>
-                """
+                'body': u'# Parallax. <small>Sexigt.</small>\nLorem ipsum dolor sit amet.<a href="" class="btn btn-primary">Bam!</a>'
             },
         },
     ]
