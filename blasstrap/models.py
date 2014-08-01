@@ -108,6 +108,4 @@ class ParallaxImage(CMSPlugin):
 
 
 class ParallaxContent(CMSPlugin):
-    image = models.ImageField(blank=True, null=True, upload_to=generate_parallax_inner_image_filename)
-    image_placement = models.BooleanField(default=False, help_text=_('True is to the right.'))
     content = PlaceholderField('parallax-content')

@@ -97,6 +97,8 @@ INSTALLED_APPS = (
     'imagekit',
     'django_filters',
     'crispy_forms',
+    'djangocms_markdown',
+    'markdown_deux',
     
     # LiTHe Blås
     'blasstrap',
@@ -112,6 +114,15 @@ INSTALLED_APPS = (
 
 SOUTH_MIGRATION_MODULES = {
     'easy_thumbnails': 'easy_thumbnails.south_migrations',
+}
+
+MARKDOWN_DEUX_STYLES = {
+    'default': {
+        'safe_mode': False,
+        'extras': {
+            # 'smarty-pants': True
+        }
+    }
 }
 
 MIDDLEWARE_CLASSES = (
@@ -241,9 +252,9 @@ CMS_PLACEHOLDER_CONF = {
         'name': _(u'Page content'),
         'default_plugins':[
             {
-                'plugin_type': 'TextPlugin',
-                'values':{
-                    'body': u'<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'
+                'plugin_type': 'MarkdownPlugin',
+                'values': {
+                    'body': u'Lorem ipsum dolor sit amet...'
                 },
             },
         ]
