@@ -172,3 +172,4 @@ $RECYCLE.BIN/
 # KDE directory preferences
 .directory
 
+litheblas/settings/secret.py
