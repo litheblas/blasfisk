@@ -95,11 +95,6 @@ class Parallax(CMSPlugin):
     cover_ratio = models.DecimalField(max_digits=3, decimal_places=2, default=Decimal('0.75'))
     holder_min_height = models.IntegerField(default=200)
 
-    # media_width = models.IntegerField(default=1600)
-    # media_height = models.IntegerField(default=900)
-    # media_width_unparallaxed = models.IntegerField(default=800)
-    # media_height_unparallaxed = models.IntegerField(default=450)
-
 
 class ParallaxImage(CMSPlugin):
     image = models.ImageField(upload_to=generate_parallax_image_filename)
