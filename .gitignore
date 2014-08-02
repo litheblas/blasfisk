@@ -1,6 +1,7 @@
 db.sqlite3*
 litheblas/media/*
-litheblas/secret.py
+litheblas/settings/local.py
+litheblas/settings/secret.py
 *.bat
 
 # Created by http://www.gitignore.io

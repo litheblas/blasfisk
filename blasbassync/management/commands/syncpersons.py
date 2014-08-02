@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 from blasbase.models import Person, SpecialDiet, PersonAddress,PersonPhoneNumber,User,Function,Assignment
 from datetime import datetime
 from cards.models import MagnetCard
-from litheblas.secret import OLD_DATABASE_PASSWORD, OLD_DATABASE_USER
+from django.conf import settings
 import pycountry
 import MySQLdb
 from sys import stdout
@@ -14,7 +14,7 @@ class Command(BaseCommand):
     help = 'Syncronizes persons from mysql'
     def handle(self, *args, **options):
         print u"Öppnar mysqldatabasen"
-        db = MySQLdb.connect(host="localhost", user=OLD_DATABASE_USER, passwd=OLD_DATABASE_PASSWORD, db="litheblas", port=3307, charset='utf8' )
+        db = MySQLdb.connect(host="localhost", user=settings.OLD_DATABASE_USER, passwd=settings.OLD_DATABASE_PASSWORD, db="litheblas", port=3307, charset='utf8' )
         print u"Hämtar data för sektioner"
         instrument_dictionary = self.create_sections(db)
         print u"Hämtar data för funktioner"
