@@ -59,7 +59,7 @@ class Command(BaseCommand):
         return function_dictionary
     def create_instruments(self,sektid,sektion,db,instrument_dictionary):
         cur = db.cursor()
-        cur.execute("SELECT lnamn,instrid from instrument where sekt = %s", (sektid))
+        cur.execute("SELECT lnamn,instrid from instrument where sekt = %s", (sektid,))
         for row in cur.fetchall():
             tempFunction = Function()
             tempFunction.name = row[0]
@@ -187,7 +187,7 @@ class Command(BaseCommand):
             """
     def get_functions(self,db,persid,person,function_dictionary):
         cur = db.cursor()
-        cur.execute("SELECT pers,funk,startdatum,slutdatum from persfunk where pers=%s",(persid))
+        cur.execute("SELECT pers,funk,startdatum,slutdatum from persfunk where pers=%s",(persid,))
         for row in cur.fetchall():
             tempA = Assignment(engagement=True)
             tempA.start = row[2]
@@ -197,7 +197,7 @@ class Command(BaseCommand):
             tempA.save()
     def get_instruments(self,db,persid,person,instrument_dictionary):
         cur = db.cursor()
-        cur.execute("SELECT pers,datum,typ,instr from medlem where pers=%s ORDER BY datum",(persid))
+        cur.execute("SELECT pers,datum,typ,instr from medlem where pers=%s ORDER BY datum",(persid,))
         last = None
         for row in cur.fetchall():
             if row[2] == 'prov':
@@ -239,7 +239,7 @@ class Command(BaseCommand):
                 last = tempA
     def get_cards(self,db,persid,person):
         cur2 = db.cursor()
-        cur2.execute("SELECT nummer,aktiv FROM kort WHERE persid=%s", (persid))
+        cur2.execute("SELECT nummer,aktiv FROM kort WHERE persid=%s", (persid,))
         oldnumber = ""
         for row2 in cur2.fetchall():
             if row2[0] != oldnumber:
