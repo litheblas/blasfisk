@@ -6187,11 +6187,6 @@ fieldset[disabled] .parallax-content a.btn.active {
   height: auto;
   min-width: 100%;
 }
-@media (min-width: 992px) {
-  .parallax-content .img.img-right {
-    left: 66.66666667%;
-  }
-}
 .parallax-content .text {
   position: relative;
   min-height: 1px;
@@ -6202,11 +6197,6 @@ fieldset[disabled] .parallax-content a.btn.active {
   .parallax-content .text {
     float: left;
     width: 66.66666667%;
-  }
-}
-@media (min-width: 992px) {
-  .parallax-content .text.text-left {
-    right: 33.33333333%;
   }
 }
 html {
