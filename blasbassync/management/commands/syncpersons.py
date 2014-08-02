@@ -41,6 +41,7 @@ class Command(BaseCommand):
         styrelse.save()
         hedersmedlem = Function()
         hedersmedlem.name = "Hedersmedlem"
+        hedersmedlem.membership = True
         hedersmedlem.save()
 
         function_dictionary = {}
@@ -53,6 +54,7 @@ class Command(BaseCommand):
                 tempFunc.parent=styrelse
             else:
                 tempFunc.parent=funktion
+            tempFunc.engagement = True
             tempFunc.description = row[2]
             tempFunc.save()
             function_dictionary[int(row[3])] = tempFunc
@@ -65,6 +67,7 @@ class Command(BaseCommand):
             tempFunction.name = row[0]
             tempFunction.description = ""
             tempFunction.parent = sektion
+            tempFunction.membership = True
             tempFunction.save()
             instrument_dictionary[int(row[1])] = tempFunction
         if sektid == 10:
@@ -72,6 +75,7 @@ class Command(BaseCommand):
             tempFunction.name = "Okänt instrument"
             tempFunction.description = ""
             tempFunction.parent = sektion
+            tempFunction.membership = True
             tempFunction.save()
     def create_sections(self,db):
         litheblasFunc = Function()
@@ -189,7 +193,7 @@ class Command(BaseCommand):
         cur = db.cursor()
         cur.execute("SELECT pers,funk,startdatum,slutdatum from persfunk where pers=%s",(persid,))
         for row in cur.fetchall():
-            tempA = Assignment(engagement=True)
+            tempA = Assignment()
             tempA.start = row[2]
             tempA.end = row[3]
             tempA.function = function_dictionary[int(row[1])]
@@ -201,7 +205,7 @@ class Command(BaseCommand):
         last = None
         for row in cur.fetchall():
             if row[2] == 'prov':
-                tempA = Assignment(membership=True)
+                tempA = Assignment()
                 tempA.start = row[1]
                 tempA.person = person
                 tempA.trial = True
@@ -209,7 +213,7 @@ class Command(BaseCommand):
                 tempA.save()
                 last=tempA
             elif row[2] == 'antagen':
-                tempA = Assignment(membership=True)
+                tempA = Assignment()
                 tempA.start = row[1]
                 tempA.person = person
                 if last:
@@ -223,18 +227,17 @@ class Command(BaseCommand):
                     last.end = row[1]
                     last.save()
                 else:
-                    tempA = Assignment(membership=True)
+                    tempA = Assignment()
                     tempA.end = row[1]
                     tempA.person = person
                     tempA.function = Function.objects.get(name="Okänt instrument")
                     tempA.save()
             elif row[2] == 'heder':
-                tempA=Assignment(membership=True)
+                tempA=Assignment()
                 tempA.start = row[1]
                 tempA.person = person
                 tempA.function = Function.objects.get(name="Hedersmedlem")
                 tempA.save()
-                #tempA.membership = True
                 tempA.save()
                 last = tempA
     def get_cards(self,db,persid,person):
