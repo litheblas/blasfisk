@@ -209,7 +209,7 @@ CMS_PLACEHOLDER_CONF = {
             {
                 'plugin_type': 'MarkdownPlugin',
                 'values': {
-                    'body': u'Lorem ipsum dolor sit amet...'
+                    'body': u'<p class="lead">Här skriver du eventuell ingress.</p>\n\nLorem ipsum dolor sit amet, **för helvete**.'
                 },
             },
         ]
