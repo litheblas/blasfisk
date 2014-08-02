@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from litheblas.settings import *
-from litheblas.settings.secret import *
 
 DEBUG = False
 TEMPLATE_DEBUG = False
