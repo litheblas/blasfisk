@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Utvecklingsspecfika inställningar
-
 from litheblas.settings import *
 
 DEBUG = True
@@ -21,6 +19,7 @@ DATABASE_PASSWORD = None
 
 # INSTALLED_APPS += ('debug_toolbar',)
 INSTALLED_APPS += ('blasbassync',)
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
@@ -34,3 +33,11 @@ CMS_CACHE_DURATIONS = {
 }
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'litheblas', 'media')
+
+
+# MUST BE LAST IN FILE
+try:
+    from litheblas.settings.local import *
+except ImportError:
+    pass
+# MUST BE LAST IN FILE

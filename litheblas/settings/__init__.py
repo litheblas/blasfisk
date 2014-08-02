@@ -10,55 +10,12 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 from django.utils.translation import ugettext_lazy as _
-from litheblas.secret import *
 from socket import getfqdn
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-TEMPLATE_DEBUG = False
-
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'dev.skorpan.lysator.liu.se',
-    'litheblas.org',
-    'www.litheblas.org'
-]
-
-#Till vilka adresser ska debug-epost skickas?
-ADMINS = (
-    ('Olle Vidner', 'olle@vidner.se'),
-)
-
-#Från vilken adress ska debug-epost skickas?
-SERVER_EMAIL = 'django@' + getfqdn()
-
-
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'litheblas',
-        'USER': 'litheblas',
-        'PASSWORD': DATABASE_PASSWORD,
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
-
-# Application definition
 
 INSTALLED_APPS = (
     # CMS-specifikt
@@ -186,16 +143,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATIC_ROOT = os.path.join('/opt/litheblas.org/static')
-
-MEDIA_ROOT = os.path.join('/opt/litheblas.org/media')
 MEDIA_URL = '/media/'
 
 #CMS-specifikt
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 SITE_ID = 1
@@ -258,6 +212,17 @@ CMS_PLACEHOLDER_CONF = {
             },
         ]
     },
+    'parallax-content': {
+        'name': _(u'Parallax content'),
+        'default_plugins': [
+            {
+                'plugin_type': 'MarkdownPlugin',
+                'values': {
+                    'body': u'# Parallax. <small>Sexigt.</small>\nLorem ipsum dolor sit amet.\n\n<a href="" class="btn btn-primary">Bam!</a>'
+                },
+            },
+        ]
+    }
 }
 
 CKEDITOR_SETTINGS = {
