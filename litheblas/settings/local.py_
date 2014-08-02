@@ -3,13 +3,3 @@
 This file can be used for your own, local settings. It is not under version control and it is always the last settings
 file to be loaded.
 """
-
-<<<<<<< HEAD
-# 32 bytes from urandom or other crypto safe source
-SECRET_KEY = None
-DATABASE_PASSWORD = None
-# Username and password for the old database
-OLD_DATABASE_PASSWORD = None
-OLD_DATABASE_USER = None
-=======
->>>>>>> load-old-database
