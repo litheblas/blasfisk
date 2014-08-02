@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from litheblas.settings import *
-<<<<<<< HEAD
-=======
-from litheblas.settings.secret import *
->>>>>>> load-old-database
 
 DEBUG = False
 TEMPLATE_DEBUG = False
