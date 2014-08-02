@@ -17,13 +17,14 @@ django-reversion==1.8.1
 django-sekizai==0.7
 djangocms-admin-style==0.2.2
 djangocms-link==1.3.5
-djangocms-markdown==0.2.0
+-e git+https://github.com/ovidner/djangocms-markdown.git@c7a0f23b73cbe17e518a5b6226258a1a49d1d2fe#egg=djangocms_markdown-master
 djangocms-picture==0.0.2
 djangocms-text-ckeditor==2.1.6
 easy-thumbnails==2.0.1
 gunicorn==19.0.0
 html5lib==1.0b3
 markdown2==2.2.1
+mysql-python==1.2.5
 pilkit==1.1.9
 psycopg2==2.5.3
 pycountry==1.8
