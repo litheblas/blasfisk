@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from cms.plugin_base import CMSPluginBase
@@ -42,16 +41,3 @@ class ParallaxImagePlugin(CMSPluginBase):
 plugin_pool.register_plugin(ParallaxPlugin)
 plugin_pool.register_plugin(ParallaxContentPlugin)
 plugin_pool.register_plugin(ParallaxImagePlugin)
-
-
-settings.CMS_PLACEHOLDER_CONF['parallax-content'] = {
-    'name': _(u'Parallax content'),
-    'default_plugins': [
-        {
-            'plugin_type': 'MarkdownPlugin',
-            'values': {
-                'body': u'# Parallax. <small>Sexigt.</small>\nLorem ipsum dolor sit amet.<a href="" class="btn btn-primary">Bam!</a>'
-            },
-        },
-    ]
-}
