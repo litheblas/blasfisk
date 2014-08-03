@@ -56,6 +56,10 @@ class PersonMethodsTestCase(TestCase):
             for m in memberships:
                 if m['typ'] == 'gamling':
                     self.assertTrue(self.contains(new_memberships, lambda x: str(x.end) == m['datum']),msg=p.old_database_id)
+                if m['typ'] == 'prov':
+                    self.assertTrue(self.contains(new_memberships, lambda x: str(x.start) == m['datum'] and x.trial == True),msg=p.old_database_id)
+                if m['typ'] == 'antagen':
+                    self.assertTrue(self.contains(new_memberships, lambda x: str(x.start) == m['datum'] and x.trial == False),msg=p.old_database_id)
 
 
 

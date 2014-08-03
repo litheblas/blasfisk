@@ -31,7 +31,7 @@ DATABASES = {
         'PORT': '',
     }
 }
-
+INSTALLED_APPS += ('blasbassync',)
 STATIC_ROOT = os.path.join('/opt/litheblas.org/static')
 MEDIA_ROOT = os.path.join('/opt/litheblas.org/media')
 
