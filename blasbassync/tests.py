@@ -27,13 +27,40 @@ class PersonMethodsTestCase(TestCase):
             count+=1
             r=requests.get('http://www.litheblas.org/internt/blasbas/person.php?id=%s' % p.old_database_id,auth=HTTPBasicAuth(settings.OLD_SITE_USER, settings.OLD_SITE_PASSWORD))
             while r.status_code!=200:
-                sleep(1)
+                sleep(0.1)
                 r=requests.get('http://www.litheblas.org/internt/blasbas/person.php?id=%s' % p.old_database_id,auth=HTTPBasicAuth(settings.OLD_SITE_USER, settings.OLD_SITE_PASSWORD))
             self.siteList[p.old_database_id] =r
     def setUp(self):
         pass
-    def test_person_memberships(self):
+    def test_person_names(self):
+        print "Testing person names"
+        count = 1
+        total = Person.objects.all().count()
         for p in Person.objects.all():
+            stdout.write("Testing Person %d/%d   \r" % (count, total) )
+            stdout.flush()
+            count+=1
+        soup = BeautifulSoup(self.siteList[p.old_database_id].text)
+        current = soup.find('b')
+        name = current.text.split( )
+        fnamn = name[0]
+        if len(name)==3:
+            smek = name[1][1:-1]
+            enamn = name[2]
+        else:
+            smek = ""
+            enamn = name[1]
+        self.assertEquals(fnamn,p.first_name)
+        self.assertEquals(smek,p.nickname)
+        self.assertEquals(enamn,p.last_name)
+    def test_person_memberships(self):
+        print "Testing person memberships"
+        count = 1
+        total = Person.objects.all().count()
+        for p in Person.objects.all():
+            stdout.write("Testing Person %d/%d   \r" % (count, total) )
+            stdout.flush()
+            count+=1
             soup = BeautifulSoup(self.siteList[p.old_database_id].text)
             try:
                 current = soup.find(text="Medlemskap").findNext('td')
