@@ -11,4 +11,5 @@ before_script:
   - python manage.dev.py migrate
 script:
   - coverage run --source='.' manage.dev.py test
+after_success:
   - coverage report
