@@ -16,7 +16,7 @@ from socket import getfqdn
 import os
 
 
-BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), '..')
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), '..'))
 
 INSTALLED_APPS = (
     # CMS-specifikt
