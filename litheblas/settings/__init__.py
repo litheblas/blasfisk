@@ -194,8 +194,7 @@ CMS_LANGUAGES = {
 
 CMS_TEMPLATES = (
     ('pages/page.html', _('Page')),  # Först i listan, blir standard
-    ('pages/custom_page.html', _('Custom Page')),
-    ('pages/home.html', _('LiTHe Hem')),
+    ('pages/base.html', _('Base Page')),
 )
 
 CMS_TEMPLATE_INHERITANCE = False  # Annars ärver en massa sidor hem-mallen, vilken egentligen bara ska finnas på startsidan
