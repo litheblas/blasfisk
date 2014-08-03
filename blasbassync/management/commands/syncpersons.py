@@ -161,6 +161,7 @@ class Command(BaseCommand):
                 ptel.save()
             """ row[19] innehåller latlong men ingenstans att stoppa in den """
             """ row[20] innehåller persid """
+            person.old_database_id = row[20]
             self.get_cards(db,row[20],person)
             """ row[21] innehåller blasmail """
             if row[21]:
