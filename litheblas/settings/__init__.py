@@ -9,14 +9,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-
 from django.utils.translation import ugettext_lazy as _
 from socket import getfqdn
 
 import os
 
-
-BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), '..')
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), '..'))
 
 INSTALLED_APPS = (
     # CMS-specifikt
@@ -156,6 +154,10 @@ TEMPLATE_LOADERS = (
 
 SITE_ID = 1
 
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'conf', 'locale'),
+)
+
 LANGUAGES = (
     ('sv', _('Swedish')),
     ('en', _('English')),
@@ -193,8 +195,7 @@ CMS_LANGUAGES = {
 
 CMS_TEMPLATES = (
     ('pages/page.html', _('Page')),  # Först i listan, blir standard
-    ('pages/custom_page.html', _('Custom Page')),
-    ('pages/home.html', _('LiTHe Hem')),
+    ('pages/base.html', _('Base Page')),
 )
 
 CMS_TEMPLATE_INHERITANCE = False  # Annars ärver en massa sidor hem-mallen, vilken egentligen bara ska finnas på startsidan
@@ -238,3 +239,14 @@ CKEDITOR_SETTINGS = {
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+CONTACT_SUBJECTS = (
+    ('general', _('General questions')),
+    ('concerts', _('Concerts')),
+)
+
+CONTACT_SUBJECT_RECIPIENTS = {
+    # '<subject key>': ['recipient1@a.com', 'recipient2@b.com']
+    'general': ['lithe.blas@music.liu.se'],
+    'concerts': ['spelraggare@litheblas.org'],
+}

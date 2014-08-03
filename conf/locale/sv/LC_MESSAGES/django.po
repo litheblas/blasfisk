@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Copyright (C) LiTHe Blås
+# This file is distributed under the same license as the litheblas package.
+# Olle Vidner <olle@vidner.se>, 2014.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-23 09:00+0200\n"
+"POT-Creation-Date: 2014-08-03 01:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,207 +17,400 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: blasbase/admin.py:56
-msgid "Permissions"
-msgstr ""
-
-#: blasbase/admin.py:58
-msgid "Important dates"
-msgstr ""
-
-#: blasbase/cms_app.py:7
-msgid "Blåsbasen"
-msgstr ""
-
-#: blasbase/models.py:28
-msgid "address"
-msgstr ""
-
-#: blasbase/models.py:29
-msgid "post code"
-msgstr ""
-
-#: blasbase/models.py:30
-msgid "city"
-msgstr ""
-
-#: blasbase/models.py:31
-msgid "country"
-msgstr ""
-
-#: blasbase/models.py:58
-msgid "first name"
-msgstr ""
-
-#: blasbase/models.py:59
-msgid "nickname"
-msgstr ""
-
-#: blasbase/models.py:60
-msgid "last name"
-msgstr ""
-
-#: blasbase/models.py:62
-msgid "gender"
-msgstr ""
-
-#: blasbase/models.py:63
-msgid "born"
-msgstr ""
-
-#: blasbase/models.py:65
-msgid "deceased"
-msgstr ""
-
-#: blasbase/models.py:67
-msgid "personal identification number"
-msgstr ""
-
-#: blasbase/models.py:69
-msgid "LiU-ID"
-msgstr ""
-
-#: blasbase/models.py:71
-msgid "about"
-msgstr ""
-
-#: blasbase/models.py:73
-msgid "special diets"
-msgstr ""
-
-#: blasbase/models.py:74
-msgid "special diets comments"
-msgstr ""
-
-#: blasbase/models.py:76
-msgid "posts"
-msgstr ""
-
-#: blasbase/models.py:78
-msgid "phone"
-msgstr ""
-
-#: blasbase/models.py:79
-msgid "e-mail"
-msgstr ""
-
-#: blasbase/models.py:81
-msgid "last updated"
-msgstr ""
-
-#: blasbase/models.py:88 blasbase/models.py:169
+#: barenbaren/models.py:10 barenbaren/models.py:42 blasbase/models.py:49
+#: blasbase/models.py:53 blasbase/models.py:57 blasbase/models.py:117
+#: blasbase/models.py:198 blasbase/models.py:289 blasbase/models.py:465
 msgid "person"
-msgstr ""
+msgstr "person"
 
-#: blasbase/models.py:89
+#: barenbaren/models.py:28
+msgid "account"
+msgstr "konto"
+
+#: barenbaren/models.py:29
+msgid "amount (kr)"
+msgstr "summa (kr)"
+
+#: barenbaren/models.py:41
+msgid "event"
+msgstr "evenemang"
+
+#: barenbaren/models.py:43
+msgid "date"
+msgstr "datum"
+
+#: barenbaren/models.py:44
+msgid "amount (cl)"
+msgstr "mängd (cl)"
+
+#: blasbase/admin.py:70
+msgid "Permissions"
+msgstr "Rättigheter"
+
+#: blasbase/admin.py:72
+msgid "Important dates"
+msgstr "Viktiga datum"
+
+#: blasbase/cms_app.py:8
+msgid "Blåsbase"
+msgstr "Blåsbasen"
+
+#: blasbase/models.py:31 blasbase/models.py:40 blasbase/models.py:48
+msgid "type"
+msgstr "typ"
+
+#: blasbase/models.py:32 locations/models.py:15
+msgid "country"
+msgstr "land"
+
+#: blasbase/models.py:33
+msgid "phone number"
+msgstr "telefonnummer"
+
+#: blasbase/models.py:41
+msgid "email address"
+msgstr "e-postadress"
+
+#: blasbase/models.py:91
+msgid "first name"
+msgstr "förnamn"
+
+#: blasbase/models.py:92
+msgid "nickname"
+msgstr "blåsnamn"
+
+#: blasbase/models.py:93
+msgid "last name"
+msgstr "efternamn"
+
+#: blasbase/models.py:95
+msgid "gender"
+msgstr "kön"
+
+#: blasbase/models.py:96
+msgid "born"
+msgstr "född"
+
+#: blasbase/models.py:98
+msgid "deceased"
+msgstr "avliden"
+
+#: blasbase/models.py:100
+msgid "personal identification number"
+msgstr "personnummer"
+
+#: blasbase/models.py:102
+msgid "LiU-ID"
+msgstr "LiU-ID"
+
+#: blasbase/models.py:104
+msgid "about"
+msgstr "om"
+
+#: blasbase/models.py:106
+msgid "special diets"
+msgstr "speciella kostvanor"
+
+#: blasbase/models.py:107
+msgid "special diets comments"
+msgstr "kommentarer till speciella kostvanor"
+
+#: blasbase/models.py:109
+msgid "functions"
+msgstr "funktioner"
+
+#: blasbase/models.py:111
+msgid "last updated"
+msgstr "senast uppdaterad"
+
+#: blasbase/models.py:118
 msgid "people"
-msgstr ""
+msgstr "personer"
 
-#: blasbase/models.py:99
+#: blasbase/models.py:128
 msgid "Decease date must be after birth date."
-msgstr ""
+msgstr "Dödsdatum måste vara efter födelsedatum."
 
-#: blasbase/models.py:168
+#: blasbase/models.py:197
 msgid "picture"
+msgstr "bild"
+
+#: blasbase/models.py:199
+msgid "primary"
+msgstr "primär"
+
+#: blasbase/models.py:283
+msgid "username"
+msgstr "användarnamn"
+
+#: blasbase/models.py:284
+msgid "is active"
+msgstr "aktivt konto"
+
+#: blasbase/models.py:286
+msgid "is staff"
+msgstr "adminkonto"
+
+#: blasbase/models.py:378 blasbase/models.py:510 blasbase/models.py:529
+#: locations/models.py:22
+msgid "name"
+msgstr "namn"
+
+#: blasbase/models.py:379 cards/models.py:11 locations/models.py:23
+msgid "description"
+msgstr "beskrivning"
+
+#: blasbase/models.py:380
+msgid "parent"
+msgstr "förälder"
+
+#: blasbase/models.py:382
+msgid "permissions"
+msgstr "rättigheter"
+
+#: blasbase/models.py:384
+msgid "membership"
+msgstr "medlemskap"
+
+#: blasbase/models.py:385
+msgid "engagement"
+msgstr "uppdrag"
+
+#: blasbase/models.py:466
+msgid "function"
+msgstr "funktion"
+
+#: blasbase/models.py:468
+msgid "start"
+msgstr "från och med"
+
+#: blasbase/models.py:468
+msgid "First date of assignment."
 msgstr ""
 
-#: blasbase/models.py:170
-msgid "primary"
+#: blasbase/models.py:469
+msgid "end"
+msgstr "till och med"
+
+#: blasbase/models.py:469
+msgid "Last date of assignment."
 msgstr ""
+
+#: blasbase/models.py:471
+msgid "trial"
+msgstr "prov"
+
+#: blasbase/models.py:510
+msgid "Anges i formen \"Allergisk mot...\", \"Nykterist\" etc."
+msgstr ""
+
+#: blasbase/models.py:520 blasbase/models.py:524
+msgid "customer"
+msgstr "kund"
+
+#: blasbase/models.py:530
+msgid "organisation number"
+msgstr "organisations-/personnummer"
+
+#: blasbase/models.py:531
+msgid "comments"
+msgstr "kommentarer"
+
+#: blasbase/models.py:533
+msgid "contact person"
+msgstr "kontaktperson"
 
 #: blasbase/validators.py:17 blasbase/validators.py:21
 msgid "Must not be in the future."
 msgstr ""
 
-#: blasbase/views.py:55
+#: blasbase/views.py:49
 msgid "Members"
-msgstr ""
+msgstr "Blåsare"
+
+#: blasbase/views.py:53
+msgid "Active"
+msgstr "Aktiva"
+
+#: blasbase/views.py:56
+msgid "Oldies"
+msgstr "Gamlingar"
 
 #: blasbase/views.py:59
-msgid "Active"
-msgstr ""
+msgid "Others"
+msgstr "Löst folk"
 
 #: blasbase/views.py:62
-msgid "Oldies"
-msgstr ""
-
-#: blasbase/views.py:65
-msgid "Others"
-msgstr ""
-
-#: blasbase/views.py:68
 msgid "Everybody"
-msgstr ""
+msgstr "Alla"
 
-#: blasstrap/cms_plugins.py:11
-msgid "Jumbotron"
-msgstr ""
-
-#: blasstrap/cms_plugins.py:12 blasstrap/cms_plugins.py:27
-#: blasstrap/cms_plugins.py:43
-msgid "Bootstrap"
-msgstr ""
-
-#: blasstrap/cms_plugins.py:26
+#: blasstrap/cms_plugins/carousel.py:16
 msgid "Carousel"
-msgstr ""
+msgstr "Karusell"
 
-#: blasstrap/cms_plugins.py:42
-msgid "Pusher"
-msgstr ""
+#: blasstrap/cms_plugins/carousel.py:17 blasstrap/cms_plugins/jumbotron.py:12
+#: blasstrap/cms_plugins/pusher.py:19
+msgid "Bootstrap"
+msgstr "Bootstrap"
 
-#: blasstrap/cms_plugins.py:56 blasstrap/cms_plugins.py:71
+#: blasstrap/cms_plugins/jumbotron.py:11
+msgid "Jumbotron"
+msgstr "Jumbotron"
+
+#: blasstrap/cms_plugins/jumbotron.py:22 blasstrap/cms_plugins/pusher.py:32
 msgid "Jumbotron content"
-msgstr ""
+msgstr "Jumbotroninnehåll"
+
+#: blasstrap/cms_plugins/parallax.py:10 blasstrap/cms_plugins/parallax.py:11
+#: blasstrap/cms_plugins/parallax.py:22 blasstrap/cms_plugins/parallax.py:33
+msgid "Parallax"
+msgstr "Parallax"
+
+#: blasstrap/cms_plugins/parallax.py:21
+msgid "Content"
+msgstr "Innehåll"
+
+#: blasstrap/cms_plugins/parallax.py:32
+msgid "Image"
+msgstr "Bild"
+
+#: blasstrap/cms_plugins/pusher.py:18
+msgid "Pusher"
+msgstr "Pusher"
 
 #: cards/models.py:9
 msgid "enabled"
-msgstr ""
+msgstr "aktiverat"
 
 #: cards/models.py:10
 msgid "Avmarkera om du tillfälligt vill spärra ditt kort"
 msgstr ""
 
 #: cards/models.py:12
-msgid "description"
-msgstr ""
-
-#: cards/models.py:13
 msgid "Anges förslagsvis om du har fler än ett kort"
 msgstr ""
 
-#: cards/models.py:23 cards/models.py:27
+#: cards/models.py:23 cards/models.py:28
 msgid "card data"
-msgstr ""
+msgstr "kortdata"
 
-#: litheblas/settings.py:194 litheblas/settings.py:209
+#: contact/cms_app.py:8
+msgid "Contact"
+msgstr "Kontakt"
+
+#: contact/forms.py:15
+msgid "Your name"
+msgstr "Ditt namn"
+
+#: contact/forms.py:16
+msgid "Your email address"
+msgstr "Din e-postadress"
+
+#: contact/forms.py:17
+msgid "Subject"
+msgstr "Ärende"
+
+#: contact/forms.py:18
+msgid "Message"
+msgstr "Meddelande"
+
+#: contact/forms.py:19
+msgid "Send a copy to you"
+msgstr "Skicka en kopia till dig"
+
+#: contact/forms.py:30
+msgid "Send"
+msgstr "Skicka"
+
+#: contact/forms.py:41
+#, python-format
+msgid "Message from %(name)s"
+msgstr "Meddelande från %(name)s"
+
+#: contact/templates/contact/contact_form.html:9
+msgid "The board"
+msgstr "Styrelsen"
+
+#: contact/templates/contact/contact_form.html:76
+msgid "Keep in touch"
+msgstr "Hör av dig"
+
+#: contact/templates/contact/contact_form.html:84
+msgid "Sweden"
+msgstr "Sverige"
+
+#: contact/templates/contact/contact_form.html:88
+msgid "Email"
+msgstr "E-post"
+
+#: events/cms_app.py:8
+msgid "Events"
+msgstr "Evenemang"
+
+#: litheblas/settings/__init__.py:161 litheblas/settings/__init__.py:176
 msgid "Swedish"
-msgstr ""
+msgstr "Svenska"
 
-#: litheblas/settings.py:195 litheblas/settings.py:215
+#: litheblas/settings/__init__.py:162 litheblas/settings/__init__.py:182
 msgid "English"
-msgstr ""
+msgstr "Engelska"
 
-#: litheblas/settings.py:196 litheblas/settings.py:221
+#: litheblas/settings/__init__.py:163 litheblas/settings/__init__.py:188
 msgid "German"
-msgstr ""
+msgstr "Tyska"
 
-#: litheblas/settings.py:229
+#: litheblas/settings/__init__.py:196
 msgid "Page"
-msgstr ""
+msgstr "Sida"
 
-#: litheblas/settings.py:230
-msgid "Custom Page"
-msgstr ""
+#: litheblas/settings/__init__.py:197
+msgid "Base Page"
+msgstr "Bassida"
 
-#: litheblas/settings.py:231
-msgid "LiTHe Hem"
-msgstr ""
-
-#: litheblas/settings.py:241
+#: litheblas/settings/__init__.py:207
 msgid "Page content"
+msgstr "Sidinnehål"
+
+#: litheblas/settings/__init__.py:218
+msgid "Parallax content"
+msgstr "Parallaxinnehåll"
+
+#: litheblas/settings/__init__.py:243
+msgid "General questions"
+msgstr "Allmänna frågor"
+
+#: litheblas/settings/__init__.py:244
+msgid "Concerts"
+msgstr "Spelningar"
+
+#: locations/admin.py:9
+msgid "Description"
+msgstr "Beskrivning"
+
+#: locations/admin.py:11
+msgid "Address"
+msgstr "Adress"
+
+#: locations/admin.py:15
+msgid "GPS Position"
 msgstr ""
 
-#: litheblas/settings.py:252
-msgid "Subtitle"
-msgstr ""
+#: locations/models.py:12
+msgid "address"
+msgstr "adress"
+
+#: locations/models.py:13
+msgid "post code"
+msgstr "postkod"
+
+#: locations/models.py:14
+msgid "city"
+msgstr "stad"
+
+#: locations/models.py:24
+msgid "longitude"
+msgstr "longitud"
+
+#: locations/models.py:25
+msgid "latitude"
+msgstr "latitud"
