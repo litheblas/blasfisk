@@ -13,14 +13,14 @@ from sys import stdout
 class Command(BaseCommand):
     help = 'Syncronizes persons from mysql'
     def handle(self, *args, **options):
-        print "Öppnar mysqldatabasen"
+        print u"Öppnar mysqldatabasen"
         db = MySQLdb.connect(host="127.0.0.1", user=settings.OLD_DATABASE_USER, passwd=settings.OLD_DATABASE_PASSWORD,
                              db="litheblas", port=3307, charset='utf8')
-        print "Hämtar data för sektioner"
+        print u"Hämtar data för sektioner"
         instrument_dictionary = self.create_sections(db)
-        print "Hämtar data för funktioner"
+        print u"Hämtar data för funktioner"
         function_dictionary = self.create_functions(db)
-        print "Hämtar data från persontabellen"
+        print u"Hämtar data från persontabellen"
         self.loop_through_persons(db, instrument_dictionary, function_dictionary)
 
         """
