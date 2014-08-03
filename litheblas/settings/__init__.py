@@ -235,3 +235,14 @@ CKEDITOR_SETTINGS = {
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+CONTACT_SUBJECTS = (
+    ('general', _('General questions')),
+    ('concerts', _('Concerts')),
+)
+
+CONTACT_SUBJECT_RECIPIENTS = {
+    # '<subject key>': ['recipient1@a.com', 'recipient2@b.com']
+    'general': ['lithe.blas@music.liu.se'],
+    'concerts': ['spelraggare@litheblas.org'],
+}
