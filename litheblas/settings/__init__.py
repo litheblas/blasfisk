@@ -152,6 +152,10 @@ TEMPLATE_LOADERS = (
     # 'django.template.loaders.eggs.Loader',
 )
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'litheblas', 'templates'),
+)
+
 SITE_ID = 1
 
 LOCALE_PATHS = (

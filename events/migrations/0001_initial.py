@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ("locations", "0001_initial"),
+    )
+
     def forwards(self, orm):
         # Adding model 'EventType'
         db.create_table(u'events_eventtype', (

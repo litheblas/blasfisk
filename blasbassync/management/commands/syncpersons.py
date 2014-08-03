@@ -13,14 +13,15 @@ from sys import stdout
 class Command(BaseCommand):
     help = 'Syncronizes persons from mysql'
     def handle(self, *args, **options):
-        print u"Öppnar mysqldatabasen"
-        db = MySQLdb.connect(host="localhost", user=settings.OLD_DATABASE_USER, passwd=settings.OLD_DATABASE_PASSWORD, db="litheblas", port=3307, charset='utf8' )
-        print u"Hämtar data för sektioner"
+        print "Öppnar mysqldatabasen"
+        db = MySQLdb.connect(host="127.0.0.1", user=settings.OLD_DATABASE_USER, passwd=settings.OLD_DATABASE_PASSWORD,
+                             db="litheblas", port=3307, charset='utf8')
+        print "Hämtar data för sektioner"
         instrument_dictionary = self.create_sections(db)
-        print u"Hämtar data för funktioner"
+        print "Hämtar data för funktioner"
         function_dictionary = self.create_functions(db)
-        print u"Hämtar data från persontabellen"
-        self.loop_through_persons(db,instrument_dictionary,function_dictionary)
+        print "Hämtar data från persontabellen"
+        self.loop_through_persons(db, instrument_dictionary, function_dictionary)
 
         """
                 Assignments
@@ -59,6 +60,7 @@ class Command(BaseCommand):
             tempFunc.save()
             function_dictionary[int(row[3])] = tempFunc
         return function_dictionary
+
     def create_instruments(self,sektid,sektion,db,instrument_dictionary):
         cur = db.cursor()
         cur.execute("SELECT lnamn,instrid from instrument where sekt = %s", (sektid,))
@@ -77,6 +79,7 @@ class Command(BaseCommand):
             tempFunction.parent = sektion
             tempFunction.membership = True
             tempFunction.save()
+
     def create_sections(self,db):
         litheblasFunc = Function()
         litheblasFunc.name = "Blåssektioner"
@@ -99,6 +102,7 @@ class Command(BaseCommand):
             hemsida
             listordning
         """
+
     def loop_through_persons(self,db,instrument_dictionary,function_dictionary):
         gluten = SpecialDiet.objects.get_or_create(name='Glutenallergi')[0]
         veg = SpecialDiet.objects.get_or_create(name='Vegetarian')[0]
@@ -201,6 +205,7 @@ class Command(BaseCommand):
             tempA.function = function_dictionary[int(row[1])]
             tempA.person = person
             tempA.save()
+
     def get_instruments(self,db,persid,person,instrument_dictionary):
         cur = db.cursor()
         cur.execute("SELECT pers,datum,typ,instr from medlem where pers=%s ORDER BY datum",(persid,))
@@ -239,6 +244,7 @@ class Command(BaseCommand):
                     tempA.person = person
                     tempA.function = Function.objects.get(name="Okänt instrument")
                     tempA.save()
+
             elif row[2] == 'heder':
                 tempA=Assignment()
                 tempA.start = row[1]
@@ -247,6 +253,7 @@ class Command(BaseCommand):
                 tempA.save()
                 tempA.save()
                 last = tempA
+
     def get_cards(self,db,persid,person):
         cur2 = db.cursor()
         cur2.execute("SELECT nummer,aktiv FROM kort WHERE persid=%s", (persid,))
