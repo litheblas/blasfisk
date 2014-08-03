@@ -196,7 +196,7 @@ class Command(BaseCommand):
         for row in cur.fetchall():
             tempA = Assignment()
             tempA.start = row[2]
-            if str(row[3]) == '9999-12-31':
+            if str(row[3]) != '9999-12-31':
                 tempA.end = row[3]
             tempA.function = function_dictionary[int(row[1])]
             tempA.person = person
