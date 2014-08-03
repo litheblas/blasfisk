@@ -1,0 +1,98 @@
+{% extends 'pages/page.html' %}
+{% load cms_tags crispy_forms_tags i18n sekizai_tags %}
+
+
+{% block content %}
+    {% addtoblock 'js' %}<script src="/static/js/holder.js"></script>{% endaddtoblock %}
+    <div class="row">
+        <div class="col-md-6">
+            <h2>{% trans 'The board' %}</h2>
+            <div class="media">
+                <img class="media-object pull-left" src="holder.js/75x75" alt="">
+                <div class="media-body">
+                    <h3 class="media-heading">Gustaf Bengtz <small>Dictator (ordförande)</small></h3>
+                    E-post: <a href="mailto:dictator@litheblas.org">dictator@litheblas.org</a><br>
+                    Telefon: 070-736 73 07
+                </div>
+            </div>
+            <div class="media">
+                <img class="media-object pull-left" src="holder.js/75x75" alt="">
+                <div class="media-body">
+                    <h3 class="media-heading">Olle Vidner <small>Domptör</small></h3>
+                    E-post: <a href="mailto:dictator@litheblas.org">dictator@litheblas.org</a><br>
+                    Telefon: 070-736 73 07
+                </div>
+            </div>
+            <div class="media">
+                <img class="media-object pull-left" src="holder.js/75x75" alt="">
+                <div class="media-body">
+                    <h3 class="media-heading">Mathilda Fitoussy <small>Styryra (balettchef)</small></h3>
+                    E-post: <a href="mailto:dictator@litheblas.org">dictator@litheblas.org</a><br>
+                    Telefon: 070-736 73 07
+                </div>
+            </div>
+            <div class="media">
+                <img class="media-object pull-left" src="holder.js/75x75" alt="">
+                <div class="media-body">
+                    <h3 class="media-heading">Elin Borin <small>Spelraggare</small></h3>
+                    E-post: <a href="mailto:dictator@litheblas.org">dictator@litheblas.org</a><br>
+                    Telefon: 070-736 73 07
+                </div>
+            </div>
+            <div class="media">
+                <img class="media-object pull-left" src="holder.js/75x75" alt="">
+                <div class="media-body">
+                    <h3 class="media-heading">Karl Linderhed <small>Kronharpa (kassör)</small></h3>
+                    E-post: <a href="mailto:dictator@litheblas.org">dictator@litheblas.org</a><br>
+                    Telefon: 070-736 73 07
+                </div>
+            </div>
+            <div class="media">
+                <img class="media-object pull-left" src="holder.js/75x75" alt="">
+                <div class="media-body">
+                    <h3 class="media-heading">Sofia Larsson Cahlin <small>Skrivkunig (sekreterare)</small></h3>
+                    E-post: <a href="mailto:dictator@litheblas.org">dictator@litheblas.org</a><br>
+                    Telefon: 070-736 73 07
+                </div>
+            </div>
+            <div class="media">
+                <img class="media-object pull-left" src="holder.js/75x75" alt="">
+                <div class="media-body">
+                    <h3 class="media-heading">Arvid Johnsson <small>Intendent</small></h3>
+                    E-post: <a href="mailto:dictator@litheblas.org">dictator@litheblas.org</a><br>
+                    Telefon: 070-736 73 07
+                </div>
+            </div>
+            <div class="media">
+                <img class="media-object pull-left" src="holder.js/75x75" alt="">
+                <div class="media-body">
+                    <h3 class="media-heading">Albin Martinsson <small>Notpiccolo</small></h3>
+                    E-post: <a href="mailto:dictator@litheblas.org">dictator@litheblas.org</a><br>
+                    Telefon: 070-736 73 07
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h2>{% trans 'Keep in touch' %}</h2>
+            {% placeholder 'page-content' %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <address>
+                        <b>LiTHe Blås</b><br>
+                        Kårallen, Linköpings universitet<br>
+                        581 83 Linköping<br>
+                        {% trans 'Sweden' %}
+                    </address>
+                </div>
+                <div class="col-sm-6">
+                    <p>{% trans 'Email' %}: <a href="mailto:lithe.blas@music.liu.se" target="_blank">lithe.blas@music.liu.se</a><br>
+                        Bankgiro: 189397-3
+                    </p>
+                </div>
+            </div>
+            <div class="well">
+            {% crispy form %}
+                </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -9,12 +9,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-
 from django.utils.translation import ugettext_lazy as _
 from socket import getfqdn
 
 import os
-
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), '..'))
 
@@ -241,3 +239,14 @@ CKEDITOR_SETTINGS = {
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+CONTACT_SUBJECTS = (
+    ('general', _('General questions')),
+    ('concerts', _('Concerts')),
+)
+
+CONTACT_SUBJECT_RECIPIENTS = {
+    # '<subject key>': ['recipient1@a.com', 'recipient2@b.com']
+    'general': ['lithe.blas@music.liu.se'],
+    'concerts': ['spelraggare@litheblas.org'],
+}

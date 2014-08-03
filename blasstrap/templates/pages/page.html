@@ -1,15 +1,17 @@
-{% extends 'base.html' %}
-{% load cms_tags staticfiles sekizai_tags menu_tags %}
+{# This page inherits a lot from pages/base.html and in turn base.html. Consider making template changes to those. #}
+{% extends 'pages/base.html' %}
+{% load cms_tags %}
 
-{% block title %} – {% page_attribute "page_title" %}{% endblock title %}
-
-{% block content %}
+{% block main %}
     <div class="page-title">
         <div class="container">
             <h1>{% render_model request.current_page "titles" %}</h1>
         </div>
     </div>
+
     <div class="container">
-        {% placeholder 'page-content' %}
+        {% block content %}
+            {{ block.super }}
+        {% endblock content %}
     </div>
-{% endblock content %}
+{% endblock main %}
