@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-from test_backends import *
-from test_validators import *
-
 
 
 from django.test import TestCase
