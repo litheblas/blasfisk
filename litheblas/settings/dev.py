@@ -5,6 +5,8 @@ from litheblas.settings import *
 DEBUG = True
 TEMPLATE_DEBUG = True
 
+CRISPY_FAIL_SILENTLY = False
+
 ALLOWED_HOSTS = ['*']
 
 DATABASES = {
