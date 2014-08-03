@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 #added requirement to BeautifulSoup
 from django.test import TestCase
 from requests.auth import HTTPBasicAuth
 import requests
 from BeautifulSoup import BeautifulSoup
-from blasbase.models import Person
+from blasbase.models import Person,Function
 from blasbassync.management.commands.syncpersons import Command
 from django.conf import settings
 from sys import stdout
@@ -53,6 +54,38 @@ class PersonMethodsTestCase(TestCase):
         self.assertEquals(fnamn,p.first_name)
         self.assertEquals(smek,p.nickname)
         self.assertEquals(enamn,p.last_name)
+    def test_person_engagements(self):
+        print "Testing person engagements"
+        count = 1
+        total = Person.objects.all().count()
+        for p in Person.objects.all():
+            stdout.write("Testing Person %d/%d   \r" % (count, total) )
+            stdout.flush()
+            count+=1
+            soup = BeautifulSoup(self.siteList[p.old_database_id].text)
+            try:
+                current = soup.find(text="Uppdrag").findNext('td')
+            except:
+                print soup.text
+
+
+            engagements = []
+            while current.text != "":
+                #print current.text
+                temp = current.text.split( )
+                tuppdrag = {}
+                tuppdrag['startdatum'] = temp[0]
+                if temp[2] == u'(pågår)':
+                    tuppdrag['slutdatum'] = None
+                else:
+                    tuppdrag['slutdatum'] = temp[2]
+                tuppdrag['typ'] = temp[3]
+                engagements.append(tuppdrag)
+                current = current.findNext('td').findNext('td')
+            new_engagement = p.assignments.filter(function__engagement=True).order_by('start')
+            for m in engagements:
+                    self.assertTrue(self.contains(new_engagement, lambda x: str(x.start) == m['startdatum'] and str(x.end) == m['slutdatum'] and Function.objects.get(name=m['typ'])),msg=p.old_database_id)
+
     def test_person_memberships(self):
         print "Testing person memberships"
         count = 1

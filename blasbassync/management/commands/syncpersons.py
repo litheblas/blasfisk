@@ -196,7 +196,8 @@ class Command(BaseCommand):
         for row in cur.fetchall():
             tempA = Assignment()
             tempA.start = row[2]
-            tempA.end = row[3]
+            if str(row[3]) == '9999-12-31':
+                tempA.end = row[3]
             tempA.function = function_dictionary[int(row[1])]
             tempA.person = person
             tempA.save()
@@ -219,19 +220,22 @@ class Command(BaseCommand):
                 tempA.person = person
                 if last:
                     if last.end == None:
-                        last.end = row[1]
-                        last.save()
+                        if str(row[1]) != '9999-12-31':
+                            last.end = row[1]
+                            last.save()
                 tempA.function = instrument_dictionary[int(row[3])]
                 tempA.save()
                 last=tempA
             elif row[2] == 'gamling':
                 if last:
                     if last.end == None:
-                        last.end = row[1]
-                        last.save()
+                        if str(row[1]) != '9999-12-31':
+                            last.end = row[1]
+                            last.save()
                 else:
                     tempA = Assignment()
-                    tempA.end = row[1]
+                    if str(row[1]) != '9999-12-31':
+                        tempA.end = row[1]
                     tempA.person = person
                     tempA.function = Function.objects.get(name="Okänt instrument")
                     tempA.save()
