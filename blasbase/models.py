@@ -109,7 +109,7 @@ class Person(models.Model):
     functions = models.ManyToManyField('Function', through='Assignment', verbose_name=_('functions'))
 
     last_updated = models.DateTimeField(auto_now=True, verbose_name=_('last updated'))
-
+    old_database_id = models.IntegerField(null=True)
     objects = PersonManager()
 
     class Meta:

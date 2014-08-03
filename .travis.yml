@@ -7,9 +7,9 @@ install:
   - pip install coveralls
 # command to run tests, e.g. python setup.py test
 before_script:
-  - python manage.dev.py syncdb
-  - python manage.dev.py migrate
+  - python manage.test.py syncdb
+  - python manage.test.py migrate
 script:
-  - coverage run --source='.' --branch --omit='*migrations*' manage.dev.py test
+  - coverage run --source='.' --branch --omit='*migrations*' manage.test.py test
 after_success:
   - coverage report
