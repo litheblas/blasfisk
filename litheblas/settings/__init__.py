@@ -153,6 +153,10 @@ TEMPLATE_LOADERS = (
 
 SITE_ID = 1
 
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'conf', 'locale'),
+)
+
 LANGUAGES = (
     ('sv', _('Swedish')),
     ('en', _('English')),
