@@ -32,8 +32,15 @@ CMS_CACHE_DURATIONS = {
 }
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'litheblas', 'media')
-
-
+TEST_RUNNER = 'litheblas.includeappstestsuiterunner.IncludeAppsTestSuiteRunner'
+APPS_TO_TEST = (
+    'blasstrap',
+    'blasbase',
+    'cards',
+    'events',
+    'locations',
+    'contact',
+)
 # MUST BE LAST IN FILE
 try:
     from litheblas.settings.local import *
