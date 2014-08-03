@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>LiTHe Blås{% block title %}{% endblock title %}</title>
+    <title>LiTHe Blås{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
@@ -43,14 +43,18 @@
         </div>
     </div>
 </header>
-{% block content %}
-{% endblock content %}
+{% block main %}
+{% endblock %}
 <footer>
     <div class="page-footer">
         <div class="container">
             <div class="row">
-                <div class="col-xs-7 col-sm-4 contact-links"><p><strong>LiTHe Blås</strong><br>Kårallen, Linköpings
-                    universitet<br>581 83 Linköping</p>
+                <div class="col-xs-7 col-sm-4 contact-links">
+                    <p>
+                        <strong>LiTHe Blås</strong><br>
+                        Kårallen, Linköpings universitet<br>
+                        581 83 Linköping
+                    </p>
 
                     <p><a href="mailto:lithe.blas@music.liu.se" target="_blank">lithe.blas@music.liu.se</a><br>Bankgiro
                         189397-3</p>
