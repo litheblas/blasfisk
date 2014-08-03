@@ -17,14 +17,6 @@ def generate_pusher_image_filename(instance, filename):
     return generate_filename(instance, filename, 'pusher-imgs')
 
 
-def generate_parallax_image_filename(instance, filename):
-    return generate_filename(instance, filename, 'parallax-imgs')
-
-
-def generate_parallax_inner_image_filename(instance, filename):
-    return generate_filename(instance, filename, 'parallax-mobile-imgs')
-
-
 class Carousel(CMSPlugin):
     extra_css_classes = models.CharField(max_length=256, blank=True)
     indicators = models.BooleanField(default=True)
@@ -88,19 +80,3 @@ class PusherEntry(models.Model):
 
     class Meta:
         ordering = ['priority']
-
-
-class Parallax(CMSPlugin):
-    speed = models.DecimalField(max_digits=3, decimal_places=2, default=Decimal('0.2'))
-    cover_ratio = models.DecimalField(max_digits=3, decimal_places=2, default=Decimal('0.75'))
-    holder_min_height = models.IntegerField(default=200)
-
-
-class ParallaxImage(CMSPlugin):
-    image = models.ImageField(upload_to=generate_parallax_image_filename)
-    # mobile_image = models.ImageField(upload_to=generate_parallax_mobile_image_filename)
-    extra_height = models.IntegerField(default=0)
-
-
-class ParallaxContent(CMSPlugin):
-    content = PlaceholderField('parallax-content')

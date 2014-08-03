@@ -9,10 +9,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
+
 from django.utils.translation import ugettext_lazy as _
 from socket import getfqdn
 
 import os
+
 
 BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), '..')
 
@@ -55,6 +57,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'djangocms_markdown',
     'markdown_deux',
+    'djangocms_parallax',
     
     # LiTHe Blås
     'blasstrap',
@@ -206,7 +209,7 @@ CMS_PLACEHOLDER_CONF = {
             {
                 'plugin_type': 'MarkdownPlugin',
                 'values': {
-                    'body': u'Lorem ipsum dolor sit amet...'
+                    'body': u'<p class="lead">Här skriver du eventuell ingress.</p>\n\nLorem ipsum dolor sit amet, **för helvete**.'
                 },
             },
         ]

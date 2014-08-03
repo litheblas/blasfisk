@@ -6119,45 +6119,6 @@ button.close {
   font-size: 18px;
   line-height: 1.33;
   border-radius: 0px;
-  color: #ffffff;
-  background-color: #1c4386;
-  border-color: #183871;
-}
-.parallax-content a.btn:hover,
-.parallax-content a.btn:focus,
-.parallax-content a.btn:active,
-.parallax-content a.btn.active,
-.open > .dropdown-toggle.parallax-content a.btn {
-  color: #ffffff;
-  background-color: #132e5c;
-  border-color: #0d1f3e;
-}
-.parallax-content a.btn:active,
-.parallax-content a.btn.active,
-.open > .dropdown-toggle.parallax-content a.btn {
-  background-image: none;
-}
-.parallax-content a.btn.disabled,
-.parallax-content a.btn[disabled],
-fieldset[disabled] .parallax-content a.btn,
-.parallax-content a.btn.disabled:hover,
-.parallax-content a.btn[disabled]:hover,
-fieldset[disabled] .parallax-content a.btn:hover,
-.parallax-content a.btn.disabled:focus,
-.parallax-content a.btn[disabled]:focus,
-fieldset[disabled] .parallax-content a.btn:focus,
-.parallax-content a.btn.disabled:active,
-.parallax-content a.btn[disabled]:active,
-fieldset[disabled] .parallax-content a.btn:active,
-.parallax-content a.btn.disabled.active,
-.parallax-content a.btn[disabled].active,
-fieldset[disabled] .parallax-content a.btn.active {
-  background-color: #1c4386;
-  border-color: #183871;
-}
-.parallax-content a.btn .badge {
-  color: #1c4386;
-  background-color: #ffffff;
 }
 .parallax-content .img {
   position: relative;
@@ -6187,11 +6148,6 @@ fieldset[disabled] .parallax-content a.btn.active {
   height: auto;
   min-width: 100%;
 }
-@media (min-width: 992px) {
-  .parallax-content .img.img-right {
-    left: 66.66666667%;
-  }
-}
 .parallax-content .text {
   position: relative;
   min-height: 1px;
@@ -6202,11 +6158,6 @@ fieldset[disabled] .parallax-content a.btn.active {
   .parallax-content .text {
     float: left;
     width: 66.66666667%;
-  }
-}
-@media (min-width: 992px) {
-  .parallax-content .text.text-left {
-    right: 33.33333333%;
   }
 }
 html {
