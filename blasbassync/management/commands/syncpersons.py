@@ -222,15 +222,17 @@ class Command(BaseCommand):
                 tempA.start = row[1]
                 tempA.person = person
                 if last:
-                    last.end = row[1]
-                    last.save()
+                    if last.end == None:
+                        last.end = row[1]
+                        last.save()
                 tempA.function = instrument_dictionary[int(row[3])]
                 tempA.save()
                 last=tempA
             elif row[2] == 'gamling':
                 if last:
-                    last.end = row[1]
-                    last.save()
+                    if last.end == None:
+                        last.end = row[1]
+                        last.save()
                 else:
                     tempA = Assignment()
                     tempA.end = row[1]
