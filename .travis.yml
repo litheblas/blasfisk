@@ -2,10 +2,13 @@ language: python
 python:
   - "2.7"
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -Ur requirements.txt
+install:
+  - pip install -Ur requirements.txt
+  - pip install coveralls
 # command to run tests, e.g. python setup.py test
 before_script:
   - python manage.dev.py syncdb
   - python manage.dev.py migrate
 script:
- - python manage.dev.py test
+  - coverage run --source='.' manage.dev.py test
+  - coverage report
