@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from mptt.models import MPTTModel, TreeForeignKey, TreeManager
 from django.db import models
 from django.db.models.query import QuerySet
-from django.db.models import Q
+from django.db.models import F, Q
 from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
@@ -91,14 +91,14 @@ class Person(models.Model):
     first_name = models.CharField(max_length=256, verbose_name=_('first name'))
     nickname = models.CharField(max_length=256, blank=True, verbose_name=_('nickname'))
     last_name = models.CharField(max_length=256, verbose_name=_('last name'),
-                                 help_text=u'Ange gärna tidigare efternamn inom parentes, t.ex. Vidner (Eriksson)')
+                                 help_text=_('Feel free to specify earlier last name in parentheses, e.g. Vidner (Eriksson)'))
     gender = models.CharField(max_length=1, choices=GENDERS, blank=True, verbose_name=_('gender'))
     born = models.DateField(blank=True, null=True, verbose_name=_('born'),
                             validators=[validators.date_before_today])
     deceased = models.DateField(blank=True, null=True, verbose_name=_('deceased'),
                                 validators=[validators.date_before_today])
     personal_id_number = models.CharField(max_length=4, blank=True, verbose_name=_('personal identification number'),
-                                          help_text=u'Sista 4 siffrorna i personnumret')  # Last 4 characters in Swedish personal id number
+                                          help_text=_('Last 4 characters in Swedish personal ID number'))
     liu_id = models.CharField(max_length=8, blank=True, verbose_name=_('LiU-ID'))
 
     about = models.TextField(blank=True, verbose_name=_('about'))
@@ -125,10 +125,11 @@ class Person(models.Model):
 
         # Validera endast om både födelse- och dödsdatum angetts.
         if self.born and self.deceased:
-            validators.datetime_before_datetime(self.born, self.deceased, _(u'Decease date must be after birth date.'))
+            validators.datetime_before_datetime(self.born, self.deceased, _('Decease date must be after birth date.'))
         return cleaned_data
 
-    def get_age(self):
+    @property
+    def age(self):
         if self.born and not self.deceased:
             return relativedelta(datetime.date.today(), self.born)
         elif self.born and self.deceased:
@@ -164,7 +165,7 @@ class Person(models.Model):
         return u'{0} {1}'.format(self.first_name, self.last_name[0])  # Leif H
 
     @property
-    def start_date(self):
+    def membership_start(self):
         """Hämtar alla assignments som innebär medlemsskap och som inte är provmedlemsskap,
         sorterar stigande på startdatum, tar det första objektet och ger detta objekts startdatum"""
         try:
@@ -175,7 +176,7 @@ class Person(models.Model):
             return None
 
     @property
-    def end_date(self):
+    def membership_end(self):
         a = self.assignments.memberships().order_by('end_date')
 
         # Om man inte har några sådana assignments eller om någon är pågående returnerar vi None
@@ -185,7 +186,6 @@ class Person(models.Model):
         # Annars tar vi det sista objektet och ger dess slutdatum
         return a.last().end_date
 
-    age = property(get_age)
     full_name = property(get_full_name)
     short_name = property(get_short_name)
     primary_avatar = property(get_primary_avatar)
@@ -240,10 +240,10 @@ class UserManager(BaseUserManager):
 
     def create_user(self, username, password):
         if not username:
-            raise ValueError(u'Users must have a username')
+            raise ValueError('Users must have a username')
 
         if not password:
-            raise ValueError(u'Users must have a password')
+            raise ValueError('Users must have a password')
 
         # TODO: Fixa nåt snyggare
         person = Person(first_name=u'Niklas', last_name=u'Namnlös')
@@ -306,7 +306,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             perms.update(assignment.function.get_all_permissions())
         return perms
 
-    # Ersätter Djangos egna get_all_permissions för att få med rättigheter från poster/sektioner 
+    # Ersätter Djangos egna get_all_permissions för att få med rättigheter från poster/sektioner
     def get_all_permissions(self, obj=None):
         perms = super(User, self).get_all_permissions(obj)  # Hämtar rättigheter på vedertaget vis
         perms.update(self.get_assignment_permissions(obj))
@@ -353,7 +353,7 @@ class FunctionManagerMixin(TreeManager):
 
     def people(self):
         """
-        Returns people from self and all descendants.
+        Returns people from self and all descendants. Does not and should not care about start/end dates.
         """
         return Person.objects.filter(functions=self.descendants(include_self=True)).distinct()
 
@@ -395,15 +395,23 @@ class Function(MPTTModel):
     def __str__(self):
         return u'{0}'.format(self.name)
 
+    @property
     def people(self):
         return self.get_descendants(include_self=True).people()
 
-    def get_permissions(self):
+    @property
+    def inherited_permissions(self):
         return self.get_ancestors(include_self=True).permissions()
 
 
 class AssignmentQuerySetMixin(object):
-    #use_for_related_fields = True
+    def sane(self):
+        """
+        Returns sane assignments, i.e. all except those with an earlier end date than start date.
+
+        This isn't really used in production, but could be useful to find invalid assignment if it would happen.
+        """
+        return self.filter(Q(end__gte=F('start')) | Q(start__isnull=True) | Q(end__isnull=True))
 
     def defined(self):
         """
@@ -413,7 +421,7 @@ class AssignmentQuerySetMixin(object):
 
     def ongoing(self, date=datetime.date.today()):
         """
-        Returns defined assignments with...
+        Returns *defined* assignments with...
 
         Start date undefined or before date
         AND
@@ -427,8 +435,8 @@ class AssignmentQuerySetMixin(object):
         )
 
     def ended(self, date=datetime.date.today()):
-        return self.defined().filter(
-            Q(end__lt=date)
+        return self.filter(
+            Q(end__lt=date) | Q(start__isnull=True, end__isnull=True)
         )
 
     def memberships(self, all=False):
@@ -487,12 +495,24 @@ class Assignment(models.Model):
         return self.function.engagement
 
     @property
-    def on_timeline(self):
-        return self.function.show_in_timeline
+    def sane(self):
+        return not self.start or not self.end or not self.start > self.end
 
     @property
-    def ongoing(self):
-        return self.objects.ongoing().filter(pk__in=self.pk).exists()
+    def defined(self):
+        """
+        Returns False if neither start nor end are set. Otherwise True.
+        """
+        return self.start or self.end
+
+    @property
+    def ongoing(self, date=datetime.date.today()):
+        if not self.defined or not self.sane:
+            return False
+        elif (not self.start or self.start <= date) and (not self.end or self.end >= date):
+            return True
+        else:
+            return False
 
     def convert_to_regular_membership(self, date=datetime.date.today()):
         a = Assignment(person=self.person, function=self.function, start_date=date, trial=False)
@@ -507,7 +527,7 @@ class Assignment(models.Model):
 
 @python_2_unicode_compatible
 class SpecialDiet(models.Model):
-    name = models.CharField(max_length=256, verbose_name=_('name'), help_text=_(u'Anges i formen "Allergisk mot...", "Nykterist" etc.'))
+    name = models.CharField(max_length=256, verbose_name=_('name'))
 
     class Meta:
         ordering = ['name']
