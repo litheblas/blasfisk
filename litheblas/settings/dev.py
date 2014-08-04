@@ -19,7 +19,6 @@ DATABASES = {
 SECRET_KEY = 'd*dvb_n#28xx9ij*f(-5=*9k9s57_=#!rqgrjl!2$&+b=%ujr$'
 DATABASE_PASSWORD = None
 
-# INSTALLED_APPS += ('debug_toolbar',)
 INSTALLED_APPS += ('blasbassync',)
 
 CACHES = {
