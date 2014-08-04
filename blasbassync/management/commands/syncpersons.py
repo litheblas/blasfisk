@@ -7,6 +7,7 @@ from cards.models import MagnetCard
 from django.conf import settings
 import pycountry
 import MySQLdb
+import django.contrib.auth.hashers
 from sys import stdout
 
 
@@ -109,7 +110,7 @@ class Command(BaseCommand):
         nykter = SpecialDiet.objects.get_or_create(name='Nykterist')[0]
 
         cur = db.cursor()
-        cur.execute("SELECT fnamn,smek,enamn,kon,fodd,pnr_sista,studentid,fritext,allergi,gluten,veg,nykter,gatuadr,postnr,ort,land,hemnr,mobilnr,jobbnr,latlong,persid,blasmail,epost FROM person")
+        cur.execute("SELECT fnamn,smek,enamn,kon,fodd,pnr_sista,studentid,fritext,allergi,gluten,veg,nykter,gatuadr,postnr,ort,land,hemnr,mobilnr,jobbnr,latlong,persid,blasmail,epost,password FROM person")
         total = cur.rowcount
         #Improviserad progressbar
         count = 1
@@ -173,7 +174,10 @@ class Command(BaseCommand):
                 puser.username = row[21]
                 puser.is_active = True
                 puser.person = person
+                if row[23]:
+                    puser.password = "md5$$" + row[23]
                 puser.save()
+
             self.get_instruments(db,row[20],person,instrument_dictionary)
             self.get_functions(db,row[20],person,function_dictionary)
             person.save()
