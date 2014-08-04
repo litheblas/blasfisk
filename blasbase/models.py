@@ -252,7 +252,6 @@ class UserManager(BaseUserManager):
         user = self.model(
             person=person,
             username=username,
-            password=password,
         )
 
         user.set_password(password)
