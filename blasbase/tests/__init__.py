@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-from test_models import *
-from test_validators import *
-
-
 
 from django.test import TestCase
 from django.contrib.auth.models import Permission
