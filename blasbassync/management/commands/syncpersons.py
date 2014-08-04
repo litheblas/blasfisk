@@ -176,7 +176,6 @@ class Command(BaseCommand):
                 puser.person = person
                 if row[23]:
                     puser.password = "md5$$" + row[23]
-                    #puser.set_password("md5$$"+row[23])
                 puser.save()
 
             self.get_instruments(db,row[20],person,instrument_dictionary)
