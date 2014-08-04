@@ -7,20 +7,21 @@ from cards.models import MagnetCard
 from django.conf import settings
 import pycountry
 import MySQLdb
+import django.contrib.auth.hashers
 from sys import stdout
 
 
 class Command(BaseCommand):
     help = 'Syncronizes persons from mysql'
     def handle(self, *args, **options):
-        print "Öppnar mysqldatabasen"
+        print u"Öppnar mysqldatabasen"
         db = MySQLdb.connect(host="127.0.0.1", user=settings.OLD_DATABASE_USER, passwd=settings.OLD_DATABASE_PASSWORD,
                              db="litheblas", port=3307, charset='utf8')
-        print "Hämtar data för sektioner"
+        print u"Hämtar data för sektioner"
         instrument_dictionary = self.create_sections(db)
-        print "Hämtar data för funktioner"
+        print u"Hämtar data för funktioner"
         function_dictionary = self.create_functions(db)
-        print "Hämtar data från persontabellen"
+        print u"Hämtar data från persontabellen"
         self.loop_through_persons(db, instrument_dictionary, function_dictionary)
 
         """
@@ -109,7 +110,7 @@ class Command(BaseCommand):
         nykter = SpecialDiet.objects.get_or_create(name='Nykterist')[0]
 
         cur = db.cursor()
-        cur.execute("SELECT fnamn,smek,enamn,kon,fodd,pnr_sista,studentid,fritext,allergi,gluten,veg,nykter,gatuadr,postnr,ort,land,hemnr,mobilnr,jobbnr,latlong,persid,blasmail,epost FROM person")
+        cur.execute("SELECT fnamn,smek,enamn,kon,fodd,pnr_sista,studentid,fritext,allergi,gluten,veg,nykter,gatuadr,postnr,ort,land,hemnr,mobilnr,jobbnr,latlong,persid,blasmail,epost,password FROM person")
         total = cur.rowcount
         #Improviserad progressbar
         count = 1
@@ -173,7 +174,10 @@ class Command(BaseCommand):
                 puser.username = row[21]
                 puser.is_active = True
                 puser.person = person
+                if row[23]:
+                    puser.password = "md5$$" + row[23]
                 puser.save()
+
             self.get_instruments(db,row[20],person,instrument_dictionary)
             self.get_functions(db,row[20],person,function_dictionary)
             person.save()
