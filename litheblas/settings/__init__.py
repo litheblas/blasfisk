@@ -15,6 +15,7 @@ from socket import getfqdn
 import os
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), '..'))
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'litheblas', 'static'),)
 
 INSTALLED_APPS = (
     # CMS-specifikt
