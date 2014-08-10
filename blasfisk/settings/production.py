@@ -23,8 +23,8 @@ ADMINS = (
 SERVER_EMAIL = 'blasfisk@' + getfqdn()
 
 INSTALLED_APPS += ('blasbassync',)
-STATIC_ROOT = '/var/www/blasfisk/static'
-MEDIA_ROOT = '/var/www/blasfisk/media'
+STATIC_ROOT = '/var/www/blasfisk/static/'
+MEDIA_ROOT = '/var/www/blasfisk/media/'
 
 
 # MUST BE LAST IN FILE
