@@ -251,7 +251,7 @@ CONTACT_SUBJECTS = (
 )
 
 CONTACT_SUBJECT_RECIPIENTS = {
-    # '<subject key>': ['recipient1@a.com', 'recipient2@b.com']
+    # '<subject key>': ['recipient1@a.com', 'recipient2@b.com', ...]
     'general': ['lithe.blas@music.liu.se'],
     'concerts': ['spelraggare@litheblas.org'],
 }
