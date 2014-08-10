@@ -1,7 +1,7 @@
 db.sqlite3*
-litheblas/media/*
-litheblas/settings/local.py
-litheblas/settings/secret.py
+blasfisk/media/*
+blasfisk/settings/local.py
+blasfisk/settings/secret.py
 *.bat
 
 # Created by http://www.gitignore.io
@@ -107,10 +107,6 @@ htmlcov/
 nosetests.xml
 coverage.xml
 
-# Translations
-*.mo
-*.pot
-
 # Django stuff:
 *.log
 
@@ -172,4 +168,4 @@ $RECYCLE.BIN/
 # KDE directory preferences
 .directory
 
-litheblas/settings/secret.py
+blasfisk/settings/secret.py

@@ -4,6 +4,18 @@ This file can be used for your own, local settings. It is not under version cont
 file to be loaded.
 """
 
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'blasfisk',
+        'USER': 'blasfisk',
+        'PASSWORD': '<password>',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+
 # 32 bytes from urandom or other crypto safe source
 SECRET_KEY = None
 DATABASE_PASSWORD = None
