@@ -1,15 +1,15 @@
 server {
     server_name dev.skorpan.lysator.liu.se;
-    listen 8080;
+    listen 80;
 
     access_log off;
 
     location /static/ {
-        alias /opt/litheblas.org/static/;
+        alias /var/www/blasfisk/static/;
     }
 
     location /media/ {
-        alias /opt/litheblas.org/media/;
+        alias /var/www/blasfisk/media/;
     }
 
     location / {
