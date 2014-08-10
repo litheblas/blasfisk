@@ -16,10 +16,11 @@ ALLOWED_HOSTS = [
 #Till vilka adresser ska debug-epost skickas?
 ADMINS = (
     ('Olle Vidner', 'olle@vidner.se'),
+    ('Blåsfisk-debug', 'blasfisk-debug@litheblas.org')
 )
 
 #Från vilken adress ska debug-epost skickas?
-SERVER_EMAIL = 'django@' + getfqdn()
+SERVER_EMAIL = 'blasfisk@' + getfqdn()
 
 INSTALLED_APPS += ('blasbassync',)
 STATIC_ROOT = '/var/www/blasfisk/static'
