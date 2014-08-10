@@ -22,8 +22,8 @@ ADMINS = (
 SERVER_EMAIL = 'django@' + getfqdn()
 
 INSTALLED_APPS += ('blasbassync',)
-STATIC_ROOT = os.path.join('/opt/litheblas.org/static')
-MEDIA_ROOT = os.path.join('/opt/litheblas.org/media')
+STATIC_ROOT = '/var/www/blasfisk/static'
+MEDIA_ROOT = '/var/www/blasfisk/media'
 
 
 # MUST BE LAST IN FILE
