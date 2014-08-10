@@ -3,12 +3,14 @@ from django.db import models
 from django.contrib.auth.models import Group
 from django.db.models.query import QuerySet
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext_lazy as _
+
 from datetime import datetime
 
 ANSWERS = (
-    ('No', 'Nej'),
-    ('Maybe', 'Kanske'),
-    ('Yes', 'Ja'),
+    ('yes', _('Yes')),
+    ('maybe', _('Maybe')),
+    ('no', _('No')),
 )
 
 
