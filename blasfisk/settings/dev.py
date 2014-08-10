@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from litheblas.settings import *
+from blasfisk.settings import *
 
 DEBUG = True
 TEMPLATE_DEBUG = True
@@ -34,12 +34,12 @@ CMS_CACHE_DURATIONS = {
     'permissions': 0
 }
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'litheblas', 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'blasfisk', 'media')
 
 
 # MUST BE LAST IN FILE
 try:
-    from litheblas.settings.local import *
+    from blasfisk.settings.local import *
 except ImportError:
     pass
 # MUST BE LAST IN FILE
