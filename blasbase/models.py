@@ -23,6 +23,8 @@ from blasbase import validators
 from locations.models import AddressMixin
 
 
+
+
 def generate_avatar_filename(instance, filename):
     return generate_filename(instance, filename, 'avatars')
 
@@ -536,24 +538,17 @@ class SpecialDiet(models.Model):
         return self.name
 
 
-class CustomerPhoneNumber(PhoneNumber):
-    customer = models.ForeignKey('blasbase.Customer', related_name='phone_numbers', verbose_name=_('customer'))
 
-
-class CustomerEmailAddress(EmailAddress):
-    customer = models.ForeignKey('blasbase.Customer', related_name='email_addresses', verbose_name=_('customer'))
 
 
 @python_2_unicode_compatible
 class Customer(AddressMixin, models.Model):
     name = models.CharField(max_length=256, verbose_name=_('name'))
     organisation_number = models.CharField(max_length=12, blank=True, verbose_name=_('organisation number'))
-    comments = models.TextField(blank=True, verbose_name=_('comments'))
-
-    contact = models.CharField(max_length=256, blank=True, verbose_name=_('contact person'))
 
     class Meta:
-        ordering = ['name', 'contact']
+        ordering = ['name']
+        unique_together = ['name', 'organisation_number']
 
     def __str__(self):
         return self.name

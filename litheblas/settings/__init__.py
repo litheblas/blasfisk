@@ -255,3 +255,7 @@ CONTACT_SUBJECT_RECIPIENTS = {
     'general': ['lithe.blas@music.liu.se'],
     'concerts': ['spelraggare@litheblas.org'],
 }
+
+# Name of the default event type
+# Used with a get_or_create, so shouldn't be translatable
+DEFAULT_EVENT_TYPE = 'Spelning'
