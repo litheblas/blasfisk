@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from litheblas.settings.dev import *
+from blasfisk.settings.dev import *
 
 DEBUG = True
 TEMPLATE_DEBUG = True

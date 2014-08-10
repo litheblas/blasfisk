@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) LiTHe Blås
-# This file is distributed under the same license as the litheblas package.
+# This file is distributed under the same license as the blasfisk package.
 # Olle Vidner <olle@vidner.se>, 2014.
 #
 #, fuzzy
@@ -417,59 +417,59 @@ msgstr "Innehåll"
 msgid "event information"
 msgstr "evenemangsinformation"
 
-#: litheblas/settings/__init__.py:169 litheblas/settings/__init__.py:184
+#: blasfisk/settings/__init__.py:169 blasfisk/settings/__init__.py:184
 msgid "Swedish"
 msgstr "Svenska"
 
-#: litheblas/settings/__init__.py:170 litheblas/settings/__init__.py:190
+#: blasfisk/settings/__init__.py:170 blasfisk/settings/__init__.py:190
 msgid "English"
 msgstr "Engelska"
 
-#: litheblas/settings/__init__.py:171 litheblas/settings/__init__.py:196
+#: blasfisk/settings/__init__.py:171 blasfisk/settings/__init__.py:196
 msgid "German"
 msgstr "Tyska"
 
-#: litheblas/settings/__init__.py:204
+#: blasfisk/settings/__init__.py:204
 msgid "Page"
 msgstr "Sida"
 
-#: litheblas/settings/__init__.py:205
+#: blasfisk/settings/__init__.py:205
 msgid "Base Page"
 msgstr "Bassida"
 
-#: litheblas/settings/__init__.py:206
+#: blasfisk/settings/__init__.py:206
 msgid "LiTHe Home"
 msgstr "LiTHe Hem"
 
-#: litheblas/settings/__init__.py:216
+#: blasfisk/settings/__init__.py:216
 msgid "Page content"
 msgstr "Sidinnehål"
 
-#: litheblas/settings/__init__.py:227
+#: blasfisk/settings/__init__.py:227
 msgid "Parallax content"
 msgstr "Parallaxinnehåll"
 
-#: litheblas/settings/__init__.py:252
+#: blasfisk/settings/__init__.py:252
 msgid "General questions"
 msgstr "Allmänna frågor"
 
-#: litheblas/settings/__init__.py:253
+#: blasfisk/settings/__init__.py:253
 msgid "Concerts"
 msgstr "Spelningar"
 
-#: litheblas/templates/contact/contact_form.html:9
+#: blasfisk/templates/contact/contact_form.html:9
 msgid "The board"
 msgstr "Styrelsen"
 
-#: litheblas/templates/contact/contact_form.html:76
+#: blasfisk/templates/contact/contact_form.html:76
 msgid "Keep in touch"
 msgstr "Hör av dig"
 
-#: litheblas/templates/contact/contact_form.html:84
+#: blasfisk/templates/contact/contact_form.html:84
 msgid "Sweden"
 msgstr "Sverige"
 
-#: litheblas/templates/contact/contact_form.html:88
+#: blasfisk/templates/contact/contact_form.html:88
 msgid "Email"
 msgstr "E-post"
 

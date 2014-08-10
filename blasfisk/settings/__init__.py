@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Django settings for litheblas project.
+Django settings for blasfisk project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -15,7 +15,7 @@ from socket import getfqdn
 import os
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), '..'))
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'litheblas', 'static'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'blasfisk', 'static'),)
 
 INSTALLED_APPS = (
     # CMS-specifikt
@@ -115,9 +115,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static'
 )
 
-ROOT_URLCONF = 'litheblas.urls'
+ROOT_URLCONF = 'blasfisk.urls'
 
-WSGI_APPLICATION = 'litheblas.wsgi.application'
+WSGI_APPLICATION = 'blasfisk.wsgi.application'
 
 AUTHENTICATION_BACKENDS = (
     'blasbase.backends.BlasbaseBackend',
@@ -154,7 +154,7 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'litheblas', 'templates'),
+    os.path.join(BASE_DIR, 'blasfisk', 'templates'),
 )
 
 SITE_ID = 1

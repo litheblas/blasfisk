@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from litheblas.settings import *
+from blasfisk.settings import *
 
 DEBUG = False
 TEMPLATE_DEBUG = False
@@ -24,8 +24,8 @@ SERVER_EMAIL = 'django@' + getfqdn()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'litheblas',
-        'USER': 'litheblas',
+        'NAME': 'blasfisk',
+        'USER': 'blasfisk',
         'PASSWORD': DATABASE_PASSWORD,
         'HOST': 'localhost',
         'PORT': '',
@@ -38,7 +38,7 @@ MEDIA_ROOT = os.path.join('/opt/litheblas.org/media')
 
 # MUST BE LAST IN FILE
 try:
-    from litheblas.settings.local import *
+    from blasfisk.settings.local import *
 except ImportError:
     pass
 # MUST BE LAST IN FILE
