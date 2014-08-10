@@ -2,7 +2,7 @@
 import multiprocessing
 
 command = '/opt/venvs/blasfisk/bin/gunicorn'
-pythonpath = '/opt/blasfisk/blasfisk'
+pythonpath = '/opt/blasfisk'
 bind = '127.0.0.1:8000'
 workers = multiprocessing.cpu_count() * 2 + 1
 user = None
