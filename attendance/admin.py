@@ -1,9 +1,16 @@
 from django.contrib import admin
 from attendance.models import Attendance, Comment
-#from blasbase.models import Customer
 
 
 class AttendanceAdmin(admin.ModelAdmin):
+    list_display = ('get_event_start', 'event', 'person', 'attended', 'penalty', 'comment')
+    list_filter = ['person', 'event']
+
+    def get_event_start(self, obj):
+        return obj.event.start
+    get_event_start.short_description = 'Event start'
+    get_event_start.admin_order_field = 'event__start'
+
     class Meta:
         model = Attendance
 
