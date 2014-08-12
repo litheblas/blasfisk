@@ -67,6 +67,7 @@ INSTALLED_APPS = (
     'locations',
     #'watcher',
     'contact',
+    'attendance',
 )
 
 SOUTH_MIGRATION_MODULES = {
