@@ -3,7 +3,7 @@
 from django.contrib import admin
 
 from attendance.models import Attendance, Comment
-from datetime import datetime, time
+
 
 class AttendanceAdmin(admin.ModelAdmin):
     # Design to the admin-page
