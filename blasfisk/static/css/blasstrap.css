@@ -6173,7 +6173,7 @@ button.close {
   }
 }
 .parallax-content .parallax-inner-text.left {
-  padding-right: 96px;
+  padding-right: 72px;
 }
 @media (min-width: 992px) {
   .parallax-content .parallax-inner-text.left {
@@ -6181,7 +6181,7 @@ button.close {
   }
 }
 .parallax-content .parallax-inner-text.right {
-  padding-left: 96px;
+  padding-left: 72px;
 }
 html {
   position: relative;
