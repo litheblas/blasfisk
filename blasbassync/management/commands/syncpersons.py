@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import requests
+from BeautifulSoup import BeautifulSoup, Tag,NavigableString
 
 from django.core.management.base import BaseCommand, CommandError
 from blasbase.models import Person, SpecialDiet, PersonAddress,PersonPhoneNumber,User,Function,Assignment
@@ -7,8 +9,10 @@ from cards.models import MagnetCard
 from django.conf import settings
 import pycountry
 import MySQLdb
-from sys import stdout
 
+from sys import stdout
+import sys
+from events.models import Event, EventInformation
 
 class Command(BaseCommand):
     help = 'Syncronizes persons from mysql'
@@ -20,9 +24,10 @@ class Command(BaseCommand):
         instrument_dictionary = self.create_sections(db)
         print u"Hämtar data för funktioner"
         function_dictionary = self.create_functions(db)
-        print u"Hämtar data från persontabellen"
-        self.loop_through_persons(db, instrument_dictionary, function_dictionary)
-
+        #print u"Hämtar data från persontabellen"
+        #self.loop_through_persons(db, instrument_dictionary, function_dictionary)
+        print u"Hämtar data från events"
+        self.import_events(db)
         """
                 Assignments
                Avatars
@@ -101,6 +106,56 @@ class Command(BaseCommand):
             hemsida
             listordning
         """
+
+
+    def import_events(self,db):
+        cur = db.cursor()
+        cur.execute("SELECT id,dag,tid, plats, fritext FROM pagang where dag >='2010-01-01'")
+        for row in cur.fetchall() :
+            if row[4]:
+                soup = BeautifulSoup(row[4])
+                e = Event()
+                for title in soup.findAll('h1'):
+                    #tit = str(title.text).decode('utf-8')
+                    #print tit.encode(sys.stdout.encoding, errors='replace')
+
+                    e.name = title.text
+                    e.start = datetime.combine(row[1],datetime.min.time()) #datetime.combine(row[1],row[2])
+                    e.start = e.start + row[2]
+                    e.save()
+                    eventString = ""
+                    next = title.nextSibling
+                    while(next):
+                        eventString += str(next)
+                        next = next.nextSibling
+
+                    #Remove all tags from eventString
+
+                    ei = EventInformation()
+                    ei.event = e
+                    ei.content = eventString
+                    ei.save()
+                #if tit:
+                #    pass
+            """parser.feed(row[4])
+            if parser.success and parser.name != "":
+                print "Event:"
+                print parser.name
+                print "Row:"
+                print row[4].encode(sys.stdout.encoding, errors='replace')
+                e = Event()
+                e.name = parser.name
+                e.start = row[1]
+                e.save()"""
+            #for line in parser.data:
+            #    print line.encode(sys.stdout.encoding, errors='replace')
+            #                if row[1] == None:
+            #                e.start = datetime(1990,1,1)
+            #            else:
+
+
+
+            #print parser.data
 
     def loop_through_persons(self,db,instrument_dictionary,function_dictionary):
         gluten = SpecialDiet.objects.get_or_create(name='Glutenallergi')[0]
