@@ -6114,51 +6114,74 @@ button.close {
     font-size: 63px;
   }
 }
+@media screen and (min-width: 768px) {
+  .parallax-content {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+}
 .parallax-content a.btn {
   padding: 10px 16px;
   font-size: 18px;
   line-height: 1.33;
   border-radius: 0px;
 }
-.parallax-content .img {
+.parallax-content .parallax-inner-img {
   position: relative;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
 }
 @media (max-width: 767px) {
-  .parallax-content .img {
+  .parallax-content .parallax-inner-img {
     display: none !important;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  .parallax-content .img {
+  .parallax-content .parallax-inner-img {
     display: none !important;
   }
 }
 @media (min-width: 992px) {
-  .parallax-content .img {
+  .parallax-content .parallax-inner-img {
     float: left;
     width: 33.33333333%;
   }
 }
-.parallax-content .img img {
+.parallax-content .parallax-inner-img img {
   display: block;
   max-width: 100%;
   height: auto;
+  border-radius: 50%;
   min-width: 100%;
 }
-.parallax-content .text {
+@media (min-width: 992px) {
+  .parallax-content .parallax-inner-img.right {
+    left: 66.66666667%;
+  }
+}
+.parallax-content .parallax-inner-text {
   position: relative;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
 }
 @media (min-width: 992px) {
-  .parallax-content .text {
+  .parallax-content .parallax-inner-text {
     float: left;
     width: 66.66666667%;
   }
+}
+.parallax-content .parallax-inner-text.left {
+  padding-right: 96px;
+}
+@media (min-width: 992px) {
+  .parallax-content .parallax-inner-text.left {
+    right: 33.33333333%;
+  }
+}
+.parallax-content .parallax-inner-text.right {
+  padding-left: 96px;
 }
 html {
   position: relative;
