@@ -42,7 +42,6 @@ class Command(BaseCommand):
         styrelse.save()
         hedersmedlem = Function()
         hedersmedlem.name = "Hedersmedlem"
-        hedersmedlem.membership = True
         hedersmedlem.save()
 
         function_dictionary = {}
