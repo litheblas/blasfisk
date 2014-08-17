@@ -41,7 +41,7 @@ class ContactForm(forms.Form):
         subject = _('Message from %(name)s') % {'name': self.cleaned_data['sender_name']}
         message = self.cleaned_data['message']
 
-        cc_email = sender_email if self.cleaned_data['sender_cc'] else ''
+        cc_email = [sender_email] if self.cleaned_data['sender_cc'] else None
 
         email = EmailMessage(
             to=self.resolve_recipients(),
