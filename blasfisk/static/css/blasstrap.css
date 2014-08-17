@@ -6172,16 +6172,20 @@ button.close {
     width: 66.66666667%;
   }
 }
-.parallax-content .parallax-inner-text.left {
-  padding-right: 72px;
-}
 @media (min-width: 992px) {
   .parallax-content .parallax-inner-text.left {
     right: 33.33333333%;
   }
 }
-.parallax-content .parallax-inner-text.right {
-  padding-left: 72px;
+@media screen and (min-width: 768px) {
+  .parallax-content .parallax-inner-text.left {
+    padding-right: 72px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .parallax-content .parallax-inner-text.right {
+    padding-left: 72px;
+  }
 }
 html {
   position: relative;
