@@ -6081,6 +6081,8 @@ button.close {
   background-color: #eeeeee;
   margin-bottom: 0;
   background: #ffffff;
+  padding-top: 72px;
+  padding-bottom: 72px;
 }
 .parallax-content h1,
 .parallax-content .h1 {
@@ -6177,12 +6179,12 @@ button.close {
     right: 33.33333333%;
   }
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 992px) {
   .parallax-content .parallax-inner-text.left {
     padding-right: 72px;
   }
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 992px) {
   .parallax-content .parallax-inner-text.right {
     padding-left: 72px;
   }
