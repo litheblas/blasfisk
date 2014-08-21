@@ -215,9 +215,15 @@ CMS_PLACEHOLDER_CONF = {
         'name': _(u'Page content'),
         'default_plugins': [
             {
+                'plugin_type': 'TaglinePlugin',
+                'values': {
+
+                }
+            },
+            {
                 'plugin_type': 'MarkdownPlugin',
                 'values': {
-                    'body': u'<p class="lead">Här skriver du eventuell ingress.</p>\n\nLorem ipsum dolor sit amet, **för helvete**.'
+                    'body': u'Lorem ipsum dolor sit amet, **för helvete**.'
                 },
             },
         ]

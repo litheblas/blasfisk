@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import python_2_unicode_compatible
 
 from cms.models.pluginmodel import CMSPlugin
 from cms.models.fields import PlaceholderField
@@ -48,16 +49,24 @@ class CarouselEntry(models.Model):
         ordering = ['priority']
 
 
+@python_2_unicode_compatible
 class Jumbotron(CMSPlugin):
     extra_css_classes = models.CharField(max_length=256, blank=True)
     container = models.BooleanField(default=True)
     content = PlaceholderField('jumbotron-content')
 
+    def __str__(self):
+        return 'test'
 
+
+@python_2_unicode_compatible
 class Pusher(CMSPlugin):
     wrapper_css_classes = models.CharField(max_length=256, blank=True, default='row pusher')
     entry_css_classes = models.CharField(max_length=256, blank=True, default='col-sm-4 item')
     container = models.BooleanField(default=False)
+
+    def __str__(self):
+        return 'test'
 
     def copy_relations(self, copied_instance):
         # Delete all entries to not duplicate them for every save
@@ -80,3 +89,12 @@ class PusherEntry(models.Model):
 
     class Meta:
         ordering = ['priority']
+
+
+class Tagline(CMSPlugin):
+    extra_css_classes = models.CharField(max_length=256, blank=True)
+    content = PlaceholderField('tagline')
+
+
+class Container(CMSPlugin):
+    extra_css_classes = models.CharField(max_length=256, blank=True)
