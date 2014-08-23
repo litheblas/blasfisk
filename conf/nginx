@@ -12,12 +12,32 @@ server {
         alias /var/www/blasfisk/media/;
     }
 
+    # START OF OLD SITE PROXYING
+    # These locations shouldn't be much of a problem for the new site, since it uses language coded URLs for almost everything.
     location /internt/ {
         proxy_pass http://skorpan.litheblas.org/internt/;
         proxy_set_header X-Forwarded-Host $server_name;
         proxy_set_header X-Real-IP $remote_addr;
-        add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
     }
+
+    location /images/ {
+        proxy_pass http://skorpan.litheblas.org/images/;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location /bilder/ {
+        proxy_pass http://skorpan.litheblas.org/bilder/;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location /css/ {
+        proxy_pass http://skorpan.litheblas.org/css/;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    # END OF OLD SITE PROXYING
 
     location / {
         proxy_pass http://127.0.0.1:8000;
