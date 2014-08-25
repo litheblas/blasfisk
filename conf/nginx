@@ -2,6 +2,9 @@ server {
     server_name dev.skorpan.lysator.liu.se;
     listen [::]:80;  # IPv4 and IPv6
 
+    gzip on;
+    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml;
+
     access_log off;
 
     location /static/ {
