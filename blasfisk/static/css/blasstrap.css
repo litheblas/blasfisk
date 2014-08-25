@@ -6120,6 +6120,9 @@ button.close {
     padding-bottom: 96px;
   }
 }
+.parallax-content h1 {
+  font-weight: 500;
+}
 .parallax-content a.btn {
   padding: 10px 16px;
   font-size: 18px;
