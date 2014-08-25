@@ -6341,6 +6341,9 @@ h6 > small {
 .page-footer .row .contact-links {
   margin-bottom: 20px;
 }
+.carousel {
+  margin-bottom: 20px;
+}
 .carousel-fade .carousel-inner .item {
   opacity: 0;
   transition-property: opacity;
