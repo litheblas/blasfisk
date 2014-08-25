@@ -1,6 +1,6 @@
 server {
     server_name dev.skorpan.lysator.liu.se;
-    listen 80;
+    listen [::]:80;  # IPv4 and IPv6
 
     access_log off;
 
@@ -43,6 +43,8 @@ server {
         proxy_pass http://127.0.0.1:8000;
         proxy_set_header X-Forwarded-Host $server_name;
         proxy_set_header X-Real-IP $remote_addr;
+
+        # TODO: Check what these actually do.
         add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
     }
 }
