@@ -166,3 +166,6 @@ class EventInformation(models.Model):
 class EventViewer(CMSPlugin):
     count = models.PositiveIntegerField(blank=True, null=True)
     event_types = models.ManyToManyField('EventType', blank=True, null=True)
+
+    def copy_relations(self, instance):
+        self.event_types = instance.event_types.all()
