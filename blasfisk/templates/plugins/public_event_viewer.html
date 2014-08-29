@@ -1,7 +1,13 @@
 {% load i18n markdown_deux_tags %}
 {% for event in events %}
     <h2>{{ event.name }}</h2>
-    <p class="lead text-muted"><span class="fa fa-fw fa-clock-o"></span>&nbsp;{{ event.start.date }} {{ event.start.time }}{% if event.location %}<br><span class="fa fa-fw fa-map-marker"></span>&nbsp;{{ event.location.display_name }}{% endif %}</p>
+    <p class="lead text-muted">
+        <span class="fa fa-fw fa-clock-o"></span>&nbsp;{{ event.start.date }} {{ event.start.time }}
+        {% if event.location %}<br>
+            <span class="fa fa-fw fa-map-marker"></span>&nbsp;{% spaceless %}
+                {% if event.location.google_maps_url %}<a href="{{ event.location.google_maps_url }}" target="_blank">{% endif %}{{ event.location.display_name }}{% if event.location.google_maps_url %}</a>{% endif %}
+            {% endspaceless %}
+        {% endif %}</p>
     {% for info in event.information.public %}
         {{ info.content|markdown }}
     {% endfor %}
