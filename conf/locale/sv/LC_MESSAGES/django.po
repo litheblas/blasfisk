@@ -7,12 +7,21 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-10 21:19+0000\n"
+"POT-Creation-Date: 2014-08-29 11:12+0000\n"
 "Last-Translator: Olle Vidner <olle@vidner.se>\n"
 "Language: se-SV\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: attendance/models.py:15 attendance/models.py:26
+#, fuzzy
+msgid "comment"
+msgstr "kommentarer"
+
+#: attendance/models.py:16 events/models.py:58
+msgid "comments"
+msgstr "kommentarer"
 
 #: barenbaren/models.py:10 barenbaren/models.py:42 blasbase/models.py:51
 #: blasbase/models.py:55 blasbase/models.py:59 blasbase/models.py:119
@@ -237,43 +246,43 @@ msgstr "Löst folk"
 msgid "Everybody"
 msgstr "Alla"
 
-#: blasfisk/settings/__init__.py:167 blasfisk/settings/__init__.py:182
+#: blasfisk/settings/__init__.py:168 blasfisk/settings/__init__.py:183
 msgid "Swedish"
 msgstr "Svenska"
 
-#: blasfisk/settings/__init__.py:168 blasfisk/settings/__init__.py:188
+#: blasfisk/settings/__init__.py:169 blasfisk/settings/__init__.py:189
 msgid "English"
 msgstr "Engelska"
 
-#: blasfisk/settings/__init__.py:169 blasfisk/settings/__init__.py:194
+#: blasfisk/settings/__init__.py:170 blasfisk/settings/__init__.py:195
 msgid "German"
 msgstr "Tyska"
 
-#: blasfisk/settings/__init__.py:202
+#: blasfisk/settings/__init__.py:203
 msgid "Page"
 msgstr "Sida"
 
-#: blasfisk/settings/__init__.py:203
+#: blasfisk/settings/__init__.py:204
 msgid "Base Page"
 msgstr "Bassida"
 
-#: blasfisk/settings/__init__.py:204
+#: blasfisk/settings/__init__.py:205
 msgid "LiTHe Home"
 msgstr "LiTHe Hem"
 
-#: blasfisk/settings/__init__.py:214
+#: blasfisk/settings/__init__.py:215
 msgid "Page content"
 msgstr "Sidinnehål"
 
-#: blasfisk/settings/__init__.py:225
+#: blasfisk/settings/__init__.py:232
 msgid "Parallax content"
 msgstr "Parallaxinnehåll"
 
-#: blasfisk/settings/__init__.py:250
+#: blasfisk/settings/__init__.py:257
 msgid "General questions"
 msgstr "Allmänna frågor"
 
-#: blasfisk/settings/__init__.py:251
+#: blasfisk/settings/__init__.py:258
 msgid "Concerts"
 msgstr "Spelningar"
 
@@ -297,10 +306,25 @@ msgstr "E-post"
 msgid "Carousel"
 msgstr "Karusell"
 
-#: blasstrap/cms_plugins/carousel.py:17 blasstrap/cms_plugins/jumbotron.py:12
+#: blasstrap/cms_plugins/carousel.py:17 blasstrap/cms_plugins/generic.py:13
+#: blasstrap/cms_plugins/generic.py:22 blasstrap/cms_plugins/jumbotron.py:12
 #: blasstrap/cms_plugins/pusher.py:19
 msgid "Bootstrap"
 msgstr "Bootstrap"
+
+#: blasstrap/cms_plugins/generic.py:12
+#, fuzzy
+msgid "Container"
+msgstr "Kontakt"
+
+#: blasstrap/cms_plugins/generic.py:21 blasstrap/cms_plugins/generic.py:32
+#, fuzzy
+msgid "Tagline"
+msgstr "sista anmälan"
+
+#: blasstrap/cms_plugins/generic.py:37
+msgid "Write your tagline here."
+msgstr "Skriv ingress här."
 
 #: blasstrap/cms_plugins/jumbotron.py:11
 msgid "Jumbotron"
@@ -363,11 +387,11 @@ msgstr "Skicka"
 msgid "Message from %(name)s"
 msgstr "Meddelande från %(name)s"
 
-#: events/cms_app.py:8 events/cms_plugin.py:13
+#: events/cms_app.py:8 events/cms_plugins.py:13
 msgid "Events"
 msgstr "Evenemang"
 
-#: events/cms_plugin.py:12
+#: events/cms_plugins.py:12
 #, fuzzy
 msgid "Public events"
 msgstr "Allmänna evenemang"
@@ -416,10 +440,6 @@ msgstr "uppdrag"
 #: events/models.py:57
 msgid "contact person"
 msgstr "kontaktperson"
-
-#: events/models.py:58
-msgid "comments"
-msgstr "kommentarer"
 
 #: events/models.py:59
 msgid "price"
