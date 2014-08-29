@@ -182,18 +182,17 @@ CMS_LANGUAGES = {
             'code': 'sv',
             'name': _('Swedish'),
             'hide_untranslated': False,
-            'public': True,
         },
         {
             'code': 'en',
             'name': _('English'),
-            'public': True,
+            'public': False,
             'fallbacks': ['sv']
         },
         {
             'code': 'de',
             'name': _('German'),
-            'public': True,
+            'public': False,
             'fallbacks': ['en', 'sv']
         },
     ],
