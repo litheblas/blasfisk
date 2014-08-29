@@ -91,7 +91,7 @@ class EventQuerySetMixin(object):
 
     # Enbart publika event. För att visa på publika sidan utan inloggning.
     def public(self):
-        return self.filter(visible_to__isnull=True)
+        return self.filter(information__functions__isnull=True)
 
 
 # Magi som används för att kunna anropa flera av sina egna funktioner på varandra
@@ -112,11 +112,10 @@ class Event(models.Model):
     deadline = models.DateTimeField(null=True, blank=True, verbose_name=_('deadline'))
     location = models.ForeignKey('locations.Location', related_name='events', null=True, blank=True,
                                  verbose_name=_('location'))
-    event_type = models.ForeignKey('EventType', related_name='events', default=default_event_type, verbose_name=_('type'))
-    visible_to = models.ManyToManyField('blasbase.Function', blank=True, null=True,
-                                        verbose_name=_('visible to'))
-    attendees = models.ManyToManyField('blasbase.Person', through=Attendance, blank=True, null=True,
-                                       verbose_name=_('attendees'))
+    event_type = models.ForeignKey('EventType', related_name='events', default=default_event_type,
+                                   verbose_name=_('type'))
+    attendees = models.ManyToManyField('blasbase.Person', through=Attendance, related_name='events',
+                                       blank=True, null=True, verbose_name=_('attendees'))
 
     cancelled = models.BooleanField(default=False, verbose_name=_('cancelled'))
 
@@ -133,12 +132,28 @@ class Event(models.Model):
         return self.name
 
 
+class EventInformationQuerySetMixin(object):
+    def public(self):
+        return self.filter(functions__isnull=True)
+
+
+class EventInformationQuerySet(QuerySet, EventInformationQuerySetMixin):
+    pass
+
+
+class EventInformationManager(models.Manager, EventInformationQuerySetMixin):
+    def get_queryset(self):
+        return EventInformationQuerySet(model=self.model, using=self._db)
+
+
 @python_2_unicode_compatible
 class EventInformation(models.Model):
-    event = models.ForeignKey('Event', verbose_name=_('event'))
-    functions = models.ManyToManyField('blasbase.Function', blank=True, null=True,
+    event = models.ForeignKey('Event', related_name='information', verbose_name=_('event'))
+    functions = models.ManyToManyField('blasbase.Function', related_name='event_information', blank=True, null=True,
                                        verbose_name=_('functions'))
     content = models.TextField(verbose_name=_('content'))
+
+    objects = EventInformationManager()
 
     class Meta:
         verbose_name = _('event information')

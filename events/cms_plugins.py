@@ -14,13 +14,13 @@ class PublicEventViewerPlugin(CMSPluginBase):
 
     model = EventViewer
 
-    render_template = 'plugins/event_viewer.html'
+    render_template = 'plugins/public_event_viewer.html'
     allow_children = False
 
     def render(self, context, instance, placeholder):
         context = super(PublicEventViewerPlugin, self).render(context, instance, placeholder)
 
-        context['events'] = Event.objects.filter(event_type__in=instance.event_types.all()).public().future().limit_to()[:instance.count]
+        context['events'] = Event.objects.filter(event_type__in=instance.event_types.all()).public().future()[:instance.count]
         return context
 
 plugin_pool.register_plugin(PublicEventViewerPlugin)
