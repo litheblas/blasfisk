@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-29 11:20+0000\n"
+"POT-Creation-Date: 2014-08-29 15:20+0000\n"
 "Last-Translator: Olle Vidner <olle@vidner.se>\n"
 "Language: se-SV\n"
 "MIME-Version: 1.0\n"
@@ -15,9 +15,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: attendance/models.py:15 attendance/models.py:26
-#, fuzzy
 msgid "comment"
-msgstr "kommentarer"
+msgstr "kommentar"
 
 #: attendance/models.py:16 events/models.py:58
 msgid "comments"
@@ -39,7 +38,7 @@ msgid "amount (kr)"
 msgstr "summa (kr)"
 
 #: barenbaren/models.py:41 events/models.py:40 events/models.py:54
-#: events/models.py:129 events/models.py:138
+#: events/models.py:128 events/models.py:151
 msgid "event"
 msgstr "evenemang"
 
@@ -64,7 +63,7 @@ msgid "Blåsbase"
 msgstr "Blåsbasen"
 
 #: blasbase/models.py:33 blasbase/models.py:42 blasbase/models.py:50
-#: events/models.py:115
+#: events/models.py:116
 msgid "type"
 msgstr "typ"
 
@@ -133,7 +132,7 @@ msgstr "speciella kostvanor"
 msgid "special diets comments"
 msgstr "kommentarer till speciella kostvanor"
 
-#: blasbase/models.py:111 events/models.py:140
+#: blasbase/models.py:111 events/models.py:153
 msgid "functions"
 msgstr "funktioner"
 
@@ -250,39 +249,39 @@ msgstr "Alla"
 msgid "Swedish"
 msgstr "Svenska"
 
-#: blasfisk/settings/__init__.py:169 blasfisk/settings/__init__.py:189
+#: blasfisk/settings/__init__.py:169 blasfisk/settings/__init__.py:188
 msgid "English"
 msgstr "Engelska"
 
-#: blasfisk/settings/__init__.py:170 blasfisk/settings/__init__.py:195
+#: blasfisk/settings/__init__.py:170 blasfisk/settings/__init__.py:194
 msgid "German"
 msgstr "Tyska"
 
-#: blasfisk/settings/__init__.py:203
+#: blasfisk/settings/__init__.py:202
 msgid "Page"
 msgstr "Sida"
 
-#: blasfisk/settings/__init__.py:204
+#: blasfisk/settings/__init__.py:203
 msgid "Base Page"
 msgstr "Bassida"
 
-#: blasfisk/settings/__init__.py:205
+#: blasfisk/settings/__init__.py:204
 msgid "LiTHe Home"
 msgstr "LiTHe Hem"
 
-#: blasfisk/settings/__init__.py:215
+#: blasfisk/settings/__init__.py:214
 msgid "Page content"
 msgstr "Sidinnehål"
 
-#: blasfisk/settings/__init__.py:232
+#: blasfisk/settings/__init__.py:231
 msgid "Parallax content"
 msgstr "Parallaxinnehåll"
 
-#: blasfisk/settings/__init__.py:257
+#: blasfisk/settings/__init__.py:256
 msgid "General questions"
 msgstr "Allmänna frågor"
 
-#: blasfisk/settings/__init__.py:258
+#: blasfisk/settings/__init__.py:257
 msgid "Concerts"
 msgstr "Spelningar"
 
@@ -302,9 +301,16 @@ msgstr "Sverige"
 msgid "Email"
 msgstr "E-post"
 
+#: blasfisk/templates/plugins/public_event_viewer.html:9
+msgid ""
+"Believe it or not, but right now we don't have any public concerts planned."
+msgstr ""
+"Tro det eller ej, men just nu har vi inga allmänna spelningar planerade. "
+"Kolla in snart igen!"
+
 #: blasstrap/cms_plugins/carousel.py:16
 msgid "Carousel"
-msgstr "Karusell"
+msgstr "Bildkarusell"
 
 #: blasstrap/cms_plugins/carousel.py:17 blasstrap/cms_plugins/generic.py:13
 #: blasstrap/cms_plugins/generic.py:22 blasstrap/cms_plugins/jumbotron.py:12
@@ -313,14 +319,12 @@ msgid "Bootstrap"
 msgstr "Bootstrap"
 
 #: blasstrap/cms_plugins/generic.py:12
-#, fuzzy
 msgid "Container"
-msgstr "Kontakt"
+msgstr "Container"
 
-#: blasstrap/cms_plugins/generic.py:21 blasstrap/cms_plugins/generic.py:32
-#, fuzzy
+#: blasstrap/cms_plugins/generic.py:21
 msgid "Tagline"
-msgstr "sista anmälan"
+msgstr "Ingress"
 
 #: blasstrap/cms_plugins/generic.py:37
 msgid "Write your tagline here."
@@ -428,14 +432,13 @@ msgstr "deltagande"
 msgid "attendances"
 msgstr "deltaganden"
 
-#: events/models.py:55 events/models.py:123
+#: events/models.py:55 events/models.py:122
 msgid "customer"
 msgstr "kund"
 
 #: events/models.py:56
-#, fuzzy
 msgid "department"
-msgstr "uppdrag"
+msgstr "avdelning"
 
 #: events/models.py:57
 msgid "contact person"
@@ -477,28 +480,23 @@ msgstr "sista anmälan"
 msgid "location"
 msgstr "plats"
 
-#: events/models.py:117
-msgid "visible to"
-msgstr "synligt för"
-
-#: events/models.py:119
+#: events/models.py:118
 msgid "attendees"
 msgstr "deltagare"
 
-#: events/models.py:121
+#: events/models.py:120
 msgid "cancelled"
 msgstr "inställt"
 
-#: events/models.py:130
+#: events/models.py:129
 msgid "events"
 msgstr "evenemang"
 
-#: events/models.py:141
-#, fuzzy
+#: events/models.py:154
 msgid "content"
-msgstr "Innehåll"
+msgstr "innehåll"
 
-#: events/models.py:144 events/models.py:145
+#: events/models.py:159 events/models.py:160
 msgid "event information"
 msgstr "evenemangsinformation"
 
@@ -533,9 +531,3 @@ msgstr "longitud"
 #: locations/models.py:25
 msgid "latitude"
 msgstr "latitud"
-
-#~ msgid "Parallax"
-#~ msgstr "Parallax"
-
-#~ msgid "Image"
-#~ msgstr "Bild"
