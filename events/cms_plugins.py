@@ -16,6 +16,7 @@ class PublicEventViewerPlugin(CMSPluginBase):
 
     render_template = 'plugins/public_event_viewer.html'
     allow_children = False
+    cache = False
 
     def render(self, context, instance, placeholder):
         context = super(PublicEventViewerPlugin, self).render(context, instance, placeholder)
