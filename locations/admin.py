@@ -5,7 +5,7 @@ from locations.models import Location
 
 class LocationAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['name']}),
+        (None,               {'fields': ['name', '_display_name']}),
         (_('Description'),   {'fields': ['description'],
                               'classes': ['collapse']}),
         (_('Address'),       {'fields': ['address',
