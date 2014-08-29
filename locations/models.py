@@ -23,8 +23,8 @@ class Location(AddressMixin, models.Model):
     name = models.CharField(max_length=256, blank=True, verbose_name=_('name'))
     _display_name = models.CharField(max_length=256, blank=True, verbose_name=_('display name'), help_text=_('Used for displaying a different name in public.'))
     description = models.TextField(blank=True, verbose_name=_('description'))
-    gps_coordinate_longitude = models.FloatField(verbose_name=_('longitude'), blank=True, null=True)
-    gps_coordinate_latitude = models.FloatField(verbose_name=_('latitude'), blank=True, null=True)
+    latitude = models.DecimalField(max_digits=12, decimal_places=9, blank=True, null=True, verbose_name=_('latitude'))
+    longitude = models.DecimalField(max_digits=12, decimal_places=9, blank=True, null=True, verbose_name=_('longitude'))
 
     def __str__(self):
         return self.name
@@ -32,3 +32,10 @@ class Location(AddressMixin, models.Model):
     @property
     def display_name(self):
         return self._display_name or self.name
+
+    @property
+    def google_maps_url(self):
+        if self.latitude and self.longitude:
+            return 'https://maps.google.com/?q={0},{1}'.format(self.latitude, self.longitude)
+        else:
+            return None

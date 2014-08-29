@@ -12,9 +12,9 @@ class LocationAdmin(admin.ModelAdmin):
                                          'post_code',
                                          'city',
                                          'country']}),
-        (_('GPS Position'), {'fields': ['gps_coordinate_longitude',
-                                        'gps_coordinate_latitude'],
-                             'classes': ['collapse']})
+        (_('Coordinates'), {'fields': ['latitude',
+                                       'longitude'],
+                            'classes': ['collapse']})
     ]
 
     list_display = ('name', 'address', 'city')
