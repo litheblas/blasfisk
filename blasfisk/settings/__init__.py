@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     
     # Andra appar
     'imagekit',
+    'easy_thumbnails',
     'django_filters',
     'crispy_forms',
     'djangocms_markdown',
@@ -72,6 +73,15 @@ INSTALLED_APPS = (
 
 SOUTH_MIGRATION_MODULES = {
     'easy_thumbnails': 'easy_thumbnails.south_migrations',
+}
+
+THUMBNAIL_ALIASES = {
+    'djangocms_parallax.ParallaxImage.image': {
+        'mobile': {
+            'size': (480, 0),
+            'crop': 'scale'
+        }
+    }
 }
 
 MARKDOWN_DEUX_STYLES = {
