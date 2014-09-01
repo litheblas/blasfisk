@@ -19,8 +19,8 @@ django-reversion==1.8.2
 django-sekizai==0.7
 djangocms-admin-style==0.2.2
 djangocms-link==1.4.0
--e git+https://github.com/ovidner/djangocms-markdown.git@c7a0f23b73cbe17e518a5b6226258a1a49d1d2fe#egg=djangocms_markdown-master
--e git+https://github.com/ovidner/djangocms-parallax.git@27d474ee2ed3c04f81152b58da007dd1108c370d#egg=djangocms_parallax-master
+-e git+https://github.com/ovidner/djangocms-markdown/#egg=djangocms_markdown-master
+-e git+https://github.com/ovidner/djangocms-parallax/#egg=djangocms_parallax-master
 djangocms-picture==0.0.4
 djangocms-text-ckeditor==2.3.0
 easy-thumbnails==2.1
