@@ -23,6 +23,12 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
     }
 
+    location /vcal/ {
+        proxy_pass http://skorpan.litheblas.org/vcal/;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
     location /images/ {
         proxy_pass http://skorpan.litheblas.org/images/;
         proxy_set_header X-Forwarded-Host $server_name;
