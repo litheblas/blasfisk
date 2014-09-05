@@ -1,5 +1,5 @@
 server {
-    server_name dev.skorpan.lysator.liu.se;
+    server_name pekka.litheblas.org;
     listen [::]:80;  # IPv4 and IPv6
 
     gzip on;
