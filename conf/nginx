@@ -17,14 +17,11 @@ server {
 
     # START OF OLD SITE PROXYING
     # These locations shouldn't be much of a problem for the new site, since it uses language coded URLs for almost everything.
-    location /internt/galleri/ {
-        client_max_body_size 0;  # Allow arbitrarily large requests for the gallery app.
-    }
-
     location /internt/ {
         proxy_pass http://skorpan.litheblas.org/internt/;
         proxy_set_header X-Forwarded-Host $server_name;
         proxy_set_header X-Real-IP $remote_addr;
+        client_max_body_size 0;  # Allow arbitrarily large requests.
     }
 
     location /vcal/ {
