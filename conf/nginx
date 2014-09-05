@@ -21,7 +21,7 @@ server {
         proxy_pass http://skorpan.litheblas.org/internt/;
         proxy_set_header X-Forwarded-Host $server_name;
         proxy_set_header X-Real-IP $remote_addr;
-        client_max_body_size 0;  # Allow arbitrarily large requests.
+        client_max_body_size 1024m;  # Allow requests up to 1GB (for gallery uploads).
     }
 
     location /vcal/ {
