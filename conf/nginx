@@ -17,6 +17,12 @@ server {
 
     # START OF OLD SITE PROXYING
     # These locations shouldn't be much of a problem for the new site, since it uses language coded URLs for almost everything.
+    location /sendpass.php {
+        proxy_pass http://skorpan.litheblas.org/sendpass.php;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
     location /internt/ {
         proxy_pass http://skorpan.litheblas.org/internt/;
         proxy_set_header X-Forwarded-Host $server_name;
