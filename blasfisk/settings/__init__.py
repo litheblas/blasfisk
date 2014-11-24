@@ -212,6 +212,7 @@ CMS_TEMPLATES = (
     ('pages/page.html', _('Page')),  # Först i listan, blir standard
     ('pages/base.html', _('Base Page')),
     ('pages/home.html', _('LiTHe Home')),
+    ('pages/special/luciafest2014.html', _('Luciafest 2014')),
 )
 
 CMS_TEMPLATE_INHERITANCE = False  # Annars ärver en massa sidor hem-mallen, vilken egentligen bara ska finnas på startsidan
