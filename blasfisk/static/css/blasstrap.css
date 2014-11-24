@@ -6212,6 +6212,26 @@ h5 > small,
 h6 > small {
   font-weight: 300;
 }
+.luciafest2014-blapp {
+  position: absolute;
+  z-index: 10000;
+  margin-left: 210px;
+  margin-top: -15px;
+}
+.luciafest2014-blapp img {
+  width: 120px;
+  height: 120px;
+}
+@media (max-width: 991px) {
+  .luciafest2014-blapp {
+    margin-left: 190px;
+    margin-top: -15px;
+  }
+  .luciafest2014-blapp img {
+    width: 100px;
+    height: 100px;
+  }
+}
 .page-title {
   padding-bottom: 9px;
   margin: 40px 0 20px;
