@@ -83,6 +83,27 @@
 
                 </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Följ Snuba på Facebook</h1>
+                </div>
+                <div class="panel-body">
+                    <style scoped="scoped">
+                        .fb-like-box, .fb-like-box span, .fb-like-box span iframe[style] { width: 100% !important; }
+                    </style>
+                    <div id="fb-root"></div>
+                    <script>(function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s); js.id = id;
+                        js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.0";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));</script>
+                    <div class="fb-like-box" data-href="https://www.facebook.com/pages/Snuba-Luciafest/819642224741936"
+                         data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="true"
+                         data-show-border="false" data-height="550"></div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock content %}
