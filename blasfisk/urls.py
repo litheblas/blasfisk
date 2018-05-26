@@ -25,8 +25,6 @@ urlpatterns = patterns(
     url(r'^500/$', TemplateView.as_view(template_name='500.html')),  # Test för 500-sidan
     url(r'^test/$', TemplateView.as_view(template_name='test.html')),
 
-    url(r'^integritetspolicy/$', TemplateView.as_view(template_name='privacy_policy.html')),  # Privacy policy
-
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap',
         {'sitemaps': {'cmspages': CMSSitemap}}),
     url(r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
