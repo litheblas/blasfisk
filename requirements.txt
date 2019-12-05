@@ -29,7 +29,7 @@ markdown2==2.2.2
 pilkit==1.1.9
 pycountry==1.8
 python-dateutil==2.2
-requests==2.4.0
+requests==2.20.0
 six==1.7.3
 sqlparse==0.1.11
 wsgiref==0.1.2
