@@ -16,7 +16,7 @@ class ContactForm(forms.Form):
     sender_email = forms.EmailField(label=_('Your email address'))
     subject = forms.ChoiceField(choices=settings.CONTACT_SUBJECTS, label=_('Subject'))
     message = forms.CharField(widget=forms.Textarea, label=_('Message'))
-    sender_cc = forms.BooleanField(required=False, label=_('Send a copy to you'))
+    # sender_cc = forms.BooleanField(required=False, label=_('Send a copy to you'))
 
 
     def __init__(self, *args, **kwargs):
@@ -41,11 +41,11 @@ class ContactForm(forms.Form):
         subject = _('Message from %(name)s') % {'name': self.cleaned_data['sender_name']}
         message = self.cleaned_data['message']
 
-        cc_email = [sender_email] if self.cleaned_data['sender_cc'] else None
+        # cc_email = [sender_email] if self.cleaned_data['sender_cc'] else None
 
         email = EmailMessage(
             to=self.resolve_recipients(),
-            cc=cc_email,
+            # cc=cc_email,
             from_email=sender_email,
             subject=subject,
             body=message,
